@@ -1,0 +1,240 @@
+@import "tailwindcss";
+
+/* Lenis smooth scroll */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+@theme {
+  /* Luxury warm-neutral palette */
+  --color-ivory: #f7f3ec;
+  --color-cream: #efe8dc;
+  --color-sand: #e3d8c6;
+  --color-taupe: #9a8f7d;
+  --color-stone: #6f6557;
+  --color-espresso: #2a241d;
+  --color-ink: #16130f;
+  --color-onyx: #0c0a08;
+  --color-champagne: #b89b6e;
+  --color-gold: #a8895c;
+
+  --color-background: var(--color-ivory);
+  --color-foreground: var(--color-ink);
+
+  --font-serif: var(--font-cormorant), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --tracking-luxe: 0.28em;
+
+  --animate-heroZoom: heroZoom 24s ease-in-out infinite alternate;
+  --animate-marquee: marquee 38s linear infinite;
+  --animate-sheen: sheen 16s ease-in-out infinite alternate;
+  --animate-scrollCue: scrollCue 2.6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+@keyframes heroZoom {
+  from {
+    transform: scale(1.05);
+  }
+  to {
+    transform: scale(1.14);
+  }
+}
+
+@keyframes sheen {
+  from {
+    transform: translate3d(-7%, -5%, 0) scale(1.1);
+    opacity: 0.45;
+  }
+  to {
+    transform: translate3d(7%, 5%, 0) scale(1.2);
+    opacity: 0.85;
+  }
+}
+
+@keyframes scrollCue {
+  0% {
+    transform: translateY(-110%);
+    opacity: 0;
+  }
+  35% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(120%);
+    opacity: 0;
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+* {
+  border-color: color-mix(in srgb, var(--color-stone) 18%, transparent);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+}
+
+/* Serif headings: richer ligatures + balanced line breaks */
+.font-serif {
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "dlig" 1;
+  font-kerning: normal;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+::selection {
+  background: var(--color-gold);
+  color: var(--color-ivory);
+}
+
+/* Tiny-caps eyebrow label */
+.eyebrow {
+  font-family: var(--font-sans);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-luxe);
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--color-gold);
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px) scale(0.985);
+  filter: blur(6px);
+  transition:
+    opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.1s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform, filter;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* Editorial line reveal — clip-mask rise */
+.line-reveal {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+}
+.line-reveal > span {
+  display: block;
+  transform: translateY(110%);
+  transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+.line-reveal.is-revealed > span {
+  transform: none;
+}
+
+/* Animated gold underline sweep for links */
+.link-sweep {
+  position: relative;
+}
+.link-sweep::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 1px;
+  width: 100%;
+  background: var(--color-gold);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.link-sweep:hover::after,
+.link-sweep:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Gold accent rule that draws in with its parent reveal */
+.accent-line {
+  display: block;
+  height: 1px;
+  width: 3.5rem;
+  background: var(--color-gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+  will-change: transform;
+}
+.reveal.is-visible .accent-line {
+  transform: scaleX(1);
+}
+
+/* Film grain texture overlay */
+.grain {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  background-image: url("/brand/grain.svg");
+  background-size: 180px 180px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+  .line-reveal > span {
+    transform: none;
+    transition: none;
+  }
+  .accent-line {
+    transform: none;
+    transition: none;
+  }
+  .heroZoom,
+  [class*="animate-"] {
+    animation: none !important;
+  }
+}
