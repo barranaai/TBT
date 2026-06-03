@@ -47,7 +47,7 @@ export default function Philosophy() {
                 alt="Dr. Trevor J. Thomas, DDS"
                 fill
                 sizes="(min-width: 1024px) 40vw, 100vw"
-                className="object-cover object-top transition-transform duration-[1.4s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
+                className="object-contain transition-transform duration-[1.4s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
               />
             </div>
             <div className="absolute -bottom-6 -left-6 hidden h-32 w-32 border border-gold/40 lg:block" />
