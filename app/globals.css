@@ -188,6 +188,11 @@ p {
   transform-origin: left;
 }
 
+/* Handwritten signature script */
+.font-script {
+  font-family: var(--font-pinyon), "Snell Roundhand", cursive;
+}
+
 /* Gold accent rule that draws in with its parent reveal */
 .accent-line {
   display: block;

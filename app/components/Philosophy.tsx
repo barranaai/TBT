@@ -29,6 +29,14 @@ export default function Philosophy() {
           <p className="mt-10 font-serif text-2xl italic text-gold">
             Real people. Real problems. Real results.
           </p>
+          <div className="mt-10">
+            <span className="block font-script text-6xl leading-none text-champagne sm:text-7xl">
+              Dr. Trev
+            </span>
+            <span className="mt-3 block text-[0.7rem] uppercase tracking-[0.24em] text-stone">
+              Dr. Trevor Thomas, DDS
+            </span>
+          </div>
         </Reveal>
 
         <Reveal delay={120}>
