@@ -10,10 +10,10 @@ export default function Hero() {
         muted
         loop
         playsInline
-        poster="/stock/poster-48173.jpg"
+        poster="/video/trevor-hero-poster.jpg"
         aria-hidden="true"
       >
-        <source src="/stock/video-48173.mp4" type="video/mp4" />
+        <source src="/video/trevor-hero.mp4" type="video/mp4" />
       </video>
       <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/55 to-ink/65" />
       {/* Drifting champagne sheen */}
