@@ -43,11 +43,11 @@ export default function Philosophy() {
           <div className="relative">
             <div className="group relative aspect-[4/5] w-full overflow-hidden">
               <Image
-                src="/stock/dental-19879741.jpg"
-                alt="A dentist working under the clinic light"
+                src="/people/dr-trev-portrait.png"
+                alt="Dr. Trevor J. Thomas, DDS"
                 fill
                 sizes="(min-width: 1024px) 40vw, 100vw"
-                className="object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
+                className="object-cover object-top transition-transform duration-[1.4s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
               />
             </div>
             <div className="absolute -bottom-6 -left-6 hidden h-32 w-32 border border-gold/40 lg:block" />
