@@ -1,4 +1,3 @@
-import Image from "next/image";
 import AtelierHeroIntro from "./AtelierHeroIntro";
 
 export default function AtelierHero() {
@@ -7,14 +6,17 @@ export default function AtelierHero() {
       id="top"
       className="relative flex min-h-dvh flex-col justify-center overflow-hidden bg-onyx"
     >
-      <Image
-        src="/stock/dental-6627447.jpg"
-        alt=""
-        fill
-        priority
-        sizes="100vw"
-        className="object-cover opacity-25 motion-safe:animate-[heroZoom_28s_ease-in-out_infinite_alternate]"
-      />
+      <video
+        className="absolute inset-0 h-full w-full object-cover opacity-30 motion-safe:animate-[heroZoom_28s_ease-in-out_infinite_alternate]"
+        autoPlay
+        muted
+        loop
+        playsInline
+        poster="/video/trevor-hero-poster.jpg"
+        aria-hidden="true"
+      >
+        <source src="/video/trevor-hero.mp4" type="video/mp4" />
+      </video>
       <div className="absolute inset-0 bg-gradient-to-b from-onyx via-onyx/70 to-onyx" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(12,10,8,0.9)_100%)]" />
 
