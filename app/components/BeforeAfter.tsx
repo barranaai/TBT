@@ -78,7 +78,7 @@ export default function BeforeAfter({
           alt={beforeAlt}
           fill
           sizes="(min-width: 1024px) 80vw, 100vw"
-          className="object-cover [filter:grayscale(0.35)_brightness(0.95)]"
+          className="object-cover"
         />
         <span className="pointer-events-none absolute left-5 top-5 z-20 bg-ink/55 px-3 py-1 text-[0.62rem] font-medium uppercase tracking-[0.22em] text-ivory backdrop-blur-sm">
           Before

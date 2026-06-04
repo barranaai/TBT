@@ -67,10 +67,10 @@ export default function Gallery() {
 
         <Reveal className="mt-16">
           <BeforeAfter
-            beforeSrc="/stock/dental-5622257.jpg"
-            afterSrc="/stock/poster-48173.jpg"
-            beforeAlt="Smile before treatment"
-            afterAlt="Smile after treatment"
+            beforeSrc="/stock/before-smile.jpg"
+            afterSrc="/stock/after-smile.jpg"
+            beforeAlt="Worn, damaged smile before treatment by Dr. Trevor J. Thomas"
+            afterAlt="Bright, restored smile after treatment by Dr. Trevor J. Thomas"
           />
           <p className="mt-4 text-center text-[0.72rem] uppercase tracking-[0.2em] text-stone">
             Drag to reveal the transformation
