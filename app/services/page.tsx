@@ -22,32 +22,33 @@ const services = [
     title: "Smile Makeovers",
     body: "A fully bespoke redesign of your smile. We study proportion, shade, and character against your face and personality, then build a plan that looks like the best version of you — never someone else.",
     points: ["Digital smile preview", "Custom shade & shape", "Face-first design"],
-    image: "/stock/dental-8413334.jpg",
-    alt: "Dentist carefully treating a patient under studio light",
+    image: "/stock/service-smile-makeover.jpg",
+    alt: "Dr. Trevor J. Thomas presenting a smile makeover plan to a patient",
+    position: "object-top",
   },
   {
     no: "02",
     title: "Porcelain Veneers",
     body: "Hand-finished ceramic artistry that corrects shape, color, and alignment with natural, light-catching translucency. Each veneer is layered by hand until it disappears into your smile.",
     points: ["Minimal-prep options", "Hand-layered ceramic", "Lifelike translucency"],
-    image: "/stock/dental-6627524.jpg",
-    alt: "Close-up of a refined dental procedure in progress",
+    image: "/stock/service-veneers.jpg",
+    alt: "Dr. Trevor J. Thomas hand-finishing porcelain veneers at the bench",
   },
   {
     no: "03",
     title: "Dental Implants",
     body: "Permanent, lifelike tooth replacement engineered for function and finished for beauty. From single teeth to full arches, implants restore your bite and your confidence for good.",
     points: ["Single & full-arch", "Guided placement", "Restored function"],
-    image: "/stock/dental-7800675.jpg",
-    alt: "Clinicians reviewing a patient's dental imaging together",
+    image: "/stock/service-implants.jpg",
+    alt: "Dr. Trevor J. Thomas discussing dental implants with a patient beside a panoramic X-ray",
   },
   {
     no: "04",
     title: "Full-Mouth Rehabilitation",
     body: "Complex, life-restoring reconstruction that rebuilds health, bite, and confidence from the ground up. The most demanding work in dentistry, performed with patience and precision.",
     points: ["Comprehensive plan", "Bite & health restored", "Staged for comfort"],
-    image: "/stock/dental-3845954.jpg",
-    alt: "Detailed restorative dental work being performed",
+    image: "/stock/service-full-mouth.jpg",
+    alt: "Dr. Trevor J. Thomas performing a full-mouth rehabilitation procedure",
   },
 ];
 
@@ -61,8 +62,8 @@ export default function ServicesPage() {
           eyebrow="The Craft"
           title="Signature services, executed as artistry."
           intro="Every treatment is designed and finished by hand — proportion, translucency, and line drawn to your features."
-          image="/stock/dental-6627524.jpg"
-          imageAlt="A refined dental procedure in progress"
+          image="/stock/service-veneers.jpg"
+          imageAlt="Dr. Trevor J. Thomas hand-finishing porcelain veneers at the bench"
         />
 
         <section className="bg-ivory py-28 lg:py-40">
@@ -75,13 +76,13 @@ export default function ServicesPage() {
                 <Reveal
                   className={i % 2 === 1 ? "lg:order-2" : ""}
                 >
-                  <div className="relative aspect-[4/3] overflow-hidden">
+                  <div className="relative aspect-[5/4] overflow-hidden">
                     <Image
                       src={service.image}
                       alt={service.alt}
                       fill
                       sizes="(min-width: 1024px) 45vw, 100vw"
-                      className="object-cover"
+                      className={`object-cover ${service.position ?? "object-center"}`}
                     />
                   </div>
                 </Reveal>
