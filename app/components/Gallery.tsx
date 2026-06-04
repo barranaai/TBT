@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Reveal from "./Reveal";
+import RevealImage from "./RevealImage";
 import Eyebrow from "./Eyebrow";
 import BeforeAfter from "./BeforeAfter";
 
@@ -90,17 +90,15 @@ export default function Gallery() {
 
         <div className="mt-20 grid grid-cols-2 gap-4 auto-rows-[10rem] sm:auto-rows-[12rem] lg:grid-cols-4 lg:auto-rows-[13rem]">
           {cases.map((c, i) => (
-            <Reveal
-              key={c.name}
-              delay={(i % 3) * 90}
-              className={`${c.span} h-full`}
-            >
+            <div key={c.name} className={`${c.span} h-full`}>
               <figure className="group relative h-full overflow-hidden">
-                <Image
+                <RevealImage
                   src={c.image}
                   alt={c.alt}
                   fill
                   sizes={c.sizes}
+                  delay={(i % 3) * 90}
+                  wrapperClassName="absolute inset-0"
                   className="object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/10 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-100" />
@@ -113,7 +111,7 @@ export default function Gallery() {
                   </span>
                 </figcaption>
               </figure>
-            </Reveal>
+            </div>
           ))}
         </div>
       </div>

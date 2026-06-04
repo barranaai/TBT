@@ -39,18 +39,20 @@ export default function Clientele() {
           </p>
         </Reveal>
 
-        <Reveal delay={120} className="mt-16">
+        <div className="mt-16">
           <ul className="grid grid-cols-2 gap-x-8 gap-y-6 border-t border-ivory/15 pt-10 sm:grid-cols-3 lg:grid-cols-5">
-            {names.map((name) => (
-              <li
+            {names.map((name, i) => (
+              <Reveal
+                as="li"
                 key={name}
+                delay={i * 55}
                 className="font-serif text-xl font-light text-ivory/75 transition-colors duration-300 hover:text-champagne sm:text-2xl"
               >
                 {name}
-              </li>
+              </Reveal>
             ))}
           </ul>
-        </Reveal>
+        </div>
       </div>
     </section>
   );

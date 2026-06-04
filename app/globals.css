@@ -166,6 +166,20 @@ p {
   transform: none;
 }
 
+/* Editorial image curtain reveal — clip-path wipe + scale settle */
+.img-reveal {
+  clip-path: inset(0 0 100% 0);
+  transform: scale(1.06);
+  transition:
+    clip-path 1.3s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: clip-path, transform;
+}
+.img-reveal.is-revealed {
+  clip-path: inset(0 0 0 0);
+  transform: scale(1);
+}
+
 /* Animated gold underline sweep for links */
 .link-sweep {
   position: relative;
@@ -235,6 +249,11 @@ p {
     transition: none;
   }
   .accent-line {
+    transform: none;
+    transition: none;
+  }
+  .img-reveal {
+    clip-path: none;
     transform: none;
     transition: none;
   }

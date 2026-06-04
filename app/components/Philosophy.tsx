@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Reveal from "./Reveal";
+import RevealImage from "./RevealImage";
 import Eyebrow from "./Eyebrow";
 
 export default function Philosophy() {
@@ -42,11 +42,12 @@ export default function Philosophy() {
         <Reveal delay={120}>
           <div className="relative">
             <div className="group relative aspect-[4/5] w-full overflow-hidden">
-              <Image
+              <RevealImage
                 src="/people/dr-trev-portrait.png"
                 alt="Dr. Trevor J. Thomas, DDS"
                 fill
                 sizes="(min-width: 1024px) 40vw, 100vw"
+                wrapperClassName="absolute inset-0"
                 className="object-contain transition-transform duration-[1.4s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
               />
             </div>
