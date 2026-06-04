@@ -7,29 +7,30 @@ const services = [
     no: "01",
     title: "Smile Makeovers",
     body: "A fully bespoke redesign of your smile — proportion, shade, and character tailored to your face and personality.",
-    image: "/stock/dental-8413334.jpg",
-    alt: "Dentist carefully treating a patient under studio light",
+    image: "/stock/service-smile-makeover.jpg",
+    alt: "Dr. Trevor J. Thomas presenting a smile makeover plan to a patient",
+    position: "object-top",
   },
   {
     no: "02",
     title: "Porcelain Veneers",
     body: "Hand-finished ceramic artistry that corrects shape, color, and alignment with natural, light-catching translucency.",
-    image: "/stock/dental-6627524.jpg",
-    alt: "Close-up of a refined dental procedure in progress",
+    image: "/stock/service-veneers.jpg",
+    alt: "Dr. Trevor J. Thomas hand-finishing porcelain veneers at the bench",
   },
   {
     no: "03",
     title: "Dental Implants",
     body: "Permanent, lifelike tooth replacement — engineered for function and finished for beauty.",
-    image: "/stock/dental-7800675.jpg",
-    alt: "Clinicians reviewing a patient's dental imaging together",
+    image: "/stock/service-implants.jpg",
+    alt: "Dr. Trevor J. Thomas discussing dental implants with a patient beside a panoramic X-ray",
   },
   {
     no: "04",
     title: "Full-Mouth Rehabilitation",
     body: "Complex, life-restoring reconstruction that rebuilds health, bite, and confidence from the ground up.",
-    image: "/stock/dental-3845954.jpg",
-    alt: "Detailed restorative dental work being performed",
+    image: "/stock/service-full-mouth.jpg",
+    alt: "Dr. Trevor J. Thomas performing a full-mouth rehabilitation procedure",
   },
 ];
 
@@ -51,13 +52,13 @@ export default function Services() {
           {services.map((service, i) => (
             <Reveal key={service.no} delay={(i % 2) * 100}>
               <article className="group">
-                <div className="relative aspect-[4/3] overflow-hidden">
+                <div className="relative aspect-[5/4] overflow-hidden">
                   <Image
                     src={service.image}
                     alt={service.alt}
                     fill
                     sizes="(min-width: 640px) 45vw, 100vw"
-                    className="object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
+                    className={`object-cover ${service.position ?? "object-center"} transition-transform duration-[1.4s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105`}
                   />
                   <div className="absolute inset-0 bg-ink/10 transition-opacity duration-500 group-hover:bg-ink/0" />
                   <span className="absolute left-5 top-5 font-serif text-2xl text-ivory/90 drop-shadow">
