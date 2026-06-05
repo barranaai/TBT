@@ -48,7 +48,9 @@ export default function Hero() {
         <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-start">
           <Magnetic>
             <a
-              href="#consultation"
+              href="https://www.diverzeent.com/tbv-inquiry/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center justify-center bg-ivory px-8 py-4 text-[0.72rem] font-medium uppercase tracking-[0.2em] text-ink transition-colors duration-300 hover:bg-champagne hover:text-ink"
             >
               Book Your Consultation

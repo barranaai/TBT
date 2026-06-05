@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import IntroVeil from "../components/IntroVeil";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
@@ -65,8 +64,8 @@ export default function GalleryPage() {
           eyebrow="The Smile Gallery"
           title="Transformations, not just teeth."
           intro="Every smile here belongs to a real person with a real story. This is the work — placed, balanced, and unmistakably theirs."
-          image="/stock/poster-48173.jpg"
-          imageAlt="A natural, confident smile"
+          image="/stock/feature-bg.jpg"
+          imageAlt="Dr. Trevor J. Thomas and his assistant caring for a patient in the studio"
         />
 
         {/* Before / After */}
@@ -144,12 +143,14 @@ export default function GalleryPage() {
             </Reveal>
             <Reveal delay={120}>
               <Magnetic>
-                <Link
-                  href="/contact"
+                <a
+                  href="https://www.diverzeent.com/tbv-inquiry/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center justify-center bg-ivory px-8 py-4 text-[0.72rem] font-medium uppercase tracking-[0.2em] text-ink transition-colors duration-300 hover:bg-champagne"
                 >
                   Start Your Story
-                </Link>
+                </a>
               </Magnetic>
             </Reveal>
           </div>

@@ -58,7 +58,9 @@ export default function Gallery() {
             <span className="accent-line mt-8" />
           </div>
           <a
-            href="#consultation"
+            href="https://www.diverzeent.com/tbv-inquiry/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="shrink-0 border-b border-ink pb-1 text-[0.72rem] font-medium uppercase tracking-[0.2em] text-ink transition-colors hover:border-gold hover:text-gold"
           >
             Start your story

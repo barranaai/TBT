@@ -92,8 +92,10 @@ export default function Nav() {
         </ul>
 
         <div className="hidden lg:block">
-          <Link
-            href="/contact"
+          <a
+            href="https://www.diverzeent.com/tbv-inquiry/"
+            target="_blank"
+            rel="noopener noreferrer"
             className={`inline-flex items-center justify-center border px-6 py-3 text-[0.72rem] font-medium uppercase tracking-[0.2em] transition-colors duration-300 ${
               light
                 ? "border-ivory/50 text-ivory hover:bg-ivory hover:text-ink"
@@ -101,7 +103,7 @@ export default function Nav() {
             }`}
           >
             Book Consultation
-          </Link>
+          </a>
         </div>
 
         <button
@@ -158,13 +160,15 @@ export default function Nav() {
             </Link>
           </li>
           <li className="pt-4">
-            <Link
-              href="/contact"
+            <a
+              href="https://www.diverzeent.com/tbv-inquiry/"
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => setOpen(false)}
               className="inline-flex w-full items-center justify-center bg-ink px-6 py-4 text-[0.72rem] font-medium uppercase tracking-[0.2em] text-ivory"
             >
               Book Consultation
-            </Link>
+            </a>
           </li>
         </ul>
       </div>

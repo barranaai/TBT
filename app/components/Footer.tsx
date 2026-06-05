@@ -7,7 +7,11 @@ const nav = [
   { label: "Smile Gallery", href: "/gallery" },
   { label: "Financing", href: "/financing" },
   { label: "The Atelier", href: "/atelier" },
-  { label: "Book Consultation", href: "/contact" },
+  {
+    label: "Book Consultation",
+    href: "https://www.diverzeent.com/tbv-inquiry/",
+    external: true,
+  },
 ];
 
 const socials = [
@@ -108,16 +112,29 @@ export default function Footer() {
           </div>
           <nav aria-label="Footer">
             <ul className="flex flex-col gap-3 lg:items-end">
-              {nav.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className="text-sm uppercase tracking-[0.14em] transition-colors hover:text-champagne"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
+              {nav.map((item) =>
+                item.external ? (
+                  <li key={item.href}>
+                    <a
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm uppercase tracking-[0.14em] transition-colors hover:text-champagne"
+                    >
+                      {item.label}
+                    </a>
+                  </li>
+                ) : (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className="text-sm uppercase tracking-[0.14em] transition-colors hover:text-champagne"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ),
+              )}
             </ul>
           </nav>
         </div>
