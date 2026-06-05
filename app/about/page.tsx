@@ -44,8 +44,8 @@ export default function AboutPage() {
           eyebrow="The Dentist"
           title="Meet Dr. Trev."
           intro="Dr. Trevor J. Thomas, DDS — an artist working in enamel and light, devoted to the people behind every smile."
-          image="/stock/dental-19879741.jpg"
-          imageAlt="Dr. Thomas working under the studio light"
+          image="/stock/process.jpg"
+          imageAlt="Dr. Trevor J. Thomas and his assistant caring for a patient in the studio"
         />
 
         {/* Bio */}
@@ -55,11 +55,11 @@ export default function AboutPage() {
               <div className="relative">
                 <div className="relative aspect-[4/5] w-full overflow-hidden">
                   <Image
-                    src="/stock/dental-7800675.jpg"
-                    alt="Dr. Thomas reviewing a patient's treatment plan"
+                    src="/people/dr-trev-portrait.png"
+                    alt="Dr. Trevor J. Thomas, DDS"
                     fill
                     sizes="(min-width: 1024px) 40vw, 100vw"
-                    className="object-cover"
+                    className="object-cover object-top"
                   />
                 </div>
                 <div className="absolute -bottom-6 -right-6 hidden h-32 w-32 border border-gold/40 lg:block" />
