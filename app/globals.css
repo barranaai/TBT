@@ -222,6 +222,54 @@ p {
   transform: scaleX(1);
 }
 
+/* Ambient drifting dental motif field (decorative, site-wide) */
+.dental-field {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.dental-motif {
+  position: absolute;
+  color: var(--color-champagne);
+  opacity: 0.11;
+  will-change: transform;
+}
+@keyframes motifFloatA {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(3.5vw, -5vh, 0) rotate(22deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+}
+@keyframes motifFloatB {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(-4vw, 4vh, 0) rotate(-26deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+}
+@keyframes motifFloatC {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(3vw, 5vh, 0) rotate(18deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+}
+
 /* Film grain texture overlay */
 .grain {
   pointer-events: none;
@@ -256,6 +304,9 @@ p {
     clip-path: none;
     transform: none;
     transition: none;
+  }
+  .dental-motif {
+    animation: none !important;
   }
   .heroZoom,
   [class*="animate-"] {

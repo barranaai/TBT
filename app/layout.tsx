@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, Inter, Pinyon_Script } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "./components/SmoothScroll";
+import DentalField from "./components/DentalField";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -43,6 +44,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-ivory text-ink">
         <SmoothScroll />
+        <DentalField />
         {children}
         <div className="grain" aria-hidden="true" />
       </body>
