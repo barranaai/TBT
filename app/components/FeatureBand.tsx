@@ -5,13 +5,13 @@ export default function FeatureBand() {
   return (
     <section className="relative h-[70vh] min-h-[460px] overflow-hidden">
       <Image
-        src="/stock/dental-3881296.jpg"
-        alt="Dr. Trev and team caring for a patient in the studio"
+        src="/stock/feature-bg.jpg"
+        alt="Dr. Trevor J. Thomas and his assistant caring for a patient in the studio"
         fill
         sizes="100vw"
         className="object-cover"
       />
-      <div className="absolute inset-0 bg-ink/55" />
+      <div className="absolute inset-0 bg-ink/45" />
       <div className="relative z-10 mx-auto flex h-full max-w-4xl flex-col items-center justify-center px-6 text-center">
         <Reveal>
           <p className="eyebrow mb-6 text-champagne">The Standard</p>
