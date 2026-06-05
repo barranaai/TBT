@@ -25,10 +25,10 @@ export default function Process() {
     <section className="bg-espresso py-28 text-ivory lg:py-40">
       <div className="mx-auto grid max-w-7xl gap-16 px-6 lg:grid-cols-[0.85fr_1fr] lg:items-center lg:gap-20 lg:px-10">
         <Reveal>
-          <div className="relative aspect-[4/5] overflow-hidden">
+          <div className="relative aspect-[3/2] overflow-hidden">
             <Image
-              src="/stock/dental-9951402.jpg"
-              alt="A patient's-eye view of the care team at work"
+              src="/stock/process.jpg"
+              alt="Patient's-eye view of Dr. Trevor J. Thomas and his assistant beginning treatment"
               fill
               sizes="(min-width: 1024px) 40vw, 100vw"
               className="object-cover"
