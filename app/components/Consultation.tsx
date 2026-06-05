@@ -1,10 +1,23 @@
+import Image from "next/image";
 import Reveal from "./Reveal";
 
 const locations = ["Los Angeles", "Beverly Hills", "Atlanta", "New York"];
 
 export default function Consultation() {
   return (
-    <section id="consultation" className="bg-espresso py-28 text-ivory lg:py-40">
+    <section
+      id="consultation"
+      className="relative isolate overflow-hidden bg-espresso py-28 text-ivory lg:py-40"
+    >
+      <Image
+        src="/stock/consultation-bg.jpg"
+        alt=""
+        aria-hidden="true"
+        fill
+        sizes="100vw"
+        className="absolute inset-0 -z-10 object-cover"
+      />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-espresso/95 via-espresso/85 to-espresso/75" />
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="grid gap-16 lg:grid-cols-2 lg:gap-24">
           <Reveal>
