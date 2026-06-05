@@ -1,10 +1,15 @@
 import Reveal from "./Reveal";
+import SectionMotifs from "./SectionMotifs";
 
 const locations = ["Los Angeles", "Beverly Hills", "Atlanta", "New York"];
 
 export default function Consultation() {
   return (
-    <section id="consultation" className="bg-espresso py-28 text-ivory lg:py-40">
+    <section
+      id="consultation"
+      className="relative isolate overflow-hidden bg-espresso py-28 text-ivory lg:py-40"
+    >
+      <SectionMotifs variant={4} />
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="grid gap-16 lg:grid-cols-2 lg:gap-24">
           <Reveal>

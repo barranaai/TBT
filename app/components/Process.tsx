@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Reveal from "./Reveal";
 import Eyebrow from "./Eyebrow";
+import SectionMotifs from "./SectionMotifs";
 
 const steps = [
   {
@@ -22,7 +23,8 @@ const steps = [
 
 export default function Process() {
   return (
-    <section className="bg-espresso py-28 text-ivory lg:py-40">
+    <section className="relative isolate overflow-hidden bg-espresso py-28 text-ivory lg:py-40">
+      <SectionMotifs variant={3} />
       <div className="mx-auto grid max-w-7xl gap-16 px-6 lg:grid-cols-[0.85fr_1fr] lg:items-center lg:gap-20 lg:px-10">
         <Reveal>
           <div className="relative aspect-[3/2] overflow-hidden">

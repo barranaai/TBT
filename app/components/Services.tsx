@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Reveal from "./Reveal";
 import Eyebrow from "./Eyebrow";
+import SectionMotifs from "./SectionMotifs";
 
 const services = [
   {
@@ -36,7 +37,11 @@ const services = [
 
 export default function Services() {
   return (
-    <section id="services" className="bg-cream py-28 lg:py-40">
+    <section
+      id="services"
+      className="relative isolate overflow-hidden bg-cream py-28 lg:py-40"
+    >
+      <SectionMotifs variant={1} />
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <Reveal className="max-w-2xl">
           <Eyebrow index="02" className="mb-6">

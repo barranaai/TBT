@@ -222,18 +222,11 @@ p {
   transform: scaleX(1);
 }
 
-/* Ambient drifting dental motif field (decorative, site-wide) */
-.dental-field {
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  overflow: hidden;
-  pointer-events: none;
-}
+/* Drifting dental line-art motifs (decorative, section-scoped) */
 .dental-motif {
   position: absolute;
   color: var(--color-champagne);
-  opacity: 0.11;
+  opacity: 0.14;
   will-change: transform;
 }
 @keyframes motifFloatA {

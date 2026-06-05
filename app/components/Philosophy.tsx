@@ -1,10 +1,15 @@
 import Reveal from "./Reveal";
 import RevealImage from "./RevealImage";
 import Eyebrow from "./Eyebrow";
+import SectionMotifs from "./SectionMotifs";
 
 export default function Philosophy() {
   return (
-    <section id="philosophy" className="bg-ivory py-28 lg:py-40">
+    <section
+      id="philosophy"
+      className="relative isolate overflow-hidden bg-ivory py-28 lg:py-40"
+    >
+      <SectionMotifs variant={0} />
       <div className="mx-auto grid max-w-7xl items-center gap-16 px-6 lg:grid-cols-2 lg:gap-24 lg:px-10">
         <Reveal>
           <Eyebrow index="01" className="mb-6">

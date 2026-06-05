@@ -1,5 +1,6 @@
 import Reveal from "./Reveal";
 import Eyebrow from "./Eyebrow";
+import SectionMotifs from "./SectionMotifs";
 
 const names = [
   "Offset",
@@ -21,7 +22,8 @@ const names = [
 
 export default function Clientele() {
   return (
-    <section className="bg-ink py-28 lg:py-40">
+    <section className="relative isolate overflow-hidden bg-ink py-28 lg:py-40">
+      <SectionMotifs variant={2} />
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <Reveal className="max-w-2xl">
           <Eyebrow index="04" className="mb-6 text-champagne">
