@@ -8,21 +8,21 @@ const cases = [
     title: "The Porcelain Veneer",
     subtitle: "Eight units · upper arch",
     note: "A hand-layered ceramic restoration tuned to the patient's complexion and lip dynamics — translucency at the edge, warmth at the core.",
-    image: "/stock/dental-5622257.jpg",
+    image: "/gallery/trev-veneer-craft.jpg",
   },
   {
     index: "02",
     title: "Full-Mouth Rehabilitation",
     subtitle: "Reconstruction · function & form",
     note: "Rebuilding a collapsed bite into a balanced, youthful smile — engineered for the jaw, finished for the eye.",
-    image: "/stock/poster-48173.jpg",
+    image: "/gallery/trev-scan-suite.jpg",
   },
   {
     index: "03",
     title: "The Implant Restoration",
     subtitle: "Single anterior · seamless",
     note: "A titanium foundation crowned in custom ceramic, placed so precisely that the result disappears into the natural arch.",
-    image: "/stock/dental-6627447.jpg",
+    image: "/gallery/trev-intraoral-scan.jpg",
   },
 ];
 

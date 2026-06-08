@@ -9,27 +9,27 @@ const services = [
   {
     label: "Porcelain Veneers",
     meta: "Cosmetic",
-    image: "/stock/dental-5622257.jpg",
+    image: "/gallery/trev-veneer-craft.jpg",
   },
   {
     label: "Dental Implants",
     meta: "Restorative",
-    image: "/stock/dental-6627447.jpg",
+    image: "/gallery/trev-intraoral-scan.jpg",
   },
   {
     label: "Smile Design",
     meta: "Bespoke",
-    image: "/stock/poster-48173.jpg",
+    image: "/gallery/trev-consult-suit.jpg",
   },
   {
     label: "Full-Mouth Rehabilitation",
     meta: "Reconstruction",
-    image: "/stock/dental-5622257.jpg",
+    image: "/gallery/trev-scan-suite.jpg",
   },
   {
     label: "Professional Whitening",
     meta: "Refinement",
-    image: "/stock/poster-48173.jpg",
+    image: "/stock/after-smile.jpg",
   },
 ];
 
