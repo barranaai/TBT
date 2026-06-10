@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import IntroVeil from "../components/IntroVeil";
-import Nav from "../components/Nav";
-import Footer from "../components/Footer";
+import AtelierNav from "../atelier/components/AtelierNav";
+import AtelierFooter from "../atelier/components/AtelierFooter";
 import PageHero from "../components/PageHero";
 import Reveal from "../components/Reveal";
 
 export const metadata: Metadata = {
-  title: "Book a Consultation — Teeth by Trev",
+  title: "Contact — Teeth by Trev",
   description:
-    "Book your consultation with Dr. Trevor J. Thomas. Text, call, or send a note — and tell us about the smile you imagine.",
+    "Reach Dr. Trevor J. Thomas. Text, call, or send a note — and tell us about the smile you imagine.",
 };
 
 const locations = [
@@ -23,19 +23,19 @@ const locations = [
 
 export default function ContactPage() {
   return (
-    <>
-      <IntroVeil variant="light" />
-      <Nav />
-      <main className="flex-1">
+    <div className="bg-onyx text-ivory">
+      <IntroVeil variant="dark" />
+      <AtelierNav />
+      <main>
         <PageHero
-          eyebrow="Begin"
-          title="Book your consultation."
+          eyebrow="Get in Touch"
+          title="Let's start the conversation."
           intro="Tell us a little about your smile and what you'd love to change. Texting is the fastest way to reach the team."
-          image="/stock/dental-8413334.jpg"
-          imageAlt="Dr. Thomas treating a patient under studio light"
+          image="/gallery/trev-exam.jpg"
+          imageAlt="Dr. Trevor J. Thomas performing a detailed examination in the studio"
         />
 
-        <section className="bg-espresso py-28 text-ivory lg:py-40">
+        <section className="bg-onyx py-28 lg:py-40">
           <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <div className="grid gap-16 lg:grid-cols-2 lg:gap-24">
               <Reveal>
@@ -110,12 +110,7 @@ export default function ContactPage() {
                     type="email"
                     autoComplete="email"
                   />
-                  <Field
-                    id="phone"
-                    label="Phone"
-                    type="tel"
-                    autoComplete="tel"
-                  />
+                  <Field id="phone" label="Phone" type="tel" autoComplete="tel" />
                   <div>
                     <label
                       htmlFor="message"
@@ -132,7 +127,7 @@ export default function ContactPage() {
                   </div>
                   <button
                     type="submit"
-                    className="inline-flex w-full items-center justify-center bg-ivory px-8 py-4 text-[0.72rem] font-medium uppercase tracking-[0.2em] text-ink transition-colors duration-300 hover:bg-champagne sm:w-auto"
+                    className="inline-flex w-full items-center justify-center border border-gold px-8 py-4 text-[0.72rem] font-medium uppercase tracking-[0.2em] text-gold transition-colors duration-300 hover:bg-gold hover:text-onyx sm:w-auto"
                   >
                     Request Consultation
                   </button>
@@ -142,8 +137,8 @@ export default function ContactPage() {
           </div>
         </section>
       </main>
-      <Footer />
-    </>
+      <AtelierFooter />
+    </div>
   );
 }
 

@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import IntroVeil from "../components/IntroVeil";
-import Nav from "../components/Nav";
-import Footer from "../components/Footer";
+import AtelierNav from "../atelier/components/AtelierNav";
+import AtelierFooter from "../atelier/components/AtelierFooter";
 import PageHero from "../components/PageHero";
 import BeforeAfter from "../components/BeforeAfter";
 import Reveal from "../components/Reveal";
-import Eyebrow from "../components/Eyebrow";
 import Magnetic from "../components/Magnetic";
 
 export const metadata: Metadata = {
@@ -56,10 +56,10 @@ const cases = [
 
 export default function GalleryPage() {
   return (
-    <>
-      <IntroVeil variant="light" />
-      <Nav />
-      <main className="flex-1">
+    <div className="bg-onyx text-ivory">
+      <IntroVeil variant="dark" />
+      <AtelierNav />
+      <main>
         <PageHero
           eyebrow="The Smile Gallery"
           title="Transformations, not just teeth."
@@ -69,13 +69,13 @@ export default function GalleryPage() {
         />
 
         {/* Before / After */}
-        <section className="bg-ivory py-28 lg:py-40">
+        <section className="bg-onyx py-28 lg:py-40">
           <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <Reveal className="mx-auto max-w-2xl text-center">
-              <Eyebrow index="01" className="mb-6 justify-center">
-                Before &amp; After
-              </Eyebrow>
-              <h2 className="font-serif text-4xl font-light leading-[1.1] text-ink sm:text-5xl">
+              <p className="mb-6 text-[0.6rem] uppercase tracking-[0.34em] text-gold/70">
+                01 — Before &amp; After
+              </p>
+              <h2 className="font-serif text-4xl font-light leading-[1.1] text-ivory sm:text-5xl">
                 See the difference, side by side.
               </h2>
             </Reveal>
@@ -87,7 +87,7 @@ export default function GalleryPage() {
                 beforeAlt="Worn, damaged smile before treatment by Dr. Trevor J. Thomas"
                 afterAlt="Bright, restored smile after treatment by Dr. Trevor J. Thomas"
               />
-              <p className="mt-4 text-center text-[0.72rem] uppercase tracking-[0.2em] text-stone">
+              <p className="mt-4 text-center text-[0.72rem] uppercase tracking-[0.2em] text-ivory/45">
                 Drag to reveal the transformation
               </p>
             </Reveal>
@@ -95,13 +95,13 @@ export default function GalleryPage() {
         </section>
 
         {/* Case grid */}
-        <section className="bg-cream py-28 lg:py-40">
+        <section className="border-t border-ivory/10 bg-ink py-28 lg:py-40">
           <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <Reveal className="max-w-2xl">
-              <Eyebrow index="02" className="mb-6">
-                The Cases
-              </Eyebrow>
-              <h2 className="font-serif text-4xl font-light leading-[1.1] text-ink sm:text-5xl">
+              <p className="mb-6 text-[0.6rem] uppercase tracking-[0.34em] text-gold/70">
+                02 — The Cases
+              </p>
+              <h2 className="font-serif text-4xl font-light leading-[1.1] text-ivory sm:text-5xl">
                 A few of the smiles we&apos;ve had the honor to craft.
               </h2>
             </Reveal>
@@ -117,7 +117,8 @@ export default function GalleryPage() {
                       sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw"
                       className="object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-110"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/10 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-100" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-100" />
+                    <div className="pointer-events-none absolute inset-0 border border-ivory/10" />
                     <figcaption className="absolute inset-x-0 bottom-0 translate-y-2 p-6 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
                       <span className="block font-serif text-2xl font-light text-ivory">
                         {c.name}
@@ -134,7 +135,7 @@ export default function GalleryPage() {
         </section>
 
         {/* CTA */}
-        <section className="bg-espresso py-24 text-ivory lg:py-32">
+        <section className="border-t border-ivory/10 bg-onyx py-24 lg:py-32">
           <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-10 px-6 lg:flex-row lg:items-center lg:px-10">
             <Reveal>
               <h2 className="max-w-2xl font-serif text-4xl font-light leading-[1.08] text-ivory sm:text-5xl">
@@ -143,20 +144,18 @@ export default function GalleryPage() {
             </Reveal>
             <Reveal delay={120}>
               <Magnetic>
-                <a
-                  href="https://www.diverzeent.com/tbv-inquiry/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center bg-ivory px-8 py-4 text-[0.72rem] font-medium uppercase tracking-[0.2em] text-ink transition-colors duration-300 hover:bg-champagne"
+                <Link
+                  href="/consultation"
+                  className="inline-flex items-center justify-center border border-gold px-8 py-4 text-[0.72rem] font-medium uppercase tracking-[0.2em] text-gold transition-colors duration-300 hover:bg-gold hover:text-onyx"
                 >
                   Start Your Story
-                </a>
+                </Link>
               </Magnetic>
             </Reveal>
           </div>
         </section>
       </main>
-      <Footer />
-    </>
+      <AtelierFooter />
+    </div>
   );
 }

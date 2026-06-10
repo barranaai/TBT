@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import IntroVeil from "../components/IntroVeil";
-import Nav from "../components/Nav";
-import Footer from "../components/Footer";
+import AtelierNav from "../atelier/components/AtelierNav";
+import AtelierFooter from "../atelier/components/AtelierFooter";
 import PageHero from "../components/PageHero";
 import Reveal from "../components/Reveal";
-import Eyebrow from "../components/Eyebrow";
 import Magnetic from "../components/Magnetic";
 
 export const metadata: Metadata = {
@@ -68,26 +67,26 @@ const faqs = [
 
 export default function FinancingPage() {
   return (
-    <>
-      <IntroVeil variant="light" />
-      <Nav />
-      <main className="flex-1">
+    <div className="bg-onyx text-ivory">
+      <IntroVeil variant="dark" />
+      <AtelierNav />
+      <main>
         <PageHero
           eyebrow="Smile Now, Pay Later"
           title="A world-class smile shouldn't wait."
           intro="Flexible financing and monthly payment plans make life-changing dentistry accessible — so you can begin today and pay over time."
-          image="/stock/dental-7800675.jpg"
-          imageAlt="Clinicians reviewing a patient's treatment plan"
+          image="/stock/service-implants.jpg"
+          imageAlt="Dr. Trevor J. Thomas discussing a treatment plan with a patient"
         />
 
         {/* Benefits */}
-        <section className="bg-ivory py-28 lg:py-40">
+        <section className="bg-onyx py-28 lg:py-40">
           <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <Reveal className="max-w-2xl">
-              <Eyebrow index="01" className="mb-6">
-                The Promise
-              </Eyebrow>
-              <h2 className="font-serif text-4xl font-light leading-[1.1] text-ink sm:text-5xl">
+              <p className="mb-6 text-[0.6rem] uppercase tracking-[0.34em] text-gold/70">
+                01 — The Promise
+              </p>
+              <h2 className="font-serif text-4xl font-light leading-[1.1] text-ivory sm:text-5xl">
                 Transformation, within reach.
               </h2>
             </Reveal>
@@ -95,7 +94,7 @@ export default function FinancingPage() {
             <div className="mt-16 grid gap-x-12 gap-y-12 sm:grid-cols-3">
               {benefits.map((benefit, i) => (
                 <Reveal key={benefit.title} delay={i * 100}>
-                  <div className="border-t border-stone/20 pt-7">
+                  <div className="border-t border-ivory/15 pt-7">
                     <svg
                       viewBox="0 0 24 24"
                       fill="none"
@@ -107,10 +106,10 @@ export default function FinancingPage() {
                     >
                       {benefit.icon}
                     </svg>
-                    <h3 className="mt-6 font-serif text-2xl font-light text-ink">
+                    <h3 className="mt-6 font-serif text-2xl font-light text-ivory">
                       {benefit.title}
                     </h3>
-                    <p className="mt-3 text-base leading-relaxed text-stone">
+                    <p className="mt-3 text-base leading-relaxed text-ivory/60">
                       {benefit.body}
                     </p>
                   </div>
@@ -121,25 +120,25 @@ export default function FinancingPage() {
         </section>
 
         {/* FAQ */}
-        <section className="bg-cream py-28 lg:py-40">
+        <section className="border-t border-ivory/10 bg-ink py-28 lg:py-40">
           <div className="mx-auto grid max-w-7xl gap-16 px-6 lg:grid-cols-[0.8fr_1fr] lg:gap-24 lg:px-10">
             <Reveal>
-              <Eyebrow index="02" className="mb-6">
-                Questions
-              </Eyebrow>
-              <h2 className="font-serif text-4xl font-light leading-[1.1] text-ink sm:text-5xl">
+              <p className="mb-6 text-[0.6rem] uppercase tracking-[0.34em] text-gold/70">
+                02 — Questions
+              </p>
+              <h2 className="font-serif text-4xl font-light leading-[1.1] text-ivory sm:text-5xl">
                 The details, answered.
               </h2>
             </Reveal>
 
-            <div className="divide-y divide-stone/15 border-y border-stone/15">
+            <div className="divide-y divide-ivory/12 border-y border-ivory/12">
               {faqs.map((faq, i) => (
                 <Reveal key={faq.q} delay={(i % 2) * 90}>
                   <div className="py-8">
-                    <h3 className="font-serif text-2xl font-light text-ink">
+                    <h3 className="font-serif text-2xl font-light text-ivory">
                       {faq.q}
                     </h3>
-                    <p className="mt-3 max-w-xl text-base leading-relaxed text-stone">
+                    <p className="mt-3 max-w-xl text-base leading-relaxed text-ivory/60">
                       {faq.a}
                     </p>
                   </div>
@@ -150,7 +149,7 @@ export default function FinancingPage() {
         </section>
 
         {/* CTA */}
-        <section className="bg-espresso py-24 text-ivory lg:py-32">
+        <section className="border-t border-ivory/10 bg-onyx py-24 lg:py-32">
           <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-10 px-6 lg:flex-row lg:items-center lg:px-10">
             <Reveal>
               <h2 className="max-w-2xl font-serif text-4xl font-light leading-[1.08] text-ivory sm:text-5xl">
@@ -160,8 +159,8 @@ export default function FinancingPage() {
             <Reveal delay={120}>
               <Magnetic>
                 <Link
-                  href="/contact"
-                  className="inline-flex items-center justify-center bg-ivory px-8 py-4 text-[0.72rem] font-medium uppercase tracking-[0.2em] text-ink transition-colors duration-300 hover:bg-champagne"
+                  href="/consultation"
+                  className="inline-flex items-center justify-center border border-gold px-8 py-4 text-[0.72rem] font-medium uppercase tracking-[0.2em] text-gold transition-colors duration-300 hover:bg-gold hover:text-onyx"
                 >
                   Explore Financing Options
                 </Link>
@@ -170,7 +169,7 @@ export default function FinancingPage() {
           </div>
         </section>
       </main>
-      <Footer />
-    </>
+      <AtelierFooter />
+    </div>
   );
 }

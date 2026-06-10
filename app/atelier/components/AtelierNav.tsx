@@ -5,10 +5,12 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const links = [
-  { label: "Maison", href: "#maison" },
-  { label: "Work", href: "#work" },
-  { label: "Atelier", href: "#atelier" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Services", href: "/services" },
+  { label: "Gallery", href: "/gallery" },
+  { label: "Financing", href: "/financing" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export default function AtelierNav() {
@@ -24,7 +26,7 @@ export default function AtelierNav() {
   return (
     <header className="fixed inset-x-0 top-0 z-50">
       <nav className="mx-auto flex max-w-[1600px] items-center justify-between px-8 py-8 sm:px-11 sm:py-11 lg:px-14 lg:py-14">
-        <a href="#top" aria-label="Teeth by Trev — Atelier" className="relative z-10">
+        <Link href="/" aria-label="Teeth by Trev — home" className="relative z-10">
           <Image
             src="/brand/tbt-atelier-logo.png"
             alt="Teeth by Trev — Dental Atelier"
@@ -33,7 +35,7 @@ export default function AtelierNav() {
             priority
             className="h-12 w-auto"
           />
-        </a>
+        </Link>
 
         <div className="flex items-center gap-8">
           <Link
@@ -80,10 +82,10 @@ export default function AtelierNav() {
         }`}
       >
         <div className="mx-auto flex h-full max-w-[1600px] flex-col justify-center px-6 lg:px-12">
-          <ul className="space-y-2">
+          <ul className="space-y-1">
             {links.map((link, i) => (
               <li key={link.href}>
-                <a
+                <Link
                   href={link.href}
                   onClick={() => setOpen(false)}
                   className="group flex items-baseline gap-6 py-2"
@@ -91,20 +93,30 @@ export default function AtelierNav() {
                   <span className="font-sans text-[0.7rem] tabular-nums text-gold/70">
                     0{i + 1}
                   </span>
-                  <span className="font-serif text-5xl font-light text-ivory/80 transition-colors duration-300 group-hover:text-gold sm:text-7xl">
+                  <span className="font-serif text-4xl font-light text-ivory/80 transition-colors duration-300 group-hover:text-gold sm:text-6xl">
                     {link.label}
                   </span>
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
-          <Link
-            href="/classic"
-            onClick={() => setOpen(false)}
-            className="mt-12 inline-block text-[0.62rem] uppercase tracking-[0.28em] text-ivory/50 transition-colors hover:text-ivory sm:hidden"
-          >
-            ← Classic Site
-          </Link>
+
+          <div className="mt-12 flex flex-wrap items-center gap-6">
+            <Link
+              href="/consultation"
+              onClick={() => setOpen(false)}
+              className="inline-flex items-center gap-3 border border-gold px-7 py-3.5 text-[0.62rem] uppercase tracking-[0.24em] text-gold transition-colors duration-300 hover:bg-gold hover:text-onyx"
+            >
+              Book a Consultation →
+            </Link>
+            <Link
+              href="/classic"
+              onClick={() => setOpen(false)}
+              className="text-[0.62rem] uppercase tracking-[0.28em] text-ivory/50 transition-colors hover:text-ivory"
+            >
+              Classic Site
+            </Link>
+          </div>
         </div>
       </div>
     </header>
