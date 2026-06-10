@@ -20,6 +20,9 @@ function useCountUp(target: number, run: boolean, duration = 1600) {
   useEffect(() => {
     if (!run) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      // Reduced-motion users skip the animation and jump to the final value;
+      // matchMedia is client-only so this must run in the effect.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setN(target);
       return;
     }

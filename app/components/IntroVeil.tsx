@@ -21,6 +21,9 @@ export default function IntroVeil({ variant = "light" }: IntroVeilProps) {
     const seen = sessionStorage.getItem("tbt-intro-seen");
 
     if (seen || reduce) {
+      // Client-only init (sessionStorage / reduced-motion can't be read during
+      // render or SSR), so this one-time setState must live in the effect.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPhase("done");
       return;
     }

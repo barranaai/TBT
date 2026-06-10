@@ -24,6 +24,7 @@ export default function RevealImage({
   wrapperClassName = "",
   delay = 0,
   className = "",
+  alt,
   ...imageProps
 }: RevealImageProps) {
   const ref = useRef<HTMLDivElement | null>(null);
@@ -53,7 +54,7 @@ export default function RevealImage({
         className={`img-reveal relative h-full w-full ${revealed ? "is-revealed" : ""}`}
         style={delay ? { transitionDelay: `${delay}ms` } : undefined}
       >
-        <Image className={className} {...imageProps} />
+        <Image alt={alt} className={className} {...imageProps} />
       </div>
     </div>
   );
