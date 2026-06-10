@@ -40,26 +40,18 @@ export default function Nav() {
       }`}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-10">
-        <Link href="/" aria-label="Teeth by Trev — home" className="relative block h-8 w-[114px] sm:h-9 sm:w-[129px]">
+        <Link
+          href="/"
+          aria-label="Teeth by Trev — home"
+          className="relative block h-10 w-[150px] sm:h-12 sm:w-[180px]"
+        >
           <Image
-            src="/brand/tbt-logo.png"
-            alt="Teeth by Trev"
+            src="/brand/tbt-atelier-logo.png"
+            alt="Teeth by Trev — Dental Atelier"
             fill
-            sizes="129px"
+            sizes="180px"
             priority
-            className={`object-contain object-left transition-opacity duration-500 ${
-              light ? "opacity-100" : "opacity-0"
-            }`}
-          />
-          <Image
-            src="/brand/tbt-logo-dark.png"
-            alt=""
-            aria-hidden="true"
-            fill
-            sizes="129px"
-            className={`object-contain object-left transition-opacity duration-500 ${
-              light ? "opacity-0" : "opacity-100"
-            }`}
+            className="object-contain object-left"
           />
         </Link>
 

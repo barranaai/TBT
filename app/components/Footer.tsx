@@ -73,11 +73,11 @@ export default function Footer() {
               className="inline-block"
             >
               <Image
-                src="/brand/tbt-logo-footer.png"
-                alt="Teeth by Trev"
-                width={312}
-                height={202}
-                className="h-20 w-auto"
+                src="/brand/tbt-atelier-logo.png"
+                alt="Teeth by Trev — Dental Atelier"
+                width={546}
+                height={256}
+                className="h-16 w-auto"
               />
             </Link>
             <p className="mt-4 max-w-xs text-sm leading-relaxed">

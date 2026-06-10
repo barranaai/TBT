@@ -8,11 +8,11 @@ export default function AtelierFooter() {
         <div className="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <Image
-              src="/brand/tbt-logo.png"
-              alt="Teeth by Trev"
-              width={1024}
-              height={286}
-              className="h-8 w-auto"
+              src="/brand/tbt-atelier-logo.png"
+              alt="Teeth by Trev — Dental Atelier"
+              width={546}
+              height={256}
+              className="h-14 w-auto"
             />
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-ivory/45">
               An atelier of cosmetic &amp; implant dentistry by Dr. Trevor J.

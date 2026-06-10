@@ -46,7 +46,7 @@ export default function IntroVeil({ variant = "light" }: IntroVeilProps) {
   if (phase === "done") return null;
 
   const dark = variant === "dark";
-  const logo = dark ? "/brand/tbt-logo.png" : "/brand/tbt-logo-dark.png";
+  const logo = "/brand/tbt-atelier-logo.png";
 
   return (
     <div
@@ -64,11 +64,11 @@ export default function IntroVeil({ variant = "light" }: IntroVeilProps) {
       >
         <Image
           src={logo}
-          alt="Teeth by Trev"
-          width={1024}
-          height={286}
+          alt="Teeth by Trev — Dental Atelier"
+          width={546}
+          height={256}
           priority
-          className="h-9 w-auto sm:h-11"
+          className="h-14 w-auto sm:h-20"
         />
         <span
           className={`mt-6 h-px bg-gold transition-all duration-[1100ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${

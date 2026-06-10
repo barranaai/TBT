@@ -26,12 +26,12 @@ export default function AtelierNav() {
       <nav className="mx-auto flex max-w-[1600px] items-center justify-between px-6 py-6 lg:px-12">
         <a href="#top" aria-label="Teeth by Trev — Atelier" className="relative z-10">
           <Image
-            src="/brand/tbt-logo.png"
-            alt="Teeth by Trev"
-            width={1024}
-            height={286}
+            src="/brand/tbt-atelier-logo.png"
+            alt="Teeth by Trev — Dental Atelier"
+            width={546}
+            height={256}
             priority
-            className="h-7 w-auto"
+            className="h-10 w-auto"
           />
         </a>
 
