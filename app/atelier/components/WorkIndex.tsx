@@ -40,7 +40,7 @@ export default function WorkIndex() {
             </h2>
           </div>
           <span className="hidden whitespace-nowrap pb-1 text-[0.6rem] uppercase tracking-[0.3em] text-ivory/40 sm:block">
-            2024 — 2026
+            Cosmetic &amp; Implant Dentistry
           </span>
         </div>
 
