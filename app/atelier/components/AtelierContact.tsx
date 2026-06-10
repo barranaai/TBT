@@ -42,10 +42,10 @@ export default function AtelierContact() {
             </a>
           </Magnetic>
           <a
-            href="mailto:studio@teethbytrev.com"
+            href="mailto:TeethByTrev@gmail.com"
             className="text-[0.66rem] uppercase tracking-[0.26em] text-ivory/60 transition-colors duration-300 hover:text-ivory"
           >
-            studio@teethbytrev.com
+            TeethByTrev@gmail.com
           </a>
         </Reveal>
 
