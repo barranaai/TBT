@@ -15,6 +15,7 @@ const links = [
 
 export default function AtelierNav() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -23,9 +24,30 @@ export default function AtelierNav() {
     };
   }, [open]);
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 32);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Solid backdrop once scrolled (or while the overlay menu is open) so the
+  // logo and menu stay legible over light page content.
+  const showBackdrop = scrolled && !open;
+
   return (
-    <header className="fixed inset-x-0 top-0 z-50">
-      <nav className="mx-auto flex max-w-[1600px] items-center justify-between px-8 py-8 sm:px-11 sm:py-11 lg:px-14 lg:py-14">
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-500 ${
+        showBackdrop ? "border-b border-ivory/10 bg-onyx/85 backdrop-blur-md" : ""
+      }`}
+    >
+      <nav
+        className={`mx-auto flex max-w-[1600px] items-center justify-between px-8 transition-all duration-500 sm:px-11 lg:px-14 ${
+          showBackdrop
+            ? "py-4 sm:py-5 lg:py-5"
+            : "py-8 sm:py-11 lg:py-14"
+        }`}
+      >
         <Link href="/" aria-label="Teeth by Trev — home" className="relative z-10">
           <Image
             src="/brand/tbt-atelier-logo.png"
