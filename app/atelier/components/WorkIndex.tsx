@@ -57,7 +57,7 @@ export default function WorkIndex() {
                 <div className="pointer-events-none absolute inset-0 z-10 border border-ivory/10" />
               </div>
 
-              <div className="lg:flex-1">
+              <div className="lg:max-w-xl">
                 <span className="block font-serif text-[5rem] font-light leading-none text-gold/25 lg:text-[7rem]">
                   {c.index}
                 </span>
