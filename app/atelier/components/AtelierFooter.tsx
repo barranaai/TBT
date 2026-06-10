@@ -18,6 +18,18 @@ export default function AtelierFooter() {
               An atelier of cosmetic &amp; implant dentistry by Dr. Trevor J.
               Thomas, DDS.
             </p>
+            <address className="mt-6 text-sm not-italic leading-relaxed text-ivory/45">
+              11980 San Vicente Blvd #507
+              <br />
+              Los Angeles, CA 90049
+              <br />
+              <a
+                href="tel:+14243946159"
+                className="transition-colors hover:text-gold"
+              >
+                424-394-6159
+              </a>
+            </address>
           </div>
 
           <div className="flex flex-col gap-3 text-[0.62rem] uppercase tracking-[0.26em] text-ivory/45 lg:items-end">
@@ -30,7 +42,10 @@ export default function AtelierFooter() {
             <a href="#atelier" className="transition-colors hover:text-gold">
               Atelier
             </a>
-            <Link href="/" className="transition-colors hover:text-gold">
+            <Link href="/consultation" className="transition-colors hover:text-gold">
+              Book
+            </Link>
+            <Link href="/classic" className="transition-colors hover:text-gold">
               Classic Site
             </Link>
           </div>
