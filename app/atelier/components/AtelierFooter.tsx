@@ -19,7 +19,7 @@ export default function AtelierFooter() {
               Thomas, DDS.
             </p>
             <address className="mt-6 text-sm not-italic leading-relaxed text-ivory/45">
-              11980 San Vicente Blvd #507
+              11980 San Vicente Blvd # 507
               <br />
               Los Angeles, CA 90049
               <br />

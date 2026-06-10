@@ -38,7 +38,7 @@ export default function Consultation() {
                     href="tel:+14243946159"
                     className="transition-colors hover:text-champagne"
                   >
-                    (424) 394-6159
+                    424-394-6159
                   </a>
                 </dd>
               </div>
@@ -56,7 +56,7 @@ export default function Consultation() {
               <div>
                 <dt className="eyebrow mb-2 text-champagne">Flagship Studio</dt>
                 <dd className="text-base leading-relaxed">
-                  11980 San Vicente Blvd #507
+                  11980 San Vicente Blvd # 507
                   <br />
                   Los Angeles, CA 90049
                 </dd>
