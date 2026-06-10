@@ -6,9 +6,12 @@ export default function Manifesto() {
     <section id="maison" className="bg-onyx py-32 lg:py-44">
       <div className="mx-auto max-w-5xl px-6 lg:px-12">
         <Reveal>
-          <p className="mb-12 text-[0.6rem] uppercase tracking-[0.34em] text-gold/70">
+          <p className="mb-6 text-[0.6rem] uppercase tracking-[0.34em] text-gold/70">
             The Maison
           </p>
+          <h2 className="mb-12 font-serif text-4xl font-light leading-[1.05] text-ivory sm:text-5xl">
+            Dentistry is my ministry.
+          </h2>
         </Reveal>
         <Reveal delay={120}>
           <p className="font-serif text-3xl font-light leading-[1.35] tracking-[-0.01em] text-ivory/85 sm:text-4xl lg:text-[2.85rem]">
@@ -19,6 +22,12 @@ export default function Manifesto() {
             question: <span className="italic text-gold">does it look
             inevitable?</span>{" "}
             The finest work is the work no one can see was done.
+          </p>
+        </Reveal>
+
+        <Reveal delay={180}>
+          <p className="mt-10 font-serif text-2xl italic text-gold sm:text-3xl">
+            Real people. Real problems. Real results.
           </p>
         </Reveal>
 

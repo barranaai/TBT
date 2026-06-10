@@ -9,6 +9,10 @@ import Process from "./atelier/components/Process";
 import ServiceList from "./atelier/components/ServiceList";
 import AtelierContact from "./atelier/components/AtelierContact";
 import AtelierFooter from "./atelier/components/AtelierFooter";
+import Stats from "./components/Stats";
+import Clientele from "./components/Clientele";
+import Media from "./components/Media";
+import Testimonials from "./components/Testimonials";
 
 export const metadata: Metadata = {
   title: "Teeth by Trev — Cosmetic & Implant Dentistry",
@@ -25,9 +29,13 @@ export default function Home() {
         <AtelierHero />
         <Marquee />
         <Manifesto />
+        <Stats />
         <WorkIndex />
+        <Clientele />
+        <Media dark />
         <Process />
         <ServiceList />
+        <Testimonials dark />
         <AtelierContact />
       </main>
       <AtelierFooter />
