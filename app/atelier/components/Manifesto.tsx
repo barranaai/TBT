@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Reveal from "../../components/Reveal";
 
 export default function Manifesto() {
@@ -22,11 +23,25 @@ export default function Manifesto() {
         </Reveal>
 
         <Reveal delay={240}>
-          <div className="mt-16 flex items-center gap-6">
-            <span className="h-px w-16 bg-gold/40" />
-            <span className="font-serif text-xl italic text-ivory/60">
-              Dr. Trevor J. Thomas
-            </span>
+          <div className="mt-16 flex flex-col items-start gap-7 sm:flex-row sm:items-center sm:gap-10">
+            <div className="relative h-36 w-28 shrink-0 overflow-hidden sm:h-40 sm:w-32">
+              <Image
+                src="/people/dr-trev-portrait.png"
+                alt="Dr. Trevor J. Thomas, DDS"
+                fill
+                sizes="128px"
+                className="object-cover object-[center_20%]"
+              />
+              <div className="pointer-events-none absolute inset-0 border border-gold/30" />
+            </div>
+            <div>
+              <span className="block font-script text-5xl leading-none text-gold sm:text-6xl">
+                Dr. Trev
+              </span>
+              <span className="mt-3 block text-[0.6rem] uppercase tracking-[0.28em] text-ivory/50">
+                Dr. Trevor J. Thomas, DDS
+              </span>
+            </div>
           </div>
         </Reveal>
       </div>
