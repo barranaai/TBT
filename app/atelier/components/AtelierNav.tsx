@@ -31,7 +31,7 @@ export default function AtelierNav() {
             width={546}
             height={256}
             priority
-            className="h-10 w-auto"
+            className="h-12 w-auto"
           />
         </a>
 
