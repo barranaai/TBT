@@ -35,7 +35,7 @@ export default function AtelierContact() {
         <Reveal delay={200} className="mt-12 flex flex-col items-center justify-center gap-5 sm:flex-row">
           <Magnetic>
             <a
-              href="tel:+13105551234"
+              href="tel:+14243946159"
               className="group inline-flex items-center gap-4 border border-gold px-9 py-4 text-[0.66rem] uppercase tracking-[0.26em] text-gold transition-colors duration-300 hover:bg-gold hover:text-onyx"
             >
               Call the Studio
