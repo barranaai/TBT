@@ -23,7 +23,7 @@ export default function AtelierNav() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
-      <nav className="mx-auto flex max-w-[1600px] items-center justify-between px-6 py-6 lg:px-12">
+      <nav className="mx-auto flex max-w-[1600px] items-center justify-between px-8 py-8 sm:px-11 sm:py-11 lg:px-14 lg:py-14">
         <a href="#top" aria-label="Teeth by Trev — Atelier" className="relative z-10">
           <Image
             src="/brand/tbt-atelier-logo.png"
