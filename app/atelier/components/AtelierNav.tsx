@@ -37,6 +37,12 @@ export default function AtelierNav() {
 
         <div className="flex items-center gap-8">
           <Link
+            href="/consultation"
+            className="hidden border border-gold/50 px-5 py-2.5 text-[0.6rem] uppercase tracking-[0.24em] text-gold transition-colors duration-300 hover:bg-gold hover:text-onyx sm:block"
+          >
+            Book
+          </Link>
+          <Link
             href="/classic"
             className="hidden text-[0.62rem] uppercase tracking-[0.28em] text-ivory/55 transition-colors hover:text-ivory sm:block"
           >

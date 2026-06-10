@@ -68,9 +68,7 @@ export default function AtelierHeroIntro() {
       >
         <Magnetic>
           <a
-            href="https://www.diverzeent.com/tbv-inquiry/"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/consultation"
             className="group inline-flex items-center gap-4 border border-ivory/30 px-9 py-4 text-[0.66rem] uppercase tracking-[0.26em] text-ivory transition-colors duration-300 hover:border-gold hover:text-gold"
           >
             Request an Audience

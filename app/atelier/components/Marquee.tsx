@@ -1,12 +1,5 @@
-const items = [
-  "Porcelain Veneers",
-  "Dental Implants",
-  "Smile Design",
-  "Whitening",
-  "Full-Mouth Rehabilitation",
-  "Bonding",
-  "Gum Contouring",
-];
+// Cities served — sticky marquee bar. Update this list as locations change.
+const items = ["Los Angeles", "Beverly Hills", "Atlanta", "New York"];
 
 export default function Marquee() {
   const sequence = [...items, ...items];
