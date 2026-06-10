@@ -37,7 +37,7 @@ export default function AtelierNav() {
 
         <div className="flex items-center gap-8">
           <Link
-            href="/"
+            href="/classic"
             className="hidden text-[0.62rem] uppercase tracking-[0.28em] text-ivory/55 transition-colors hover:text-ivory sm:block"
           >
             Classic Site
@@ -93,7 +93,7 @@ export default function AtelierNav() {
             ))}
           </ul>
           <Link
-            href="/"
+            href="/classic"
             onClick={() => setOpen(false)}
             className="mt-12 inline-block text-[0.62rem] uppercase tracking-[0.28em] text-ivory/50 transition-colors hover:text-ivory sm:hidden"
           >
