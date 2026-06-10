@@ -1,5 +1,13 @@
 // Cities served — sticky marquee bar. Update this list as locations change.
-const items = ["Los Angeles", "Beverly Hills", "Atlanta", "New York"];
+const items = [
+  "Los Angeles",
+  "New York",
+  "Atlanta",
+  "Houston",
+  "Washington D.C.",
+  "Tampa",
+  "Memphis",
+];
 
 export default function Marquee() {
   const sequence = [...items, ...items];

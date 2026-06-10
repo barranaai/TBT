@@ -1,7 +1,15 @@
 import Reveal from "./Reveal";
 import SectionMotifs from "./SectionMotifs";
 
-const locations = ["Los Angeles", "Beverly Hills", "Atlanta", "New York"];
+const locations = [
+  "Los Angeles",
+  "New York",
+  "Atlanta",
+  "Houston",
+  "Washington D.C.",
+  "Tampa",
+  "Memphis",
+];
 
 export default function Consultation() {
   return (

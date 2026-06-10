@@ -11,7 +11,15 @@ export const metadata: Metadata = {
     "Book your consultation with Dr. Trevor J. Thomas. Text, call, or send a note — and tell us about the smile you imagine.",
 };
 
-const locations = ["Los Angeles", "Beverly Hills", "Atlanta", "New York"];
+const locations = [
+  "Los Angeles",
+  "New York",
+  "Atlanta",
+  "Houston",
+  "Washington D.C.",
+  "Tampa",
+  "Memphis",
+];
 
 export default function ContactPage() {
   return (

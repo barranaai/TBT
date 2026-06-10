@@ -28,7 +28,7 @@ const pinyon = Pinyon_Script({
 export const metadata: Metadata = {
   title: "Teeth by Trev — Cosmetic & Implant Dentistry",
   description:
-    "Dr. Trevor J. Thomas crafts life-changing smiles. Cosmetic dentistry, implants, and full-mouth rehabilitation in Los Angeles, Beverly Hills, Atlanta & New York. Real people. Real problems. Real results.",
+    "Dr. Trevor J. Thomas crafts life-changing smiles. Cosmetic dentistry, implants, and full-mouth rehabilitation in Los Angeles, New York, Atlanta, Houston, Washington D.C., Tampa & Memphis. Real people. Real problems. Real results.",
 };
 
 export default function RootLayout({

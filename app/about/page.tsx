@@ -30,7 +30,7 @@ const credentials = [
   },
   {
     title: "Four Flagship Cities",
-    body: "Caring for patients across Los Angeles, Beverly Hills, Atlanta, and New York — by appointment.",
+    body: "Caring for patients across Los Angeles, New York, Atlanta, Houston, Washington D.C., Tampa, and Memphis — by appointment.",
   },
 ];
 
