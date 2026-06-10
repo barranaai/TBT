@@ -48,7 +48,7 @@ export default function WorkIndex() {
                 i % 2 === 1 ? "lg:flex-row-reverse" : ""
               }`}
             >
-              <div className="group relative aspect-[4/5] w-full overflow-hidden lg:w-1/2">
+              <div className="group relative aspect-[4/5] w-full overflow-hidden sm:max-w-sm lg:w-[22rem] lg:max-w-none lg:shrink-0">
                 <ParallaxImage
                   src={c.image}
                   alt={c.title}
@@ -57,7 +57,7 @@ export default function WorkIndex() {
                 <div className="pointer-events-none absolute inset-0 z-10 border border-ivory/10" />
               </div>
 
-              <div className="lg:w-1/2">
+              <div className="lg:flex-1">
                 <span className="block font-serif text-[5rem] font-light leading-none text-gold/25 lg:text-[7rem]">
                   {c.index}
                 </span>
