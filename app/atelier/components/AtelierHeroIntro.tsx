@@ -71,7 +71,7 @@ export default function AtelierHeroIntro() {
             href="/consultation"
             className="group inline-flex items-center gap-4 border border-ivory/30 px-9 py-4 text-[0.66rem] uppercase tracking-[0.26em] text-ivory transition-colors duration-300 hover:border-gold hover:text-gold"
           >
-            Request an Audience
+            Request a Consultation
             <span className="transition-transform duration-300 group-hover:translate-x-1">
               →
             </span>
