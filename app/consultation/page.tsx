@@ -81,14 +81,6 @@ export default function ConsultationPage() {
                 assessment of where you are and the smile you imagine. Choose to
                 meet in person or by video.
               </p>
-              <p className="mt-10 inline-flex items-baseline gap-3 border-t border-ivory/15 pt-6">
-                <span className="font-serif text-4xl font-light text-ivory">
-                  $250
-                </span>
-                <span className="text-[0.66rem] uppercase tracking-[0.26em] text-ivory/50">
-                  Private consultation
-                </span>
-              </p>
             </Reveal>
           </div>
         </section>
