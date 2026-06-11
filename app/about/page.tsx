@@ -81,7 +81,7 @@ export default function AboutPage() {
                   tooth, but with a person and the story they carry.
                 </p>
                 <p>
-                  Over eight years he has refined a practice where world-class
+                  Over ten years he has refined a practice where world-class
                   craftsmanship meets genuine care. He studies the face before
                   the teeth, designs every smile by hand, and treats each patient
                   like he&apos;d treat his own mother.

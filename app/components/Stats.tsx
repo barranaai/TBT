@@ -9,10 +9,10 @@ type Stat = {
 };
 
 const stats: Stat[] = [
-  { value: 8, suffix: "+", label: "Years in Practice" },
+  { value: 10, suffix: "+", label: "Years in Practice" },
+  { value: 5000, suffix: "+", label: "Smiles Transformed" },
   { value: 7, label: "Cities Served" },
   { value: 15, suffix: "+", label: "Celebrity Smiles" },
-  { value: 100, suffix: "%", label: "Care, Every Visit" },
 ];
 
 function useCountUp(target: number, run: boolean, duration = 1600) {
