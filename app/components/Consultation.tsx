@@ -2,7 +2,7 @@ import Reveal from "./Reveal";
 import SectionMotifs from "./SectionMotifs";
 
 const locations = [
-  "Los Angeles",
+  "Beverly Hills",
   "New York",
   "Atlanta",
   "Houston",

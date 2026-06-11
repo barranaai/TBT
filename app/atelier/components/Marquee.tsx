@@ -1,6 +1,6 @@
 // Cities served — sticky marquee bar. Update this list as locations change.
 const items = [
-  "Los Angeles",
+  "Beverly Hills",
   "New York",
   "Atlanta",
   "Houston",

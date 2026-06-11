@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 const locations = [
-  "Los Angeles",
+  "Beverly Hills",
   "New York",
   "Atlanta",
   "Houston",

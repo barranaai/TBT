@@ -29,7 +29,7 @@ const credentials = [
   },
   {
     title: "Cities Coast to Coast",
-    body: "Caring for patients across Los Angeles, New York, Atlanta, Houston, Washington D.C., Tampa, and Memphis — by appointment.",
+    body: "Caring for patients across Beverly Hills, New York, Atlanta, Houston, Washington D.C., Tampa, and Memphis — by appointment.",
   },
 ];
 

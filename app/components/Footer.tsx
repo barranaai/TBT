@@ -143,7 +143,7 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} Teeth by Trev. All rights reserved.
           </span>
           <span>
-            Los Angeles · New York · Atlanta · Houston · Washington D.C. ·
+            Beverly Hills · New York · Atlanta · Houston · Washington D.C. ·
             Tampa · Memphis
           </span>
         </div>

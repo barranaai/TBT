@@ -28,7 +28,7 @@ export default function AtelierHeroIntro() {
             revealed ? "opacity-100" : "opacity-0"
           }`}
         >
-          Cosmetic Atelier — Est. Los Angeles
+          Cosmetic Atelier — Est. Beverly Hills
         </span>
         <span
           className={`transition-all duration-1000 ${
