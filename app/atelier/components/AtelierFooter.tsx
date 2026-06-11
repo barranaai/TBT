@@ -66,9 +66,9 @@ export default function AtelierFooter() {
               Thomas, DDS.
             </p>
             <address className="mt-6 text-sm not-italic leading-relaxed text-ivory/45">
-              11980 San Vicente Blvd # 507
+              436 N Bedford Dr #300
               <br />
-              Los Angeles, CA 90049
+              Beverly Hills, CA 90210
               <br />
               <a
                 href="tel:+14243946159"

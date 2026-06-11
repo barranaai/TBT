@@ -67,9 +67,9 @@ export default function ContactPage() {
                       Flagship Studio
                     </dt>
                     <dd className="text-base leading-relaxed">
-                      11980 San Vicente Blvd # 507
+                      436 N Bedford Dr #300
                       <br />
-                      Los Angeles, CA 90049
+                      Beverly Hills, CA 90210
                     </dd>
                   </div>
                   <div>
