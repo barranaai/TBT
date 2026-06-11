@@ -35,7 +35,7 @@ export default function Clientele() {
           <span className="accent-line mt-8" />
           <p className="mt-8 max-w-xl text-base leading-relaxed text-ivory/70 sm:text-lg">
             Star of <span className="text-champagne">SMILE: LA</span>, and the
-            celebrity smile behind some of music and entertainment&apos;s most
+            Hollywood smile behind some of music and entertainment&apos;s most
             recognizable faces — designed with the same care given to every
             patient who sits in the chair.
           </p>
