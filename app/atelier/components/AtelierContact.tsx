@@ -13,7 +13,7 @@ export default function AtelierContact() {
       <div className="relative mx-auto max-w-3xl px-6 text-center lg:px-12">
         <Reveal>
           <p className="mb-8 text-[0.6rem] uppercase tracking-[0.34em] text-gold/70">
-            Request an Audience
+            Request a Consultation
           </p>
         </Reveal>
         <h2 className="font-serif text-5xl font-light leading-[1.02] tracking-[-0.01em] text-ivory sm:text-6xl lg:text-7xl">
