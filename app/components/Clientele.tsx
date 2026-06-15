@@ -2,23 +2,7 @@ import Reveal from "./Reveal";
 import Eyebrow from "./Eyebrow";
 import SectionMotifs from "./SectionMotifs";
 
-const names = [
-  "Offset",
-  "Takeoff",
-  "Sexyy Red",
-  "Ne-Yo",
-  "Flavor Flav",
-  "Tyga",
-  "Rich the Kid",
-  "Chief Keef",
-  "Michael Blackson",
-  "Chrisean Rock",
-  "Amber Rose",
-  "Bobby Shmurda",
-  "03 Greedo",
-  "Lil Xan",
-  "Inayah",
-];
+const outlets = ["SMILE: LA", "Zeus Network", "TMZ", "Yahoo", "Black Enterprise"];
 
 export default function Clientele() {
   return (
@@ -41,16 +25,17 @@ export default function Clientele() {
           </p>
         </Reveal>
 
-        <div className="mt-16">
-          <ul className="grid grid-cols-2 gap-x-8 gap-y-6 border-t border-ivory/15 pt-10 sm:grid-cols-3 lg:grid-cols-5">
-            {names.map((name, i) => (
+        <div className="mt-16 border-t border-ivory/15 pt-10">
+          <p className="eyebrow mb-8 text-gold/70">As Seen On</p>
+          <ul className="flex flex-wrap items-center gap-x-12 gap-y-6">
+            {outlets.map((outlet, i) => (
               <Reveal
                 as="li"
-                key={name}
-                delay={i * 55}
-                className="font-serif text-xl font-light text-ivory/75 transition-colors duration-300 hover:text-champagne sm:text-2xl"
+                key={outlet}
+                delay={i * 80}
+                className="font-serif text-2xl font-light text-ivory/60 transition-colors duration-300 hover:text-ivory sm:text-3xl"
               >
-                {name}
+                {outlet}
               </Reveal>
             ))}
           </ul>

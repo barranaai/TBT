@@ -11,7 +11,6 @@ import AtelierContact from "./atelier/components/AtelierContact";
 import AtelierFooter from "./atelier/components/AtelierFooter";
 import Stats from "./components/Stats";
 import Clientele from "./components/Clientele";
-import Media from "./components/Media";
 import Testimonials from "./components/Testimonials";
 
 export const metadata: Metadata = {
@@ -32,7 +31,6 @@ export default function Home() {
         <Stats />
         <WorkIndex />
         <Clientele />
-        <Media dark />
         <Process />
         <ServiceList />
         <Testimonials dark />

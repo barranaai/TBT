@@ -8,7 +8,6 @@ import Services from "../components/Services";
 import Gallery from "../components/Gallery";
 import Process from "../components/Process";
 import FeatureBand from "../components/FeatureBand";
-import Media from "../components/Media";
 import Financing from "../components/Financing";
 import Testimonials from "../components/Testimonials";
 import Consultation from "../components/Consultation";
@@ -34,7 +33,6 @@ export default function ClassicHome() {
         <PullQuote />
         <Stats />
         <Services />
-        <Media />
         <div className="bg-ivory py-20">
           <SectionDivider />
         </div>
