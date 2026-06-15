@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Magnetic from "../components/Magnetic";
 
-const cities = [
+const locations = [
   "Beverly Hills, CA",
   "New York, NY",
   "Atlanta, GA",
@@ -12,16 +12,6 @@ const cities = [
   "Tampa, FL",
   "Memphis, TN",
   "Other — I am flexible",
-];
-
-const serviceOptions = [
-  "Implants",
-  "Veneers",
-  "Whitening",
-  "Crowns",
-  "Cleaning",
-  "Extraction",
-  "Full Smile Makeover",
 ];
 
 const budgets = [
@@ -33,50 +23,58 @@ const budgets = [
   "$40K+",
 ];
 
-const hearOptions = [
-  "Instagram DM",
-  "Instagram Comment",
-  "Facebook",
-  "Referred by a friend or patient",
-  "Found on the website",
-  "Other",
-];
-
-const financingPartners = [
-  { name: "CareCredit", href: "https://www.carecredit.com/go/276SNV/" },
-  { name: "Alphaeon", href: "https://goalphaeon.com/apply?src=cling" },
+const photoFields = [
+  { id: "photo-bite", caption: "Photo of your natural smile while biting down." },
+  { id: "photo-top", caption: "Photo of your top teeth with your lip lifted." },
   {
-    name: "Cherry",
-    href: "https://pay.withcherry.com/trevor-jamal-thomas-dds-inc?utm_source=practice&m=51934",
+    id: "photo-bottom",
+    caption: "Photo of your bottom teeth with your lip pulled down.",
   },
-  {
-    name: "Proceed Finance",
-    href: "https://www.proceedfinance.com/application/create?referrer=37783-13017-4FDA",
-  },
+  { id: "photo-left", caption: "Photo of your mouth open from a left angle." },
+  { id: "photo-right", caption: "Photo of your mouth open from a right angle." },
 ];
-
-// $250 deposit checkout (Square), credited toward treatment.
-const CHECKOUT_URL = "https://square.link/u/wISlz03Z";
 
 const inputClass =
   "w-full border border-ivory/25 bg-transparent px-4 py-3 text-ivory placeholder:text-ivory/30 transition-colors focus:border-champagne focus:outline-none";
+const selectClass = `${inputClass} appearance-none`;
 const labelClass = "eyebrow mb-3 block text-champagne";
-const sectionLabel =
-  "mb-6 text-[0.6rem] uppercase tracking-[0.34em] text-gold/70";
 
 function Req() {
   return <span className="text-gold">*</span>;
 }
 
+function PhotoField({ id, caption }: { id: string; caption: string }) {
+  const [name, setName] = useState<string | null>(null);
+  return (
+    <div>
+      <label
+        htmlFor={id}
+        className="inline-flex cursor-pointer items-center gap-3 border border-ivory/25 px-5 py-2.5 text-[0.7rem] uppercase tracking-[0.18em] text-ivory/70 transition-colors hover:border-champagne hover:text-ivory"
+      >
+        <span aria-hidden="true">📷</span>
+        {name ? "Replace file" : "Choose a file"}
+        <input
+          id={id}
+          name={id}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={(e) => setName(e.target.files?.[0]?.name ?? null)}
+        />
+      </label>
+      <p className="mt-2 text-xs text-ivory/45">
+        {name ? <span className="text-gold">{name}</span> : caption}
+      </p>
+    </div>
+  );
+}
+
 export default function InquiryForm() {
   const [submitted, setSubmitted] = useState(false);
-  const [videoConsult, setVideoConsult] = useState(false);
-  const [files, setFiles] = useState<string[]>([]);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // TODO: wire delivery (email/CRM) at launch. The $250 deposit is taken
-    // via the Square checkout link on the confirmation below.
+    // TODO: wire submission delivery (email/CRM) at launch.
     setSubmitted(true);
     if (typeof window !== "undefined") window.scrollTo({ top: 0 });
   };
@@ -99,75 +97,43 @@ export default function InquiryForm() {
           </svg>
         </div>
         <h2 className="font-serif text-4xl font-light text-ivory sm:text-5xl">
-          We Received Your Inquiry
+          We&apos;ve Received Your Request
         </h2>
         <p className="mx-auto mt-6 max-w-md text-base leading-relaxed text-ivory/65">
-          Thank you for reaching out. Dr. Trev or a member of his team will
-          review your submission and get back to you shortly. We look forward to
-          being part of your smile journey.
+          Thank you for taking the first step. Dr. Trev or a member of his team
+          will review your information and confirm your appointment shortly.
         </p>
-
-        {videoConsult && (
-          <div className="mx-auto mt-12 max-w-md border-t border-ivory/10 pt-10">
-            <p className="text-sm leading-relaxed text-ivory/65">
-              Your{" "}
-              <span className="text-gold">
-                $250 deposit is credited 100% toward your treatment
-              </span>{" "}
-              — reserve your private video consultation below. Please use the
-              same email you entered above so your booking connects
-              automatically.
-            </p>
-            <Magnetic>
-              <a
-                href={CHECKOUT_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-8 inline-flex items-center gap-3 border border-gold px-8 py-4 text-[0.66rem] uppercase tracking-[0.24em] text-gold transition-colors duration-300 hover:bg-gold hover:text-onyx"
-              >
-                Reserve My Consultation — $250 →
-              </a>
-            </Magnetic>
-          </div>
-        )}
       </div>
     );
   }
 
   return (
-    <form onSubmit={onSubmit} className="mx-auto max-w-2xl space-y-16">
-      {/* Contact Information */}
-      <fieldset>
-        <p className={sectionLabel}>Contact Information</p>
-        <div className="space-y-6">
-          <div className="grid gap-6 sm:grid-cols-2">
-            <div>
-              <label htmlFor="firstName" className={labelClass}>
-                First Name <Req />
-              </label>
-              <input
-                id="firstName"
-                name="firstName"
-                type="text"
-                required
-                autoComplete="given-name"
-                className={inputClass}
-              />
-            </div>
-            <div>
-              <label htmlFor="lastName" className={labelClass}>
-                Last Name <Req />
-              </label>
-              <input
-                id="lastName"
-                name="lastName"
-                type="text"
-                required
-                autoComplete="family-name"
-                className={inputClass}
-              />
-            </div>
-          </div>
+    <form onSubmit={onSubmit} className="mx-auto max-w-2xl">
+      <p className="mb-12 text-base leading-relaxed text-ivory/65">
+        <span className="font-medium text-ivory">
+          Book Your Consultation Today!
+        </span>{" "}
+        Take the first step toward achieving the smile you&apos;ve always
+        wanted. Enter your information below and we&apos;ll confirm your
+        appointment shortly.
+      </p>
+
+      <div className="space-y-6">
+        <div>
+          <label htmlFor="fullName" className={labelClass}>
+            Full Name (First and Last) <Req />
+          </label>
+          <input
+            id="fullName"
+            name="fullName"
+            type="text"
+            required
+            autoComplete="name"
+            className={inputClass}
+          />
+        </div>
+
+        <div className="grid gap-6 sm:grid-cols-2">
           <div>
             <label htmlFor="phone" className={labelClass}>
               Phone Number <Req />
@@ -178,7 +144,6 @@ export default function InquiryForm() {
               type="tel"
               required
               autoComplete="tel"
-              placeholder="(424) 000-0000"
               className={inputClass}
             />
           </div>
@@ -191,250 +156,140 @@ export default function InquiryForm() {
               name="email"
               type="email"
               autoComplete="email"
-              placeholder="you@example.com"
               className={inputClass}
+            />
+          </div>
+        </div>
+
+        <div className="grid gap-6 sm:grid-cols-2">
+          <div>
+            <label htmlFor="dob" className={labelClass}>
+              Date of Birth <Req />
+            </label>
+            <input
+              id="dob"
+              name="dob"
+              type="date"
+              required
+              className={`${inputClass} [color-scheme:dark]`}
             />
           </div>
           <div>
-            <label htmlFor="social" className={labelClass}>
-              Social Media Handle(s) <Req />
+            <label htmlFor="location" className={labelClass}>
+              Location <Req />
+            </label>
+            <select
+              id="location"
+              name="location"
+              required
+              defaultValue=""
+              className={selectClass}
+            >
+              <option value="" disabled>
+                Select a location
+              </option>
+              {locations.map((l) => (
+                <option key={l} value={l} className="bg-onyx text-ivory">
+                  {l}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <div className="grid gap-6 sm:grid-cols-2">
+          <div>
+            <label htmlFor="financing" className={labelClass}>
+              Have You Applied For Financing?
+            </label>
+            <select
+              id="financing"
+              name="financing"
+              defaultValue=""
+              className={selectClass}
+            >
+              <option value="" disabled>
+                Select one
+              </option>
+              <option value="Yes" className="bg-onyx text-ivory">
+                Yes
+              </option>
+              <option value="No" className="bg-onyx text-ivory">
+                No
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div className="grid gap-6 sm:grid-cols-2">
+          <div>
+            <label htmlFor="budget" className={labelClass}>
+              What is your budget?
+            </label>
+            <select
+              id="budget"
+              name="budget"
+              defaultValue=""
+              className={selectClass}
+            >
+              <option value="" disabled>
+                Select a range
+              </option>
+              {budgets.map((b) => (
+                <option key={b} value={b} className="bg-onyx text-ivory">
+                  {b}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label htmlFor="instagram" className={labelClass}>
+              Instagram Handle
             </label>
             <input
-              id="social"
-              name="social"
+              id="instagram"
+              name="instagram"
               type="text"
-              required
-              placeholder="@yourhandle — Instagram, TikTok, etc."
+              placeholder="@yourhandle"
               className={inputClass}
             />
           </div>
         </div>
-      </fieldset>
 
-      {/* Your Location */}
-      <fieldset>
-        <p className={sectionLabel}>Your Location</p>
-        <label htmlFor="city" className={labelClass}>
-          Which city would you like to be seen in? <Req />
-        </label>
-        <select
-          id="city"
-          name="city"
-          required
-          defaultValue=""
-          className={`${inputClass} appearance-none`}
-        >
-          <option value="" disabled>
-            Select a city
-          </option>
-          {cities.map((c) => (
-            <option key={c} value={c} className="bg-onyx text-ivory">
-              {c}
-            </option>
-          ))}
-        </select>
-      </fieldset>
-
-      {/* Services Interested In */}
-      <fieldset>
-        <p className={sectionLabel}>Services Interested In</p>
-        <div className="grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-3">
-          {serviceOptions.map((s) => (
-            <label
-              key={s}
-              className="flex cursor-pointer items-center gap-3 text-sm text-ivory/75"
-            >
-              <input
-                type="checkbox"
-                name="services"
-                value={s}
-                className="h-4 w-4 accent-gold"
-              />
-              {s}
-            </label>
-          ))}
-        </div>
-      </fieldset>
-
-      {/* Your Goals */}
-      <fieldset>
-        <p className={sectionLabel}>Your Goals</p>
-        <label htmlFor="goals" className={labelClass}>
-          Tell us about your goals and concerns <Req />
-        </label>
-        <textarea
-          id="goals"
-          name="goals"
-          required
-          rows={5}
-          placeholder="Describe what you'd like to change or improve about your smile. The more detail, the better Dr. Trev can assist you."
-          className={`${inputClass} resize-none`}
-        />
-      </fieldset>
-
-      {/* Estimated Budget */}
-      <fieldset>
-        <p className={sectionLabel}>Estimated Budget</p>
-        <div className="grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-3">
-          {budgets.map((b) => (
-            <label
-              key={b}
-              className="flex cursor-pointer items-center gap-3 text-sm text-ivory/75"
-            >
-              <input
-                type="radio"
-                name="budget"
-                value={b}
-                className="h-4 w-4 accent-gold"
-              />
-              {b}
-            </label>
-          ))}
-        </div>
-      </fieldset>
-
-      {/* Financing */}
-      <fieldset>
-        <p className={sectionLabel}>Financing</p>
-        <div className="space-y-4">
-          <label className="flex cursor-pointer items-center gap-3 text-sm text-ivory/75">
-            <input
-              type="radio"
-              name="financing"
-              value="Yes"
-              className="h-4 w-4 accent-gold"
-            />
-            Yes, I&apos;d like financing options
+        <div>
+          <label htmlFor="goals" className={labelClass}>
+            Primary Questions, Goals, or Concerns
           </label>
-          <label className="flex cursor-pointer items-center gap-3 text-sm text-ivory/75">
-            <input
-              type="radio"
-              name="financing"
-              value="No"
-              className="h-4 w-4 accent-gold"
-            />
-            No, paying out of pocket
-          </label>
-        </div>
-        <p className="mt-6 text-[0.62rem] uppercase tracking-[0.2em] text-ivory/40">
-          Financing partners — apply with any of these:
-        </p>
-        <div className="mt-3 flex flex-wrap gap-x-6 gap-y-2">
-          {financingPartners.map((p) => (
-            <a
-              key={p.name}
-              href={p.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-ivory/70 underline-offset-4 transition-colors hover:text-gold hover:underline"
-            >
-              {p.name} ↗
-            </a>
-          ))}
-        </div>
-      </fieldset>
-
-      {/* Video consultation */}
-      <fieldset>
-        <label className="flex cursor-pointer items-start gap-4 border border-gold/30 bg-gold/[0.04] p-5 transition-colors hover:border-gold/60">
-          <input
-            type="checkbox"
-            name="video_consult"
-            value="Yes"
-            checked={videoConsult}
-            onChange={(e) => setVideoConsult(e.target.checked)}
-            className="mt-1 h-4 w-4 accent-gold"
+          <textarea
+            id="goals"
+            name="goals"
+            rows={5}
+            className={`${inputClass} resize-none`}
           />
-          <span className="text-sm leading-relaxed text-ivory/80">
-            Reserve a private video consultation with Dr. Trev —{" "}
-            <span className="text-gold">$250, credited 100%</span> toward your
-            treatment.
-          </span>
-        </label>
-      </fieldset>
+        </div>
+      </div>
 
       {/* Photos */}
-      <fieldset>
-        <p className={sectionLabel}>Photos of Your Teeth</p>
-        <label
-          htmlFor="photos"
-          className="flex cursor-pointer flex-col items-center justify-center border border-dashed border-ivory/25 px-6 py-10 text-center transition-colors hover:border-gold/60"
-        >
-          <span aria-hidden="true" className="text-2xl">
-            📷
-          </span>
-          <span className="mt-3 text-sm text-ivory/70">
-            <span className="text-gold">Tap to upload photos</span>
-          </span>
-          <span className="mt-1 text-xs text-ivory/40">
-            Front view, side view, and any areas of concern
-          </span>
-          <input
-            id="photos"
-            name="photos"
-            type="file"
-            accept="image/*"
-            multiple
-            className="hidden"
-            onChange={(e) =>
-              setFiles(Array.from(e.target.files ?? []).map((f) => f.name))
-            }
-          />
-        </label>
-        {files.length > 0 && (
-          <ul className="mt-4 flex flex-wrap gap-2">
-            {files.map((name) => (
-              <li
-                key={name}
-                className="border border-ivory/15 px-3 py-1 text-xs text-ivory/60"
-              >
-                {name}
-              </li>
-            ))}
-          </ul>
-        )}
-        <p className="mt-3 text-xs text-ivory/40">
-          JPG, PNG or HEIC. Max 10MB per photo. Photos help Dr. Trev provide an
-          accurate estimate.
+      <div className="mt-12">
+        <p className="mb-6 text-[0.6rem] uppercase tracking-[0.34em] text-gold/70">
+          Photos of Your Smile
         </p>
-      </fieldset>
-
-      {/* How did you hear */}
-      <fieldset>
-        <p className={sectionLabel}>How Did You Hear About Us?</p>
-        <label htmlFor="hear" className="sr-only">
-          How did you hear about us?
-        </label>
-        <select
-          id="hear"
-          name="hear"
-          defaultValue=""
-          className={`${inputClass} appearance-none`}
-        >
-          <option value="" disabled>
-            Select one
-          </option>
-          {hearOptions.map((o) => (
-            <option key={o} value={o} className="bg-onyx text-ivory">
-              {o}
-            </option>
+        <div className="space-y-6">
+          {photoFields.map((p) => (
+            <PhotoField key={p.id} id={p.id} caption={p.caption} />
           ))}
-        </select>
-      </fieldset>
+        </div>
+      </div>
 
-      <div>
+      <div className="mt-12">
         <Magnetic>
           <button
             type="submit"
-            className="inline-flex w-full items-center justify-center bg-ivory px-8 py-4 text-[0.72rem] font-medium uppercase tracking-[0.2em] text-ink transition-colors duration-300 hover:bg-champagne sm:w-auto"
+            className="inline-flex w-full items-center justify-center rounded-full bg-champagne px-8 py-4 text-[0.72rem] font-medium uppercase tracking-[0.2em] text-onyx transition-colors duration-300 hover:bg-gold"
           >
-            Submit My Inquiry
+            Submit
           </button>
         </Magnetic>
-        <p className="mt-6 text-xs text-ivory/40">
-          Your information is kept private and will only be used to assist with
-          your care.
-        </p>
       </div>
     </form>
   );
