@@ -24,6 +24,13 @@ const cases = [
     note: "A titanium foundation crowned in custom ceramic, placed so precisely that the result disappears into the natural arch.",
     image: "/gallery/trev-intraoral-scan.jpg",
   },
+  {
+    index: "04",
+    title: "General Dentistry & Hygiene",
+    subtitle: "The foundation of every smile",
+    note: "Cleanings, exams, and preventive care performed with the same precision as the artistry — because a beautiful smile begins with a healthy one.",
+    image: "/gallery/trev-consult-blue.jpg",
+  },
 ];
 
 export default function WorkIndex() {
