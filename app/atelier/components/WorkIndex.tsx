@@ -20,7 +20,7 @@ const cases = [
   {
     index: "03",
     title: "The Implant Restoration",
-    subtitle: "Single anterior · seamless",
+    subtitle: "Small in size, built to last",
     note: "A titanium foundation crowned in custom ceramic, placed so precisely that the result disappears into the natural arch.",
     image: "/gallery/trev-intraoral-scan.jpg",
   },
