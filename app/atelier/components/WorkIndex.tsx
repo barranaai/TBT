@@ -6,7 +6,7 @@ const cases = [
   {
     index: "01",
     title: "The Porcelain Veneer",
-    subtitle: "Eight units · upper arch",
+    subtitle: "Where artistry meets engineering",
     note: "A hand-layered ceramic restoration tuned to the patient's complexion and lip dynamics — translucency at the edge, warmth at the core.",
     image: "/gallery/trev-veneer-craft.jpg",
   },
