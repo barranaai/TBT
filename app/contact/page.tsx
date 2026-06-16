@@ -19,9 +19,9 @@ export default function ContactPage() {
       <AtelierNav />
       <main>
         <PageHero
-          eyebrow="Begin Your Smile Transformation"
-          title="Book your consultation."
-          intro="Step one — schedule a consultation with Dr. Trev and take the first step toward the smile you deserve."
+          eyebrow="Begin"
+          title="Start your smile journey."
+          intro="Fill out the form below and Dr. Trev will personally review your inquiry."
           image="/gallery/trev-exam.jpg"
           imageAlt="Dr. Trevor J. Thomas performing a detailed examination in the studio"
         />
