@@ -46,6 +46,33 @@ const benefits = [
   },
 ];
 
+const partners = [
+  {
+    name: "CareCredit",
+    meta: "Most widely accepted",
+    body: "The healthcare credit card accepted at practices nationwide, with special promotional financing on qualifying treatment.",
+    href: "https://www.carecredit.com/go/276SNV/",
+  },
+  {
+    name: "Alphaeon Credit",
+    meta: "For elective care",
+    body: "A dedicated credit card for cosmetic and elective care, offering flexible monthly plans and promotional offers.",
+    href: "https://goalphaeon.com/apply?src=cling",
+  },
+  {
+    name: "Cherry",
+    meta: "Fast, soft-check approval",
+    body: "Paperless approval in minutes with a soft credit check and flexible monthly payments — many patients qualify for 0% APR.",
+    href: "https://pay.withcherry.com/trevor-jamal-thomas-dds-inc?utm_source=practice&m=51934",
+  },
+  {
+    name: "Proceed Finance",
+    meta: "For larger plans",
+    body: "Built for comprehensive and full-mouth cases, with longer terms and higher approval amounts than standard cards.",
+    href: "https://www.proceedfinance.com/application/create?referrer=37783-13017-4FDA",
+  },
+];
+
 const faqs = [
   {
     q: "Will checking my options affect my credit?",
@@ -53,7 +80,7 @@ const faqs = [
   },
   {
     q: "What financing partners do you work with?",
-    a: "We work with leading healthcare lenders offering plans with low and no-interest promotional periods. During your consultation we'll match you to the right fit.",
+    a: "We partner with CareCredit, Alphaeon, Cherry, and Proceed Finance — leading healthcare lenders offering plans with low and no-interest promotional periods. During your consultation we'll match you to the right fit.",
   },
   {
     q: "Can I combine financing with insurance?",
@@ -119,12 +146,68 @@ export default function FinancingPage() {
           </div>
         </section>
 
-        {/* FAQ */}
+        {/* Financing partners */}
         <section className="border-t border-ivory/10 bg-ink py-28 lg:py-40">
+          <div className="mx-auto max-w-7xl px-6 lg:px-10">
+            <Reveal className="max-w-2xl">
+              <p className="mb-6 text-[0.6rem] uppercase tracking-[0.34em] text-gold/70">
+                02 — Our Partners
+              </p>
+              <h2 className="font-serif text-4xl font-light leading-[1.1] text-ivory sm:text-5xl">
+                Trusted financing partners.
+              </h2>
+              <p className="mt-6 max-w-xl text-base leading-relaxed text-ivory/60">
+                We work with the most respected names in healthcare financing.
+                Apply with any of them in minutes — most use a soft credit check
+                that won&apos;t affect your score.
+              </p>
+            </Reveal>
+
+            <div className="mt-16 grid gap-5 sm:grid-cols-2">
+              {partners.map((p, i) => (
+                <Reveal key={p.name} delay={(i % 2) * 90}>
+                  <a
+                    href={p.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex h-full flex-col border border-ivory/12 bg-white/[0.02] p-8 transition-colors duration-300 hover:border-gold/50"
+                  >
+                    <span className="text-[0.6rem] uppercase tracking-[0.28em] text-gold/70">
+                      {p.meta}
+                    </span>
+                    <h3 className="mt-4 font-serif text-3xl font-light text-ivory">
+                      {p.name}
+                    </h3>
+                    <p className="mt-3 flex-1 text-base leading-relaxed text-ivory/60">
+                      {p.body}
+                    </p>
+                    <span className="mt-6 inline-flex items-center gap-2 text-[0.72rem] uppercase tracking-[0.2em] text-ivory/70 transition-colors duration-300 group-hover:text-gold">
+                      Apply with {p.name}
+                      <span
+                        aria-hidden="true"
+                        className="transition-transform duration-300 group-hover:translate-x-1"
+                      >
+                        →
+                      </span>
+                    </span>
+                  </a>
+                </Reveal>
+              ))}
+            </div>
+
+            <p className="mt-8 text-[0.72rem] uppercase tracking-[0.18em] text-ivory/40">
+              Not sure which fits? Dr. Trev&apos;s team will match you to the right
+              plan during your consultation.
+            </p>
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section className="border-t border-ivory/10 bg-onyx py-28 lg:py-40">
           <div className="mx-auto grid max-w-7xl gap-16 px-6 lg:grid-cols-[0.8fr_1fr] lg:gap-24 lg:px-10">
             <Reveal>
               <p className="mb-6 text-[0.6rem] uppercase tracking-[0.34em] text-gold/70">
-                02 — Questions
+                03 — Questions
               </p>
               <h2 className="font-serif text-4xl font-light leading-[1.1] text-ivory sm:text-5xl">
                 The details, answered.
