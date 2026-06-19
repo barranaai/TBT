@@ -102,8 +102,8 @@ export default function FinancingPage() {
           eyebrow="Smile Now, Pay Later"
           title="A world-class smile shouldn't wait."
           intro="Flexible financing and monthly payment plans make life-changing dentistry accessible — so you can begin today and pay over time."
-          image="/stock/service-implants.jpg"
-          imageAlt="Dr. Trevor J. Thomas discussing a treatment plan with a patient"
+          image="/stock/financing-hero.jpg"
+          imageAlt="Reviewing a panoramic X-ray and dental implant model with a patient in the Teeth by Trev studio"
         />
 
         {/* Benefits */}
