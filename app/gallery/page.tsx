@@ -19,8 +19,8 @@ const cases = [
   {
     name: "Inside the Chair",
     note: "Precision diagnostics",
-    image: "/gallery/trev-exam.jpg",
-    alt: "Dr. Trevor J. Thomas performing a detailed examination in the studio",
+    image: "/stock/financing-hero.jpg",
+    alt: "A patient reviewing a panoramic X-ray and dental implant model in the studio",
   },
   {
     name: "The Treatment",
@@ -31,8 +31,8 @@ const cases = [
   {
     name: "The Consultation",
     note: "Your plan, personalized",
-    image: "/gallery/trev-consult-suit.jpg",
-    alt: "Dr. Trevor J. Thomas presenting a dental model to a patient",
+    image: "/stock/service-smile-makeover.jpg",
+    alt: "Dr. Trevor J. Thomas presenting a smile makeover plan to a patient",
   },
   {
     name: "The Craft",
