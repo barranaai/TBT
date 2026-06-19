@@ -151,7 +151,8 @@ export default function InquiryForm() {
       if (!form.lastName.trim()) e.lastName = "Required";
       if (!form.phone.trim()) e.phone = "Required";
       if (!form.social.trim()) e.social = "Required";
-      if (form.email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email))
+      if (!form.email.trim()) e.email = "Required";
+      else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email))
         e.email = "Enter a valid email address";
     }
     if (s === 1) {
@@ -377,7 +378,7 @@ export default function InquiryForm() {
                 </div>
                 <div>
                   <label htmlFor="email" className={labelClass}>
-                    Email Address
+                    Email Address <Req />
                   </label>
                   <input
                     id="email"
