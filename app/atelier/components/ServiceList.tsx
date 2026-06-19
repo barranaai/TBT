@@ -31,6 +31,11 @@ const services = [
     meta: "Refinement",
     image: "/stock/after-smile.jpg",
   },
+  {
+    label: "General Dentistry & Hygiene",
+    meta: "Foundation",
+    image: "/gallery/trev-consult-blue.jpg",
+  },
 ];
 
 export default function ServiceList() {
