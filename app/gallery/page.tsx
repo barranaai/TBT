@@ -24,9 +24,9 @@ const cases = [
   },
   {
     name: "The Treatment",
-    note: "Meticulous, comfortable care",
+    note: "Planned to the detail",
     image: "/gallery/trev-scan-suite.jpg",
-    alt: "Dr. Trevor J. Thomas treating a patient with a 3D scan on screen",
+    alt: "Full-mouth rehabilitation plan with 3D imaging and an implant model",
   },
   {
     name: "The Consultation",
@@ -44,13 +44,13 @@ const cases = [
     name: "Digital Scanning",
     note: "3D smile design",
     image: "/gallery/trev-intraoral-scan.jpg",
-    alt: "Dr. Trevor J. Thomas capturing a 3D intraoral scan of a patient",
+    alt: "Implant components and a 3D arch rendering on screen",
   },
   {
-    name: "One-on-One",
-    note: "Every patient, every story",
+    name: "The Studio",
+    note: "Calm, precise, unhurried",
     image: "/gallery/trev-consult-blue.jpg",
-    alt: "Dr. Trevor J. Thomas discussing a treatment model with a patient",
+    alt: "The Teeth by Trev treatment studio",
   },
 ];
 
