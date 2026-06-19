@@ -19,7 +19,7 @@ const services = [
   {
     label: "Smile Design",
     meta: "Bespoke",
-    image: "/gallery/trev-consult-suit.jpg",
+    image: "/gallery/trev-smile-design.jpg",
   },
   {
     label: "Full-Mouth Rehabilitation",

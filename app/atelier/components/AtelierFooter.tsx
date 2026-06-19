@@ -1,6 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
 
+// Mirror the header navigation (AtelierNav) so the footer links stay in sync.
+const navLinks = [
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Services", href: "/services" },
+  { label: "Gallery", href: "/gallery" },
+  { label: "Financing", href: "/financing" },
+  { label: "Contact", href: "/contact" },
+];
+
 const socials = [
   {
     label: "Instagram",
@@ -105,23 +115,17 @@ export default function AtelierFooter() {
             </ul>
           </div>
 
-          <div className="flex flex-col gap-3 text-[0.62rem] uppercase tracking-[0.26em] text-ivory/45 lg:items-end">
-            <a href="#maison" className="transition-colors hover:text-gold">
-              Maison
-            </a>
-            <a href="#work" className="transition-colors hover:text-gold">
-              Work
-            </a>
-            <a href="#atelier" className="transition-colors hover:text-gold">
-              Atelier
-            </a>
-            <Link href="/consultation" className="transition-colors hover:text-gold">
-              Book
-            </Link>
-            <Link href="/classic" className="transition-colors hover:text-gold">
-              Classic Site
-            </Link>
-          </div>
+          <nav className="flex flex-col gap-3 text-[0.62rem] uppercase tracking-[0.26em] text-ivory/45 lg:items-end">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="transition-colors hover:text-gold"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
         </div>
 
         <div className="mt-12 flex flex-col items-start justify-between gap-3 border-t border-ivory/10 pt-8 text-[0.58rem] uppercase tracking-[0.26em] text-ivory/35 sm:flex-row">
