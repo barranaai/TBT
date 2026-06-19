@@ -22,8 +22,8 @@ export default function ContactPage() {
           eyebrow="Begin"
           title="Start your smile journey."
           intro="Fill out the form below and Dr. Trev will personally review your inquiry."
-          image="/gallery/trev-exam.jpg"
-          imageAlt="Dr. Trevor J. Thomas performing a detailed examination in the studio"
+          image="/stock/contact-hero.jpg"
+          imageAlt="The Teeth by Trev reception — a black marble wordmark wall, marble desk, and a city skyline view"
         />
 
         <section className="bg-onyx py-24 lg:py-32">
