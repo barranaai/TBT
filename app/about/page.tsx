@@ -44,7 +44,7 @@ export default function AboutPage() {
           title="Meet Dr. Trev."
           intro="Dr. Trevor J. Thomas, DDS — an artist working in enamel and light, devoted to the people behind every smile."
           image="/stock/process.jpg"
-          imageAlt="Dr. Trevor J. Thomas and his assistant caring for a patient in the studio"
+          imageAlt="Dr. Trevor J. Thomas holding dental instruments in the Teeth by Trev operatory"
         />
 
         {/* Bio */}

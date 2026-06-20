@@ -30,7 +30,7 @@ export default function Process() {
           <div className="relative aspect-[3/2] overflow-hidden">
             <Image
               src="/stock/process.jpg"
-              alt="Patient's-eye view of Dr. Trevor J. Thomas and his assistant beginning treatment"
+              alt="Dr. Trevor J. Thomas holding a mirror and explorer in the Teeth by Trev operatory"
               fill
               sizes="(min-width: 1024px) 40vw, 100vw"
               className="object-cover"
