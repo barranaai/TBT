@@ -2,7 +2,18 @@ import Reveal from "./Reveal";
 import Eyebrow from "./Eyebrow";
 import SectionMotifs from "./SectionMotifs";
 
-const outlets = ["SMILE: LA", "Zeus Network", "TMZ", "Yahoo", "Black Enterprise"];
+const outlets = [
+  "SMILE: LA",
+  "Zeus Network",
+  "TMZ",
+  "Yahoo",
+  "Black Enterprise",
+  "The Source",
+  "AllHipHop",
+  "HotNewHipHop",
+  "The Hype Magazine",
+  "Respect Magazine",
+];
 
 export default function Clientele() {
   return (
