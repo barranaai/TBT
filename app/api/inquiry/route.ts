@@ -91,6 +91,7 @@ export async function POST(req: Request) {
   // Folder is identifiable by name + phone with a short random suffix so the
   // public gallery URL isn't guessable. Failures here never block the lead.
   let photosUrl = "";
+  let photosWritten = 0;
   const photos = Array.isArray(data.photos) ? data.photos : [];
   if (photos.length) {
     try {
@@ -101,7 +102,6 @@ export async function POST(req: Request) {
       const dir = path.join(UPLOAD_DIR, folder);
       await fs.mkdir(dir, { recursive: true });
 
-      let written = 0;
       await Promise.all(
         photos.map(async (p, i) => {
           const m = /^data:(image\/[a-z.+-]+);base64,(.+)$/i.exec(
@@ -115,11 +115,11 @@ export async function POST(req: Request) {
             path.join(dir, `${safeStem(p?.name ?? "", i)}${ext}`),
             buf,
           );
-          written += 1;
+          photosWritten += 1;
         }),
       );
 
-      if (written > 0) {
+      if (photosWritten > 0) {
         photosUrl = `${baseUrl(req)}/api/photos/${folder}`;
       } else {
         await fs.rm(dir, { recursive: true, force: true }).catch(() => {});
@@ -140,7 +140,12 @@ export async function POST(req: Request) {
     console.warn(
       "[inquiry] Airtable not configured (AIRTABLE_TOKEN + AIRTABLE_BASE_ID). Submission NOT stored.",
     );
-    return NextResponse.json({ ok: true, stored: false, photos: photos.length });
+    return NextResponse.json({
+      ok: true,
+      stored: false,
+      photos: photosWritten,
+      photosUrl: photosUrl || undefined,
+    });
   }
 
   const fields: Record<string, string> = {
@@ -175,12 +180,27 @@ export async function POST(req: Request) {
     if (!res.ok) {
       const detail = await res.text();
       console.error("[inquiry] Airtable error", res.status, detail);
-      return NextResponse.json({ ok: true, stored: false });
+      return NextResponse.json({
+      ok: true,
+      stored: false,
+      photos: photosWritten,
+      photosUrl: photosUrl || undefined,
+    });
     }
 
-    return NextResponse.json({ ok: true, stored: true });
+    return NextResponse.json({
+      ok: true,
+      stored: true,
+      photos: photosWritten,
+      photosUrl: photosUrl || undefined,
+    });
   } catch (err) {
     console.error("[inquiry] Airtable request failed", err);
-    return NextResponse.json({ ok: true, stored: false });
+    return NextResponse.json({
+      ok: true,
+      stored: false,
+      photos: photosWritten,
+      photosUrl: photosUrl || undefined,
+    });
   }
 }
