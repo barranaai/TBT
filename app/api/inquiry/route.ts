@@ -54,20 +54,22 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true, stored: false });
   }
 
+  // Map the form payload onto the Airtable column names (per the base schema).
+  const fullName = `${data.firstName.trim()} ${data.lastName.trim()}`.trim();
   const fields: Record<string, string> = {
-    "First Name": data.firstName.trim(),
-    "Last Name": data.lastName.trim(),
-    Phone: data.phone.trim(),
+    "Caller Name": fullName,
+    "Phone Number": data.phone.trim(),
     Email: data.email.trim(),
     Social: data.social?.trim() || "",
     City: data.city.trim(),
     Services: (data.services || []).join(", "),
-    Goals: data.goals.trim(),
+    "Treatment Interest": data.goals.trim(),
     Budget: data.budget || "",
     Financing: data.financing || "",
     "Video Consult": data.videoConsult ? "Yes" : "No",
-    "How Heard": data.hear || "",
-    Photos: (data.photoNames || []).join(", "),
+    Source: data.hear || "",
+    // "Photos" is a URL field in Airtable — left unset until uploaded images are
+    // hosted somewhere public (the form only has the raw files today).
   };
 
   try {
