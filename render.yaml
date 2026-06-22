@@ -2,13 +2,23 @@ services:
   - type: web
     name: teeth-by-trev
     runtime: node
-    plan: free
+    # Starter (or higher) is required to attach a persistent disk for uploads.
+    plan: starter
     branch: main
     buildCommand: npm ci && npm run build
     startCommand: npm start
     autoDeploy: true
+    # Persistent disk for inquiry-form photo uploads (survives deploys/restarts).
+    disk:
+      name: uploads
+      mountPath: /var/data
+      sizeGB: 1
     envVars:
       - key: NODE_VERSION
         value: "22.11.0"
       - key: NODE_ENV
         value: production
+      - key: UPLOAD_DIR
+        value: /var/data/uploads
+      # AIRTABLE_TOKEN, AIRTABLE_BASE_ID, AIRTABLE_TABLE_NAME are set as secrets
+      # in the Render dashboard, not committed here.

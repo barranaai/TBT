@@ -20,6 +20,9 @@
 # production
 /build
 
+# local uploaded photos (dev fallback for the inquiry form)
+/.uploads
+
 # misc
 .DS_Store
 *.pem

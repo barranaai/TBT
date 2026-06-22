@@ -91,6 +91,52 @@ function Check({ className = "h-6 w-6" }: { className?: string }) {
   );
 }
 
+// Shrink large phone photos in the browser, then return them as a base64 data
+// URL so they ride along in the JSON submission (no flaky multipart parsing).
+// Falls back to the original bytes if the image can't be decoded.
+function photoToDataUrl(file: File): Promise<string | null> {
+  return new Promise((resolve) => {
+    const MAX = 1600;
+    const QUALITY = 0.82;
+    const url = URL.createObjectURL(file);
+    const fallback = () => {
+      const reader = new FileReader();
+      reader.onload = () =>
+        resolve(typeof reader.result === "string" ? reader.result : null);
+      reader.onerror = () => resolve(null);
+      reader.readAsDataURL(file);
+    };
+    const img = new Image();
+    img.onload = () => {
+      try {
+        let w = img.naturalWidth || img.width;
+        let h = img.naturalHeight || img.height;
+        if (Math.max(w, h) > MAX) {
+          const scale = MAX / Math.max(w, h);
+          w = Math.round(w * scale);
+          h = Math.round(h * scale);
+        }
+        const canvas = document.createElement("canvas");
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) throw new Error("no 2d context");
+        ctx.drawImage(img, 0, 0, w, h);
+        URL.revokeObjectURL(url);
+        resolve(canvas.toDataURL("image/jpeg", QUALITY));
+      } catch {
+        URL.revokeObjectURL(url);
+        fallback();
+      }
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      fallback();
+    };
+    img.src = url;
+  });
+}
+
 export default function InquiryForm() {
   const [step, setStep] = useState(0);
   const [shown, setShown] = useState(false);
@@ -203,11 +249,22 @@ export default function InquiryForm() {
     }
 
     setSubmitting(true);
-    // Persist to Airtable via our own server route (which holds the secret
-    // token). We don't block the visitor on the result — they still reach the
-    // success screen and the $250 deposit step; delivery issues are logged
-    // server-side rather than shown to the user.
+    // Persist to Airtable (text) and upload photos to our own server route,
+    // which holds the secret token and writes files to the persistent disk. We
+    // don't block the visitor on the result — they still reach the success
+    // screen and the $250 deposit step; delivery issues are logged server-side.
     try {
+      const photoPayload = (
+        await Promise.all(
+          photos.map(async (file, i) => {
+            const dataUrl = await photoToDataUrl(file);
+            if (!dataUrl) return null;
+            const stem = file.name.replace(/\.[^.]+$/, "") || `photo-${i + 1}`;
+            return { name: `${stem}.jpg`, dataUrl };
+          }),
+        )
+      ).filter(Boolean);
+
       await fetch("/api/inquiry", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -224,7 +281,7 @@ export default function InquiryForm() {
           financing: form.financing,
           videoConsult,
           hear: form.hear,
-          photoNames: photos.map((p) => p.name),
+          photos: photoPayload,
         }),
       });
     } catch {
