@@ -67,7 +67,9 @@ export async function POST(req: Request) {
     Budget: data.budget || "",
     Financing: data.financing || "",
     "Video Consult": data.videoConsult ? "Yes" : "No",
-    Source: data.hear || "",
+    "How did you hear": data.hear || "",
+    // Tag the lead origin; these all come from the website form.
+    Source: "Website",
     // "Photos" is a URL field in Airtable — left unset until uploaded images are
     // hosted somewhere public (the form only has the raw files today).
   };
