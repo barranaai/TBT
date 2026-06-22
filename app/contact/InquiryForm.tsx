@@ -95,6 +95,7 @@ export default function InquiryForm() {
   const [step, setStep] = useState(0);
   const [shown, setShown] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const [form, setForm] = useState({
@@ -188,7 +189,7 @@ export default function InquiryForm() {
     scrollTop();
   };
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Guard: ensure earlier required steps are complete, jumping back if not.
     for (const s of [0, 1]) {
@@ -200,8 +201,37 @@ export default function InquiryForm() {
         return;
       }
     }
-    // TODO: wire submission delivery (email/CRM) at launch. The $250 deposit is
-    // taken via the Square checkout link on the confirmation below.
+
+    setSubmitting(true);
+    // Persist to Airtable via our own server route (which holds the secret
+    // token). We don't block the visitor on the result — they still reach the
+    // success screen and the $250 deposit step; delivery issues are logged
+    // server-side rather than shown to the user.
+    try {
+      await fetch("/api/inquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName: form.firstName,
+          lastName: form.lastName,
+          phone: form.phone,
+          email: form.email,
+          social: form.social,
+          city: form.city,
+          services,
+          goals: form.goals,
+          budget: form.budget,
+          financing: form.financing,
+          videoConsult,
+          hear: form.hear,
+          photoNames: photos.map((p) => p.name),
+        }),
+      });
+    } catch {
+      // Network failure — still complete the flow for the visitor.
+    }
+
+    setSubmitting(false);
     setSubmitted(true);
     if (typeof window !== "undefined") window.scrollTo({ top: 0 });
   };
@@ -680,9 +710,10 @@ export default function InquiryForm() {
             <Magnetic>
               <button
                 type="submit"
-                className="inline-flex items-center gap-3 rounded-full bg-champagne px-8 py-4 text-[0.72rem] font-medium uppercase tracking-[0.22em] text-onyx transition-colors duration-300 hover:bg-gold"
+                disabled={submitting}
+                className="inline-flex items-center gap-3 rounded-full bg-champagne px-8 py-4 text-[0.72rem] font-medium uppercase tracking-[0.22em] text-onyx transition-colors duration-300 hover:bg-gold disabled:cursor-not-allowed disabled:opacity-60"
               >
-                Submit My Inquiry
+                {submitting ? "Submitting…" : "Submit My Inquiry"}
               </button>
             </Magnetic>
           ) : (
