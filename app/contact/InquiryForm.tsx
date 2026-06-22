@@ -235,8 +235,8 @@ export default function InquiryForm() {
     scrollTop();
   };
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
+    if (submitting) return;
     // Guard: ensure earlier required steps are complete, jumping back if not.
     for (const s of [0, 1]) {
       const er = validate(s);
@@ -346,7 +346,7 @@ export default function InquiryForm() {
   return (
     <form
       id="inquiry-form"
-      onSubmit={onSubmit}
+      onSubmit={(e) => e.preventDefault()}
       className="mx-auto max-w-2xl scroll-mt-28"
     >
       {/* Progress stepper */}
@@ -764,9 +764,10 @@ export default function InquiryForm() {
           )}
 
           {isLast ? (
-            <Magnetic>
+            <Magnetic key="submit">
               <button
-                type="submit"
+                type="button"
+                onClick={() => handleSubmit()}
                 disabled={submitting}
                 className="inline-flex items-center gap-3 rounded-full bg-champagne px-8 py-4 text-[0.72rem] font-medium uppercase tracking-[0.22em] text-onyx transition-colors duration-300 hover:bg-gold disabled:cursor-not-allowed disabled:opacity-60"
               >
@@ -774,7 +775,7 @@ export default function InquiryForm() {
               </button>
             </Magnetic>
           ) : (
-            <Magnetic>
+            <Magnetic key="next">
               <button
                 type="button"
                 onClick={goNext}
