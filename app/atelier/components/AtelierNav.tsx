@@ -66,12 +66,6 @@ export default function AtelierNav() {
           >
             Book
           </Link>
-          <Link
-            href="/classic"
-            className="hidden text-[0.62rem] uppercase tracking-[0.28em] text-ivory/55 transition-colors hover:text-ivory sm:block"
-          >
-            Classic Site
-          </Link>
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
@@ -130,13 +124,6 @@ export default function AtelierNav() {
               className="inline-flex items-center gap-3 border border-gold px-7 py-3.5 text-[0.62rem] uppercase tracking-[0.24em] text-gold transition-colors duration-300 hover:bg-gold hover:text-onyx"
             >
               Book a Consultation →
-            </Link>
-            <Link
-              href="/classic"
-              onClick={() => setOpen(false)}
-              className="text-[0.62rem] uppercase tracking-[0.28em] text-ivory/50 transition-colors hover:text-ivory"
-            >
-              Classic Site
             </Link>
           </div>
         </div>
