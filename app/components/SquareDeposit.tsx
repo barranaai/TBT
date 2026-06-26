@@ -66,8 +66,15 @@ function loadSdk(env: "production" | "sandbox"): Promise<void> {
 }
 
 // Dark text on the light payment panel; gold focus ring to match the brand.
+// Only Square's documented selectors are valid — note "input::placeholder"
+// (a bare "::placeholder" throws InvalidStylesError and kills card init).
 const CARD_STYLE = {
-  input: { color: "#16130f", fontSize: "16px" },
+  input: {
+    color: "#16130f",
+    fontSize: "16px",
+    fontFamily: "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+    backgroundColor: "transparent",
+  },
   ".input-container": {
     borderColor: "rgba(20,17,13,0.18)",
     borderRadius: "0px",
@@ -75,7 +82,7 @@ const CARD_STYLE = {
   ".input-container.is-focus": { borderColor: "#9a7b46" },
   ".input-container.is-error": { borderColor: "#b91c1c" },
   ".message-text.is-error": { color: "#b91c1c" },
-  "::placeholder": { color: "rgba(20,17,13,0.4)" },
+  "input::placeholder": { color: "rgba(20,17,13,0.4)" },
 };
 
 export default function SquareDeposit({
@@ -106,7 +113,15 @@ export default function SquareDeposit({
           cfg.locationId,
         );
         paymentsRef.current = payments;
-        const card = await payments.card({ style: CARD_STYLE });
+        // If a custom style is ever rejected, fall back to the default styling
+        // rather than letting it break the whole card field.
+        let card: SqCard;
+        try {
+          card = await payments.card({ style: CARD_STYLE });
+        } catch (styleErr) {
+          console.warn("[SquareDeposit] card style rejected; using defaults", styleErr);
+          card = await payments.card();
+        }
         if (cancelled) return;
         if (containerRef.current) await card.attach(containerRef.current);
         cardRef.current = card;
