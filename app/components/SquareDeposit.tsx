@@ -1,205 +1,67 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import { useSquareCard } from "./useSquareCard";
 
-// Minimal typings for the slice of the Web Payments SDK we use.
-type SqTokenResult = {
-  status: string;
-  token?: string;
-  errors?: { message: string }[];
-};
-type SqCard = {
-  attach: (el: HTMLElement | string) => Promise<void>;
-  tokenize: () => Promise<SqTokenResult>;
-  destroy?: () => Promise<void>;
-};
-type SqPayments = {
-  card: (opts?: unknown) => Promise<SqCard>;
-  verifyBuyer?: (token: string, details: unknown) => Promise<{ token?: string }>;
-};
-declare global {
-  interface Window {
-    Square?: {
-      payments: (appId: string, locationId: string) => Promise<SqPayments>;
-    };
-  }
-}
-
-type Config = {
-  configured: boolean;
-  applicationId?: string;
-  locationId?: string;
-  environment?: "production" | "sandbox";
-};
-type Status =
-  | "loading"
-  | "unconfigured"
-  | "ready"
-  | "processing"
-  | "success"
-  | "error";
-
-const SDK_URL: Record<"production" | "sandbox", string> = {
-  production: "https://web.squarecdn.com/v1/square.js",
-  sandbox: "https://sandbox.web.squarecdn.com/v1/square.js",
-};
-
-function loadSdk(env: "production" | "sandbox"): Promise<void> {
-  return new Promise((resolve, reject) => {
-    if (window.Square) return resolve();
-    const existing = document.querySelector<HTMLScriptElement>(
-      "script[data-square-sdk]",
-    );
-    if (existing) {
-      existing.addEventListener("load", () => resolve());
-      existing.addEventListener("error", () => reject(new Error("sdk")));
-      return;
-    }
-    const s = document.createElement("script");
-    s.src = SDK_URL[env];
-    s.async = true;
-    s.dataset.squareSdk = "true";
-    s.onload = () => resolve();
-    s.onerror = () => reject(new Error("sdk"));
-    document.head.appendChild(s);
-  });
-}
-
-// Dark text on the light payment panel; gold focus ring to match the brand.
-// Square only accepts a narrow set of selectors/values — keep this to the
-// properties it already validated (no fontFamily/backgroundColor), and note
-// "input::placeholder" (a bare "::placeholder" throws InvalidStylesError).
-const CARD_STYLE = {
-  input: { color: "#16130f", fontSize: "16px" },
-  ".input-container": {
-    borderColor: "rgba(20,17,13,0.18)",
-    borderRadius: "0px",
-  },
-  ".input-container.is-focus": { borderColor: "#9a7b46" },
-  ".input-container.is-error": { borderColor: "#b91c1c" },
-  ".message-text.is-error": { color: "#b91c1c" },
-  "input::placeholder": { color: "rgba(20,17,13,0.4)" },
-};
+const fieldClass =
+  "mt-2 w-full border border-onyx/20 bg-transparent px-3 py-3 text-sm normal-case tracking-normal text-onyx outline-none placeholder:text-onyx/35 focus:border-gold";
+const labelClass =
+  "block text-[0.7rem] uppercase tracking-[0.18em] text-onyx/55";
 
 export default function SquareDeposit({
   type,
 }: {
   type?: "in-person" | "video";
 }) {
-  const [status, setStatus] = useState<Status>("loading");
-  const [error, setError] = useState("");
+  const card = useSquareCard(true);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const cardRef = useRef<SqCard | null>(null);
-  const paymentsRef = useRef<SqPayments | null>(null);
-  const containerRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        const cfg = (await (await fetch("/api/square/config")).json()) as Config;
-        if (!cfg.configured || !cfg.applicationId || !cfg.locationId) {
-          if (!cancelled) setStatus("unconfigured");
-          return;
-        }
-        await loadSdk(cfg.environment || "production");
-        if (cancelled || !window.Square) return;
-        const payments = await window.Square.payments(
-          cfg.applicationId,
-          cfg.locationId,
-        );
-        paymentsRef.current = payments;
-        // Square validates styles when the card is ATTACHED (not when created),
-        // so wrap both steps. If a style is ever rejected, retry with default
-        // styling rather than letting it break the whole field.
-        const mountCard = async (style?: unknown): Promise<SqCard> => {
-          const c = await payments.card(style ? { style } : undefined);
-          if (containerRef.current) await c.attach(containerRef.current);
-          return c;
-        };
-        let card: SqCard;
-        try {
-          card = await mountCard(CARD_STYLE);
-        } catch (styleErr) {
-          console.warn("[SquareDeposit] styled card failed; retrying unstyled", styleErr);
-          if (containerRef.current) containerRef.current.innerHTML = "";
-          card = await mountCard();
-        }
-        if (cancelled) {
-          card.destroy?.().catch(() => {});
-          return;
-        }
-        cardRef.current = card;
-        setStatus("ready");
-      } catch (e) {
-        console.error("[SquareDeposit] init failed", e);
-        if (!cancelled) {
-          setStatus("error");
-          setError("Could not load the secure payment field. Please refresh.");
-        }
-      }
-    })();
-    return () => {
-      cancelled = true;
-      cardRef.current?.destroy?.().catch(() => {});
-    };
-  }, []);
+  const [paying, setPaying] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const pay = async () => {
-    if (!cardRef.current || status === "processing") return;
-    setError("");
-    setStatus("processing");
+    if (paying || card.status !== "ready") return;
+    setPaying(true);
+    const tok = await card.tokenize({ amount: "250.00", email });
+    if (!tok) {
+      setPaying(false);
+      return; // card.error is set by the hook
+    }
     try {
-      const result = await cardRef.current.tokenize();
-      if (result.status !== "OK" || !result.token) {
-        setStatus("ready");
-        setError(result.errors?.[0]?.message || "Please check your card details.");
-        return;
-      }
-
-      // Best-effort SCA / 3-DS verification (improves auth rates).
-      let verificationToken: string | undefined;
-      try {
-        const v = await paymentsRef.current?.verifyBuyer?.(result.token, {
-          amount: "250.00",
-          currencyCode: "USD",
-          intent: "CHARGE",
-          ...(email ? { billingContact: { email } } : {}),
-        });
-        verificationToken = v?.token;
-      } catch {
-        /* verification is optional — proceed with the token alone */
-      }
-
       const res = await fetch("/api/square/pay", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          sourceId: result.token,
-          verificationToken,
+          sourceId: tok.sourceId,
+          verificationToken: tok.verificationToken,
+          idempotencyKey: tok.idempotencyKey,
           type,
           name: name || undefined,
           email: email || undefined,
           phone: phone || undefined,
         }),
       });
-      const data = (await res.json()) as { ok: boolean; error?: string };
+      const data = (await res.json().catch(() => ({}))) as {
+        ok?: boolean;
+        error?: string;
+      };
       if (!res.ok || !data.ok) {
-        setStatus("ready");
-        setError(data.error || "Payment could not be completed.");
+        card.setError(data.error || "Payment could not be completed.");
+        setPaying(false);
         return;
       }
-      setStatus("success");
-    } catch (e) {
-      console.error("[SquareDeposit] pay failed", e);
-      setStatus("ready");
-      setError("Something went wrong. Please try again.");
+      setSuccess(true);
+    } catch {
+      // A network error after sending is ambiguous — the charge may have gone
+      // through. Keep the button disabled so a blind retry can't double-charge.
+      card.setError(
+        "We couldn't confirm your payment. Please contact us before trying again so you're not charged twice.",
+      );
     }
   };
 
-  if (status === "success") {
+  if (success) {
     return (
       <div className="mx-auto max-w-md border border-gold/30 bg-ivory px-8 py-14 text-center text-onyx">
         <div className="mx-auto mb-7 flex h-14 w-14 items-center justify-center rounded-full border border-gold text-gold">
@@ -217,7 +79,7 @@ export default function SquareDeposit({
     );
   }
 
-  if (status === "unconfigured") {
+  if (card.status === "unconfigured") {
     return (
       <div className="mx-auto max-w-md border border-ivory/15 bg-ivory/[0.03] px-8 py-12 text-center">
         <p className="text-sm leading-relaxed text-ivory/70">
@@ -231,7 +93,7 @@ export default function SquareDeposit({
     );
   }
 
-  const busy = status === "processing";
+  const disabled = card.status !== "ready" || paying;
 
   return (
     <div className="mx-auto max-w-md border border-gold/25 bg-ivory px-7 py-9 text-onyx sm:px-9 sm:py-10">
@@ -247,20 +109,19 @@ export default function SquareDeposit({
         card details never touch our servers.
       </p>
 
-      <label className="mt-7 block text-[0.7rem] uppercase tracking-[0.18em] text-onyx/55">
-        Full name
+      <label className="mt-7 block">
+        <span className={labelClass}>Full name</span>
         <input
           type="text"
           autoComplete="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Jordan Avery"
-          className="mt-2 w-full border border-onyx/20 bg-transparent px-3 py-3 text-sm normal-case tracking-normal text-onyx outline-none placeholder:text-onyx/35 focus:border-gold"
+          className={fieldClass}
         />
       </label>
-
-      <label className="mt-4 block text-[0.7rem] uppercase tracking-[0.18em] text-onyx/55">
-        Email for your receipt
+      <label className="mt-4 block">
+        <span className={labelClass}>Email for your receipt</span>
         <input
           type="email"
           inputMode="email"
@@ -268,12 +129,11 @@ export default function SquareDeposit({
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@example.com"
-          className="mt-2 w-full border border-onyx/20 bg-transparent px-3 py-3 text-sm normal-case tracking-normal text-onyx outline-none placeholder:text-onyx/35 focus:border-gold"
+          className={fieldClass}
         />
       </label>
-
-      <label className="mt-4 block text-[0.7rem] uppercase tracking-[0.18em] text-onyx/55">
-        Phone
+      <label className="mt-4 block">
+        <span className={labelClass}>Phone</span>
         <input
           type="tel"
           inputMode="tel"
@@ -281,31 +141,31 @@ export default function SquareDeposit({
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           placeholder="(310) 555-0123"
-          className="mt-2 w-full border border-onyx/20 bg-transparent px-3 py-3 text-sm normal-case tracking-normal text-onyx outline-none placeholder:text-onyx/35 focus:border-gold"
+          className={fieldClass}
         />
       </label>
 
-      <div className="mt-5 text-[0.7rem] uppercase tracking-[0.18em] text-onyx/55">
-        Card details
+      <div className="mt-5">
+        <span className={labelClass}>Card details</span>
         {/* Square Web Payments SDK mounts its secure card iframe here. */}
-        <div ref={containerRef} className="mt-2 min-h-[52px]" />
+        <div ref={card.containerRef} className="mt-2 min-h-[52px]" />
       </div>
 
-      {error && (
+      {card.error && (
         <p className="mt-3 text-xs text-red-700" role="alert" aria-live="polite">
-          {error}
+          {card.error}
         </p>
       )}
 
       <button
         type="button"
         onClick={pay}
-        disabled={status !== "ready"}
+        disabled={disabled}
         className="mt-6 w-full rounded-full bg-onyx px-8 py-4 text-[0.66rem] uppercase tracking-[0.22em] text-ivory transition-colors duration-300 hover:bg-gold hover:text-onyx disabled:cursor-not-allowed disabled:opacity-50"
       >
-        {status === "loading"
+        {card.status === "loading" || card.status === "idle"
           ? "Loading secure form…"
-          : busy
+          : paying
             ? "Processing…"
             : "Pay $250 deposit"}
       </button>

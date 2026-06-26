@@ -11,6 +11,7 @@ export const runtime = "nodejs";
 type Body = {
   sourceId?: string;
   verificationToken?: string;
+  idempotencyKey?: string;
   type?: string;
   name?: string;
   email?: string;
@@ -60,6 +61,7 @@ export async function POST(req: Request) {
   const result = await createDepositPayment({
     sourceId,
     verificationToken: str(body.verificationToken, 1024) || undefined,
+    idempotencyKey: str(body.idempotencyKey, 64) || undefined,
     note,
     buyerEmail: email || undefined,
   });

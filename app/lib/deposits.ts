@@ -5,6 +5,7 @@
 // just because logging hiccuped.
 
 import { dbConfigured, getPool } from "./mysql";
+import { createAirtableRecord } from "./airtable";
 
 export type DepositInput = {
   paymentId: string;
@@ -73,9 +74,11 @@ async function findMatchingLead(
     return null;
   };
 
-  const cleanEmail = email.toLowerCase().replace(/['"\\]/g, "");
-  if (cleanEmail.includes("@")) {
-    const byEmail = await run(`LOWER({Email})='${cleanEmail}'`);
+  // Escape single quotes (Airtable's literal escape is '') rather than stripping
+  // them, so addresses like o'brien@x.com still match.
+  const safeEmail = email.toLowerCase().replace(/'/g, "''");
+  if (email.includes("@")) {
+    const byEmail = await run(`LOWER({Email})='${safeEmail}'`);
     if (byEmail) return byEmail;
   }
 
@@ -127,20 +130,9 @@ async function saveToAirtable(d: DepositInput, matchedLead: string): Promise<voi
     "Matched Lead": matchedLead || "No match",
   };
 
-  const res = await fetch(
-    `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(table)}`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ records: [{ fields }], typecast: true }),
-    },
-  );
-  if (!res.ok) {
-    console.error("[deposits] Airtable write failed", res.status, await res.text());
-  }
+  // Resilient create: if the Deposits table is missing a column, that field is
+  // dropped and the rest still records (instead of losing the whole row).
+  await createAirtableRecord(token, baseId, table, fields);
 }
 
 // Orchestrates matching + both writes. Never throws.

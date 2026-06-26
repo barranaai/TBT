@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Magnetic from "../components/Magnetic";
+import { useSquareCard } from "../components/useSquareCard";
 
 const cities = [
   "Beverly Hills, CA",
@@ -157,6 +158,8 @@ export default function InquiryForm() {
   const [services, setServices] = useState<string[]>([]);
   const [videoConsult, setVideoConsult] = useState(false);
   const [photos, setPhotos] = useState<File[]>([]);
+  const [paid, setPaid] = useState(false);
+  const [recordWarning, setRecordWarning] = useState(false);
 
   // Re-trigger the entrance transition whenever the step changes.
   useEffect(() => {
@@ -166,6 +169,11 @@ export default function InquiryForm() {
   }, [step]);
 
   const isLast = step === steps.length - 1;
+
+  // Mount the secure Square card field only on the final step once the deposit
+  // box is ticked.
+  const payEnabled = videoConsult && isLast;
+  const square = useSquareCard(payEnabled);
 
   const set =
     (key: keyof typeof form) =>
@@ -247,10 +255,29 @@ export default function InquiryForm() {
     }
 
     setSubmitting(true);
-    // Persist to Airtable (text) and upload photos to our own server route,
-    // which holds the secret token and writes files to the persistent disk. We
-    // don't block the visitor on the result — they still reach the success
-    // screen and the $250 deposit step; delivery issues are logged server-side.
+
+    // If they're paying the deposit, tokenize the card BEFORE submitting so a
+    // bad card stops here (no lead saved, nothing charged) and they can fix it.
+    let payment:
+      | { sourceId: string; verificationToken?: string; idempotencyKey: string }
+      | undefined;
+    if (videoConsult && square.status === "ready") {
+      const tok = await square.tokenize({ amount: "250.00", email: form.email });
+      if (!tok) {
+        setSubmitting(false);
+        scrollTop();
+        return; // square.error is shown inline
+      }
+      payment = {
+        sourceId: tok.sourceId,
+        verificationToken: tok.verificationToken,
+        idempotencyKey: tok.idempotencyKey,
+      };
+    }
+
+    // Persist to Airtable + DB and upload photos via our own server route (which
+    // also runs the charge when a card was tokenized). Non-payment failures are
+    // logged server-side and never block the visitor.
     try {
       const photoPayload = (
         await Promise.all(
@@ -263,7 +290,7 @@ export default function InquiryForm() {
         )
       ).filter(Boolean);
 
-      await fetch("/api/inquiry", {
+      const res = await fetch("/api/inquiry", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -280,10 +307,36 @@ export default function InquiryForm() {
           videoConsult,
           hear: form.hear,
           photos: photoPayload,
+          payment,
         }),
       });
+      const result = await res.json().catch(() => ({}));
+
+      // Card declined — keep them on the form to fix it (nothing was charged).
+      if (payment && (!res.ok || result?.paymentFailed)) {
+        square.setError(
+          result?.error ||
+            "Your card couldn't be processed. Please check the details and try again.",
+        );
+        setSubmitting(false);
+        scrollTop();
+        return;
+      }
+      if (result?.paid) {
+        setPaid(true);
+        if (result?.recorded === false) setRecordWarning(true);
+      }
     } catch {
-      // Network failure — still complete the flow for the visitor.
+      // A network error while paying is ambiguous — don't risk a double charge.
+      if (payment) {
+        square.setError(
+          "We couldn't confirm your payment. Please contact us before trying again so you're not charged twice.",
+        );
+        setSubmitting(false);
+        scrollTop();
+        return;
+      }
+      // No payment involved — still complete the flow for the visitor.
     }
 
     setSubmitting(false);
@@ -306,26 +359,48 @@ export default function InquiryForm() {
           being part of your smile journey.
         </p>
 
-        {videoConsult && (
+        {paid ? (
           <div className="mx-auto mt-10 max-w-md border-t border-ivory/10 pt-10">
-            <p className="text-sm leading-relaxed text-ivory/65">
+            <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-full border border-gold text-gold">
+              <Check className="h-5 w-5" />
+            </div>
+            <p className="text-sm leading-relaxed text-ivory/70">
               Your{" "}
               <span className="text-gold">
-                $250 deposit is credited 100% toward your treatment
-              </span>
-              . Reserve your private video consultation below — please use the
-              same email you entered above so your booking connects
-              automatically.
+                $250 consultation deposit is confirmed
+              </span>{" "}
+              and credited 100% toward your treatment. Dr. Trev&rsquo;s team will
+              reach out to schedule your private video consultation.
             </p>
-            <Magnetic>
-              <Link
-                href="/reserve?type=video"
-                className="mt-8 inline-flex items-center gap-3 rounded-full bg-champagne px-8 py-4 text-[0.66rem] uppercase tracking-[0.22em] text-onyx transition-colors duration-300 hover:bg-gold"
-              >
-                Reserve My Consultation — $250 →
-              </Link>
-            </Magnetic>
+            {recordWarning && (
+              <p className="mt-4 text-xs leading-relaxed text-ivory/55">
+                Please keep your card statement as confirmation — we&rsquo;ll be
+                in touch to finalize your booking details.
+              </p>
+            )}
           </div>
+        ) : (
+          videoConsult && (
+            <div className="mx-auto mt-10 max-w-md border-t border-ivory/10 pt-10">
+              <p className="text-sm leading-relaxed text-ivory/65">
+                Your{" "}
+                <span className="text-gold">
+                  $250 deposit is credited 100% toward your treatment
+                </span>
+                . Reserve your private video consultation below — please use the
+                same email you entered above so your booking connects
+                automatically.
+              </p>
+              <Magnetic>
+                <Link
+                  href="/reserve?type=video"
+                  className="mt-8 inline-flex items-center gap-3 rounded-full bg-champagne px-8 py-4 text-[0.66rem] uppercase tracking-[0.22em] text-onyx transition-colors duration-300 hover:bg-gold"
+                >
+                  Reserve My Consultation — $250 →
+                </Link>
+              </Magnetic>
+            </div>
+          )
         )}
       </div>
     );
@@ -716,6 +791,63 @@ export default function InquiryForm() {
                 </span>
               </label>
 
+              {videoConsult && (
+                <div className="border border-gold/25 bg-ivory px-6 py-7 text-onyx">
+                  <div className="flex items-baseline justify-between">
+                    <p className="text-[0.62rem] uppercase tracking-[0.28em] text-gold">
+                      Secure payment
+                    </p>
+                    <span className="font-serif text-2xl font-light">$250</span>
+                  </div>
+
+                  {square.status === "unconfigured" ? (
+                    <p className="mt-3 text-sm leading-relaxed text-onyx/70">
+                      Submit your inquiry and we&rsquo;ll send you a secure link
+                      to reserve your consultation.
+                    </p>
+                  ) : square.status === "error" ? (
+                    <p className="mt-3 text-sm leading-relaxed text-red-700">
+                      {square.error} You can still submit your inquiry below.
+                    </p>
+                  ) : (
+                    <>
+                      <p className="mt-3 text-xs leading-relaxed text-onyx/60">
+                        Your $250 deposit, credited 100% toward your treatment.
+                      </p>
+                      <span className="mt-5 block text-[0.7rem] uppercase tracking-[0.18em] text-onyx/55">
+                        Card details
+                      </span>
+                      {/* Square Web Payments SDK mounts its secure card iframe here. */}
+                      <div ref={square.containerRef} className="mt-2 min-h-[52px]" />
+                      {square.error && (
+                        <p
+                          className="mt-2 text-xs text-red-700"
+                          role="alert"
+                          aria-live="polite"
+                        >
+                          {square.error}
+                        </p>
+                      )}
+                      <p className="mt-4 flex items-start gap-2 text-[0.68rem] leading-relaxed text-onyx/55">
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          aria-hidden="true"
+                          className="mt-px h-3.5 w-3.5 shrink-0 text-onyx/50"
+                        >
+                          <rect x="5" y="11" width="14" height="9" rx="1.5" />
+                          <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+                        </svg>
+                        Secured &amp; encrypted by Square. No payment information
+                        is saved on this website.
+                      </p>
+                    </>
+                  )}
+                </div>
+              )}
+
               <div>
                 <label htmlFor="hear" className={labelClass}>
                   How did you hear about us?
@@ -764,10 +896,16 @@ export default function InquiryForm() {
               <button
                 type="button"
                 onClick={() => handleSubmit()}
-                disabled={submitting}
+                disabled={submitting || (payEnabled && square.status === "loading")}
                 className="inline-flex items-center gap-3 rounded-full bg-champagne px-8 py-4 text-[0.72rem] font-medium uppercase tracking-[0.22em] text-onyx transition-colors duration-300 hover:bg-gold disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {submitting ? "Submitting…" : "Submit My Inquiry"}
+                {submitting
+                  ? videoConsult
+                    ? "Processing…"
+                    : "Submitting…"
+                  : videoConsult
+                    ? "Submit My Inquiry & Pay"
+                    : "Submit My Inquiry"}
               </button>
             </Magnetic>
           ) : (

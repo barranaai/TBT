@@ -3,6 +3,13 @@ import { promises as fs } from "fs";
 import path from "path";
 import crypto from "crypto";
 import { dbConfigured, savePhotos } from "../../lib/photos-db";
+import { saveInquiry } from "../../lib/inquiries-db";
+import { createAirtableRecord } from "../../lib/airtable";
+import {
+  squareConfigured,
+  createDepositPayment,
+  DEPOSIT_AMOUNT_CENTS,
+} from "../../lib/square";
 
 export const runtime = "nodejs";
 
@@ -21,6 +28,14 @@ const EXT_BY_MIME: Record<string, string> = {
 };
 
 const MAX_PHOTO_BYTES = 8 * 1024 * 1024; // safety cap per photo
+const MAX_PHOTOS = 12; // cap the array so one request can't buffer huge payloads
+
+// Trusted hosts for building the stored gallery URL when PUBLIC_BASE_URL is
+// unset — stops Host-header injection from planting an attacker URL in a
+// staff-facing record.
+const ALLOWED_HOST = /(^|\.)(teethbytrev\.com|airoapp\.ai|onrender\.com)$/i;
+
+const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
 type PhotoIn = { name?: string; dataUrl?: string };
 type Payload = {
@@ -37,14 +52,20 @@ type Payload = {
   videoConsult?: boolean;
   hear?: string;
   photos?: PhotoIn[];
+  payment?: { sourceId?: string; verificationToken?: string; idempotencyKey?: string };
 };
 
 function baseUrl(req: Request): string {
   const env = process.env.PUBLIC_BASE_URL;
   if (env) return env.replace(/\/+$/, "");
-  const proto = req.headers.get("x-forwarded-proto") || "https";
   const host = req.headers.get("host") || "";
-  return `${proto}://${host}`;
+  const proto = req.headers.get("x-forwarded-proto") || "https";
+  const hostNoPort = host.replace(/:\d+$/, "");
+  if (host && (ALLOWED_HOST.test(hostNoPort) || hostNoPort === "localhost")) {
+    return `${proto}://${host}`;
+  }
+  // Unknown/forged host — fall back to the known production origin.
+  return "https://teethbytrev.com";
 }
 
 function slug(s: string): string {
@@ -95,7 +116,7 @@ async function storePhotos(
   if (!decoded.length) return { photosUrl: "", photosWritten: 0 };
 
   const digits = phone.replace(/\D/g, "") || "nophone";
-  const token = `${slug(fullName)}-${digits}-${crypto.randomBytes(3).toString("hex")}`;
+  const token = `${slug(fullName)}-${digits}-${crypto.randomBytes(8).toString("hex")}`;
 
   if (dbConfigured()) {
     const written = await savePhotos(token, decoded);
@@ -128,13 +149,16 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: "Bad request" }, { status: 400 });
   }
 
-  const s = (v: unknown) => (typeof v === "string" ? v.trim() : "");
-  const firstName = s(data.firstName);
-  const lastName = s(data.lastName);
-  const phone = s(data.phone);
-  const email = s(data.email);
-  const city = s(data.city);
-  const goals = s(data.goals);
+  // Trim AND cap every text field (narrow DB columns + avoid abuse).
+  const s = (v: unknown, max = 200) =>
+    typeof v === "string" ? v.trim().slice(0, max) : "";
+
+  const firstName = s(data.firstName, 100);
+  const lastName = s(data.lastName, 100);
+  const phone = s(data.phone, 40);
+  const email = s(data.email, 160);
+  const city = s(data.city, 120);
+  const goals = s(data.goals, 5000);
 
   if (!firstName || !lastName || !phone || !email || !city || !goals) {
     return NextResponse.json(
@@ -142,14 +166,49 @@ export async function POST(req: Request) {
       { status: 422 },
     );
   }
+  if (!EMAIL_RE.test(email)) {
+    return NextResponse.json(
+      { ok: false, error: "Please enter a valid email address." },
+      { status: 422 },
+    );
+  }
 
   const fullName = `${firstName} ${lastName}`.trim();
+  const servicesJoined = (Array.isArray(data.services) ? data.services : [])
+    .map((x) => s(x, 60))
+    .filter(Boolean)
+    .join(", ");
+
+  // ── Optional $250 consultation deposit (Square) ─────────────────────────────
+  // Charge BEFORE saving anything: a declined card returns an error and the
+  // visitor can fix it. A stable idempotency key (from the client) makes an
+  // honest retry idempotent at Square. If Square isn't configured we skip the
+  // charge (the lead still saves; the success screen offers the /reserve link).
+  let paid = false;
+  let paymentId = "";
+  const sourceId = s(data.payment?.sourceId, 1024);
+  if (data.videoConsult && sourceId && squareConfigured()) {
+    const charge = await createDepositPayment({
+      sourceId,
+      verificationToken: s(data.payment?.verificationToken, 1024) || undefined,
+      idempotencyKey: s(data.payment?.idempotencyKey, 64) || undefined,
+      note: "Teeth by Trev — consultation deposit (video, inquiry form)",
+      buyerEmail: email,
+    });
+    if (!charge.ok) {
+      return NextResponse.json(
+        { ok: false, paymentFailed: true, error: charge.error },
+        { status: 402 },
+      );
+    }
+    paid = true;
+    paymentId = charge.paymentId;
+  }
 
   // ── Save uploaded photos: hosted MySQL when attached, disk otherwise ────────
-  // Failures here never block the lead from being recorded.
   let photosUrl = "";
   let photosWritten = 0;
-  const photos = Array.isArray(data.photos) ? data.photos : [];
+  const photos = (Array.isArray(data.photos) ? data.photos : []).slice(0, MAX_PHOTOS);
   if (photos.length) {
     try {
       const stored = await storePhotos(req, photos, fullName, phone);
@@ -160,75 +219,81 @@ export async function POST(req: Request) {
     }
   }
 
+  // ── Airtable Leads (with deposit confirmation when paid) ────────────────────
   const token = process.env.AIRTABLE_TOKEN;
   const baseId = process.env.AIRTABLE_BASE_ID;
   const table = process.env.AIRTABLE_TABLE_NAME || "Leads";
+  let stored = false;
 
-  if (!token || !baseId) {
-    console.warn(
-      "[inquiry] Airtable not configured (AIRTABLE_TOKEN + AIRTABLE_BASE_ID). Submission NOT stored.",
-    );
-    return NextResponse.json({
-      ok: true,
-      stored: false,
-      photos: photosWritten,
-      photosUrl: photosUrl || undefined,
-    });
+  if (token && baseId) {
+    const fields: Record<string, string | number> = {
+      "Caller Name": fullName,
+      "Phone Number": phone,
+      Email: email,
+      Social: s(data.social),
+      City: city,
+      Services: servicesJoined,
+      "Treatment Interest": goals,
+      Budget: s(data.budget, 40),
+      Financing: s(data.financing, 40),
+      "Video Consult": data.videoConsult ? "Yes" : "No",
+      "How did you hear": s(data.hear, 120),
+      Source: "Website",
+      Photos: photosUrl,
+    };
+    if (paid) {
+      fields["Deposit Paid"] = "Yes";
+      fields["Payment ID"] = paymentId;
+      fields["Deposit Amount"] = DEPOSIT_AMOUNT_CENTS / 100;
+    }
+    // createAirtableRecord drops any column the table doesn't have (so a missing
+    // "Deposit Paid"/base column never loses the lead) and never re-creates on a
+    // transient error (no duplicates).
+    const result = await createAirtableRecord(token, baseId, table, fields);
+    stored = result.ok;
+  } else {
+    console.warn("[inquiry] Airtable not configured — submission not stored there.");
   }
 
-  const fields: Record<string, string> = {
-    "Caller Name": fullName,
-    "Phone Number": phone,
-    Email: email,
-    Social: s(data.social),
-    City: city,
-    Services: (Array.isArray(data.services) ? data.services : []).join(", "),
-    "Treatment Interest": goals,
-    Budget: s(data.budget),
-    Financing: s(data.financing),
-    "Video Consult": data.videoConsult ? "Yes" : "No",
-    "How did you hear": s(data.hear),
-    Source: "Website",
-    Photos: photosUrl,
-  };
-
+  // ── Hosted MySQL inquiries log ──────────────────────────────────────────────
+  let dbSaved = false;
   try {
-    const res = await fetch(
-      `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(table)}`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ records: [{ fields }], typecast: true }),
-      },
-    );
-
-    if (!res.ok) {
-      const detail = await res.text();
-      console.error("[inquiry] Airtable error", res.status, detail);
-      return NextResponse.json({
-      ok: true,
-      stored: false,
-      photos: photosWritten,
-      photosUrl: photosUrl || undefined,
-    });
-    }
-
-    return NextResponse.json({
-      ok: true,
-      stored: true,
-      photos: photosWritten,
-      photosUrl: photosUrl || undefined,
+    dbSaved = await saveInquiry({
+      name: fullName,
+      email,
+      phone,
+      social: s(data.social),
+      city,
+      services: servicesJoined,
+      goals,
+      budget: s(data.budget, 40),
+      financing: s(data.financing, 40),
+      videoConsult: !!data.videoConsult,
+      hear: s(data.hear, 120),
+      depositPaid: paid,
+      paymentId,
+      photosUrl,
     });
   } catch (err) {
-    console.error("[inquiry] Airtable request failed", err);
-    return NextResponse.json({
-      ok: true,
-      stored: false,
-      photos: photosWritten,
-      photosUrl: photosUrl || undefined,
-    });
+    console.error("[inquiry] DB inquiry save failed", err);
   }
+
+  // If we charged but couldn't durably record the lead anywhere staff looks,
+  // shout loudly with the paymentId so it can be reconciled/refunded by hand.
+  const recorded = stored || dbSaved;
+  if (paid && !recorded) {
+    console.error(
+      `[inquiry] PAID BUT UNRECORDED — reconcile in Square. paymentId=${paymentId} name="${fullName}" email=${email} phone=${phone}`,
+    );
+  }
+
+  return NextResponse.json({
+    ok: true,
+    stored,
+    recorded,
+    paid,
+    paymentId: paymentId || undefined,
+    photos: photosWritten,
+    photosUrl: photosUrl || undefined,
+  });
 }

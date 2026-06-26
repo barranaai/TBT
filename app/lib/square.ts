@@ -50,22 +50,27 @@ type CreatePaymentInput = {
   verificationToken?: string;
   note?: string;
   buyerEmail?: string;
+  // Stable per-attempt key so an honest retry of the SAME logical payment is
+  // collapsed to one charge by Square — even though re-tokenizing mints a new
+  // single-use sourceId. The client supplies this; we only mint a random one as
+  // a last resort.
+  idempotencyKey?: string;
 };
 
 type CreatePaymentResult =
   | { ok: true; paymentId: string; status: string }
   | { ok: false; error: string };
 
-// Charge the fixed deposit via Square's Payments API (createPayment). The card
-// token (sourceId) is single-use, so a retried token simply fails — no risk of
-// a double charge from the same tokenization.
+// Charge the fixed deposit via Square's Payments API (createPayment). Square
+// dedupes on idempotency_key: a retry with the same key returns the original
+// payment instead of charging again.
 export async function createDepositPayment(
   input: CreatePaymentInput,
 ): Promise<CreatePaymentResult> {
   const token = process.env.SQUARE_ACCESS_TOKEN!;
   const body: Record<string, unknown> = {
     source_id: input.sourceId,
-    idempotency_key: crypto.randomUUID(),
+    idempotency_key: input.idempotencyKey || crypto.randomUUID(),
     amount_money: { amount: DEPOSIT_AMOUNT_CENTS, currency: DEPOSIT_CURRENCY },
     location_id: process.env.SQUARE_LOCATION_ID,
     autocomplete: true,

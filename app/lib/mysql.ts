@@ -23,8 +23,16 @@ export function getPool(): mysql.Pool {
       connectionLimit: 4,
       maxIdle: 2,
       idleTimeout: 30_000,
+      // TLS off by default (GoDaddy's snippet uses none). When DB_SSL=true we
+      // VERIFY the server cert (supply the provider CA via DB_SSL_CA); only an
+      // explicit DB_SSL_INSECURE=true disables verification.
       ...(process.env.DB_SSL === "true"
-        ? { ssl: { rejectUnauthorized: false } }
+        ? {
+            ssl: {
+              rejectUnauthorized: process.env.DB_SSL_INSECURE !== "true",
+              ...(process.env.DB_SSL_CA ? { ca: process.env.DB_SSL_CA } : {}),
+            },
+          }
         : {}),
     });
   }
