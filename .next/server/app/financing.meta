@@ -1,0 +1,15 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/financing/layout,_N_T_/financing/page,_N_T_/financing"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/financing/__PAGE__",
+    "/financing",
+    "/_index",
+    "/_head"
+  ]
+}
