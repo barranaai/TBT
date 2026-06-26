@@ -5,7 +5,9 @@ services:
     # Starter (or higher) is required to attach a persistent disk for uploads.
     plan: starter
     branch: main
-    buildCommand: npm ci && npm run build
+    # Render builds for real (npm run build is a no-op for GoDaddy's prebuilt-zip
+    # deploy, so use build:next here).
+    buildCommand: npm ci && npm run build:next
     startCommand: npm start
     autoDeploy: true
     # Persistent disk for inquiry-form photo uploads (survives deploys/restarts).
