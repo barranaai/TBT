@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import Magnetic from "../components/Magnetic";
 
 const cities = [
@@ -54,9 +55,6 @@ const financingPartners = [
     href: "https://www.proceedfinance.com/application/create?referrer=37783-13017-4FDA",
   },
 ];
-
-// $250 deposit checkout (Square), credited 100% toward treatment.
-const CHECKOUT_URL = "https://square.link/u/wISlz03Z";
 
 const steps = [
   { label: "Contact", title: "Let's start with you." },
@@ -320,14 +318,12 @@ export default function InquiryForm() {
               automatically.
             </p>
             <Magnetic>
-              <a
-                href={CHECKOUT_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/reserve?type=video"
                 className="mt-8 inline-flex items-center gap-3 rounded-full bg-champagne px-8 py-4 text-[0.66rem] uppercase tracking-[0.22em] text-onyx transition-colors duration-300 hover:bg-gold"
               >
                 Reserve My Consultation — $250 →
-              </a>
+              </Link>
             </Magnetic>
           </div>
         )}

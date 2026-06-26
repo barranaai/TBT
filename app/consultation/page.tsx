@@ -12,10 +12,6 @@ export const metadata: Metadata = {
     "Reserve a private consultation with Dr. Trevor J. Thomas — in person or by video. A considered $250 conversation about the smile you imagine.",
 };
 
-// TODO: point this at the WooCommerce $250 consultation checkout once the
-// final product/checkout URL is confirmed. Interim: the inquiry form.
-const BOOKING_URL = "https://www.diverzeent.com/tbv-inquiry/";
-
 const options = [
   {
     kind: "In Person",
@@ -128,17 +124,15 @@ export default function ConsultationPage() {
                       $250
                     </span>
                     <Magnetic>
-                      <a
-                        href={BOOKING_URL}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                      <Link
+                        href={`/reserve?type=${o.kind === "In Person" ? "in-person" : "video"}`}
                         className="group inline-flex items-center gap-3 border border-gold px-7 py-3.5 text-[0.66rem] uppercase tracking-[0.24em] text-gold transition-colors duration-300 hover:bg-gold hover:text-onyx"
                       >
                         Reserve {o.kind}
                         <span className="transition-transform duration-300 group-hover:translate-x-1">
                           →
                         </span>
-                      </a>
+                      </Link>
                     </Magnetic>
                   </div>
                 </article>
