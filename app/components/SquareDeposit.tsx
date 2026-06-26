@@ -66,15 +66,11 @@ function loadSdk(env: "production" | "sandbox"): Promise<void> {
 }
 
 // Dark text on the light payment panel; gold focus ring to match the brand.
-// Only Square's documented selectors are valid — note "input::placeholder"
-// (a bare "::placeholder" throws InvalidStylesError and kills card init).
+// Square only accepts a narrow set of selectors/values — keep this to the
+// properties it already validated (no fontFamily/backgroundColor), and note
+// "input::placeholder" (a bare "::placeholder" throws InvalidStylesError).
 const CARD_STYLE = {
-  input: {
-    color: "#16130f",
-    fontSize: "16px",
-    fontFamily: "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
-    backgroundColor: "transparent",
-  },
+  input: { color: "#16130f", fontSize: "16px" },
   ".input-container": {
     borderColor: "rgba(20,17,13,0.18)",
     borderRadius: "0px",
@@ -113,19 +109,28 @@ export default function SquareDeposit({
           cfg.locationId,
         );
         paymentsRef.current = payments;
-        // If a custom style is ever rejected, fall back to the default styling
-        // rather than letting it break the whole card field.
+        // Square validates styles when the card is ATTACHED (not when created),
+        // so wrap both steps. If a style is ever rejected, retry with default
+        // styling rather than letting it break the whole field.
+        const mountCard = async (style?: unknown): Promise<SqCard> => {
+          const c = await payments.card(style ? { style } : undefined);
+          if (containerRef.current) await c.attach(containerRef.current);
+          return c;
+        };
         let card: SqCard;
         try {
-          card = await payments.card({ style: CARD_STYLE });
+          card = await mountCard(CARD_STYLE);
         } catch (styleErr) {
-          console.warn("[SquareDeposit] card style rejected; using defaults", styleErr);
-          card = await payments.card();
+          console.warn("[SquareDeposit] styled card failed; retrying unstyled", styleErr);
+          if (containerRef.current) containerRef.current.innerHTML = "";
+          card = await mountCard();
         }
-        if (cancelled) return;
-        if (containerRef.current) await card.attach(containerRef.current);
+        if (cancelled) {
+          card.destroy?.().catch(() => {});
+          return;
+        }
         cardRef.current = card;
-        if (!cancelled) setStatus("ready");
+        setStatus("ready");
       } catch (e) {
         console.error("[SquareDeposit] init failed", e);
         if (!cancelled) {
