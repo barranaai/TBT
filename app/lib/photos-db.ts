@@ -1,41 +1,16 @@
 // MySQL-backed storage for inquiry photos.
 //
 // On GoDaddy Airo the app filesystem is ephemeral (wiped on every redeploy), so
-// uploaded photos can't live on disk. GoDaddy provisions a persistent MySQL DB
-// and auto-injects DB_HOST / DB_PORT / DB_NAME / DB_USER / DB_PASSWORD. We store
-// each photo's bytes as a row keyed by a per-lead token and serve them back from
-// /api/photos/{token}. When these vars are absent (local dev, Render) callers
-// fall back to disk — see app/api/inquiry & app/api/photos.
+// uploaded photos can't live on disk. We store each photo's bytes as a row
+// keyed by a per-lead token and serve them back from /api/photos/{token}. When
+// the DB isn't configured (local dev, Render) callers fall back to disk — see
+// app/api/inquiry & app/api/photos.
 
-import mysql from "mysql2/promise";
+import { dbConfigured, getPool } from "./mysql";
 
-let pool: mysql.Pool | null = null;
+export { dbConfigured };
+
 let schemaReady: Promise<void> | null = null;
-
-export function dbConfigured(): boolean {
-  return Boolean(process.env.DB_HOST && process.env.DB_USER && process.env.DB_NAME);
-}
-
-function getPool(): mysql.Pool {
-  if (!pool) {
-    pool = mysql.createPool({
-      host: process.env.DB_HOST,
-      port: Number(process.env.DB_PORT || "3306"),
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
-      waitForConnections: true,
-      connectionLimit: 4,
-      maxIdle: 2,
-      idleTimeout: 30_000,
-      // GoDaddy's snippet uses no TLS; allow opting in if a future host needs it.
-      ...(process.env.DB_SSL === "true"
-        ? { ssl: { rejectUnauthorized: false } }
-        : {}),
-    });
-  }
-  return pool;
-}
 
 // Create the table on first use so there's no manual "Import SQL" step. Retried
 // on the next request if it fails (e.g. transient connection issue).

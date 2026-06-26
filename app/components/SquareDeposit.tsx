@@ -88,7 +88,9 @@ export default function SquareDeposit({
 }) {
   const [status, setStatus] = useState<Status>("loading");
   const [error, setError] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const cardRef = useRef<SqCard | null>(null);
   const paymentsRef = useRef<SqPayments | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -178,7 +180,9 @@ export default function SquareDeposit({
           sourceId: result.token,
           verificationToken,
           type,
+          name: name || undefined,
           email: email || undefined,
+          phone: phone || undefined,
         }),
       });
       const data = (await res.json()) as { ok: boolean; error?: string };
@@ -244,6 +248,18 @@ export default function SquareDeposit({
       </p>
 
       <label className="mt-7 block text-[0.7rem] uppercase tracking-[0.18em] text-onyx/55">
+        Full name
+        <input
+          type="text"
+          autoComplete="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Jordan Avery"
+          className="mt-2 w-full border border-onyx/20 bg-transparent px-3 py-3 text-sm normal-case tracking-normal text-onyx outline-none placeholder:text-onyx/35 focus:border-gold"
+        />
+      </label>
+
+      <label className="mt-4 block text-[0.7rem] uppercase tracking-[0.18em] text-onyx/55">
         Email for your receipt
         <input
           type="email"
@@ -252,7 +268,20 @@ export default function SquareDeposit({
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@example.com"
-          className="mt-2 w-full border border-onyx/20 bg-transparent px-3 py-3 text-sm text-onyx outline-none placeholder:text-onyx/35 focus:border-gold"
+          className="mt-2 w-full border border-onyx/20 bg-transparent px-3 py-3 text-sm normal-case tracking-normal text-onyx outline-none placeholder:text-onyx/35 focus:border-gold"
+        />
+      </label>
+
+      <label className="mt-4 block text-[0.7rem] uppercase tracking-[0.18em] text-onyx/55">
+        Phone
+        <input
+          type="tel"
+          inputMode="tel"
+          autoComplete="tel"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          placeholder="(310) 555-0123"
+          className="mt-2 w-full border border-onyx/20 bg-transparent px-3 py-3 text-sm normal-case tracking-normal text-onyx outline-none placeholder:text-onyx/35 focus:border-gold"
         />
       </label>
 
