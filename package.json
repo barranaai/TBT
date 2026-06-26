@@ -5,8 +5,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build --webpack",
-    "start": "NODE_ENV=production next start",
+    "start": "next build --webpack && next start",
     "lint": "eslint"
+  },
+  "engines": {
+    "node": "24.x"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4",
