@@ -14,8 +14,10 @@ services:
       mountPath: /var/data
       sizeGB: 1
     envVars:
+      # Node 24: the webpack production build hits a Next 16 prerender bug on
+      # Node 22 ("useContext" null on /_not-found & /_global-error).
       - key: NODE_VERSION
-        value: "22.11.0"
+        value: "24.4.1"
       - key: NODE_ENV
         value: production
       - key: UPLOAD_DIR

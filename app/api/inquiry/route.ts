@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
 import crypto from "crypto";
+import { dbConfigured, savePhotos } from "../../lib/photos-db";
 
 export const runtime = "nodejs";
 
@@ -62,6 +63,63 @@ function safeStem(name: string, i: number): string {
   return stem || `photo-${i + 1}`;
 }
 
+type DecodedPhoto = { idx: number; filename: string; mime: string; bytes: Buffer };
+
+// Turn the incoming base64 data URLs into validated buffers (drops anything
+// malformed, empty, or over the size cap).
+function decodePhotos(photos: PhotoIn[]): DecodedPhoto[] {
+  const out: DecodedPhoto[] = [];
+  photos.forEach((p, i) => {
+    const m = /^data:(image\/[a-z.+-]+);base64,(.+)$/i.exec(p?.dataUrl ?? "");
+    if (!m) return;
+    const mime = m[1].toLowerCase();
+    const buf = Buffer.from(m[2], "base64");
+    if (!buf.length || buf.length > MAX_PHOTO_BYTES) return;
+    const ext = EXT_BY_MIME[mime] || ".jpg";
+    out.push({ idx: i, filename: `${safeStem(p?.name ?? "", i)}${ext}`, mime, bytes: buf });
+  });
+  return out;
+}
+
+// Persist photos and return the gallery URL stored in Airtable. Uses the hosted
+// MySQL DB when one is attached (GoDaddy — survives redeploys), otherwise a
+// per-lead folder on disk (Render persistent disk / local dev). The token isn't
+// guessable, so the gallery URL stays effectively private.
+async function storePhotos(
+  req: Request,
+  photos: PhotoIn[],
+  fullName: string,
+  phone: string,
+): Promise<{ photosUrl: string; photosWritten: number }> {
+  const decoded = decodePhotos(photos);
+  if (!decoded.length) return { photosUrl: "", photosWritten: 0 };
+
+  const digits = phone.replace(/\D/g, "") || "nophone";
+  const token = `${slug(fullName)}-${digits}-${crypto.randomBytes(3).toString("hex")}`;
+
+  if (dbConfigured()) {
+    const written = await savePhotos(token, decoded);
+    return written > 0
+      ? { photosUrl: `${baseUrl(req)}/api/photos/${token}`, photosWritten: written }
+      : { photosUrl: "", photosWritten: 0 };
+  }
+
+  const dir = path.join(UPLOAD_DIR, token);
+  await fs.mkdir(dir, { recursive: true });
+  let written = 0;
+  await Promise.all(
+    decoded.map(async (d) => {
+      await fs.writeFile(path.join(dir, d.filename), d.bytes);
+      written += 1;
+    }),
+  );
+  if (written > 0) {
+    return { photosUrl: `${baseUrl(req)}/api/photos/${token}`, photosWritten: written };
+  }
+  await fs.rm(dir, { recursive: true, force: true }).catch(() => {});
+  return { photosUrl: "", photosWritten: 0 };
+}
+
 export async function POST(req: Request) {
   let data: Payload;
   try {
@@ -87,48 +145,18 @@ export async function POST(req: Request) {
 
   const fullName = `${firstName} ${lastName}`.trim();
 
-  // ── Save photos (base64 data URLs) to a per-lead folder on disk ─────────────
-  // Folder is identifiable by name + phone with a short random suffix so the
-  // public gallery URL isn't guessable. Failures here never block the lead.
+  // ── Save uploaded photos: hosted MySQL when attached, disk otherwise ────────
+  // Failures here never block the lead from being recorded.
   let photosUrl = "";
   let photosWritten = 0;
   const photos = Array.isArray(data.photos) ? data.photos : [];
   if (photos.length) {
     try {
-      const digits = phone.replace(/\D/g, "") || "nophone";
-      const folder = `${slug(fullName)}-${digits}-${crypto
-        .randomBytes(3)
-        .toString("hex")}`;
-      const dir = path.join(UPLOAD_DIR, folder);
-      await fs.mkdir(dir, { recursive: true });
-
-      await Promise.all(
-        photos.map(async (p, i) => {
-          const m = /^data:(image\/[a-z.+-]+);base64,(.+)$/i.exec(
-            p?.dataUrl ?? "",
-          );
-          if (!m) return;
-          const ext = EXT_BY_MIME[m[1].toLowerCase()] || ".jpg";
-          const buf = Buffer.from(m[2], "base64");
-          if (!buf.length || buf.length > MAX_PHOTO_BYTES) return;
-          await fs.writeFile(
-            path.join(dir, `${safeStem(p?.name ?? "", i)}${ext}`),
-            buf,
-          );
-          photosWritten += 1;
-        }),
-      );
-
-      if (photosWritten > 0) {
-        photosUrl = `${baseUrl(req)}/api/photos/${folder}`;
-      } else {
-        await fs.rm(dir, { recursive: true, force: true }).catch(() => {});
-      }
+      const stored = await storePhotos(req, photos, fullName, phone);
+      photosUrl = stored.photosUrl;
+      photosWritten = stored.photosWritten;
     } catch (err) {
-      console.error(
-        "[inquiry] photo save failed (disk not attached / not writable?)",
-        err,
-      );
+      console.error("[inquiry] photo save failed", err);
     }
   }
 

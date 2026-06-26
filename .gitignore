@@ -14,8 +14,7 @@
 /coverage
 
 # next.js
-# .next committed (minus cache) so GoDaddy SERVES a prebuilt app (no build).
-/.next/cache/
+/.next/
 /out/
 
 # production
