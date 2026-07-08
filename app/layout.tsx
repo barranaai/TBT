@@ -25,10 +25,31 @@ const pinyon = Pinyon_Script({
   display: "swap",
 });
 
+const siteTitle = "Teeth by Trev — Cosmetic & Implant Dentistry";
+const siteDescription =
+  "Dr. Trevor J. Thomas crafts life-changing smiles. Cosmetic dentistry, implants, and full-mouth rehabilitation in Beverly Hills, New York, Atlanta, Houston, Washington D.C., Tampa & Memphis. Real people. Real problems. Real results.";
+
+// metadataBase makes the auto-generated og:image / icon URLs absolute (social
+// scrapers require that). The preview image + icons come from the convention
+// files in app/: opengraph-image.png, twitter-image.png, icon.png,
+// apple-icon.png, favicon.ico.
 export const metadata: Metadata = {
-  title: "Teeth by Trev — Cosmetic & Implant Dentistry",
-  description:
-    "Dr. Trevor J. Thomas crafts life-changing smiles. Cosmetic dentistry, implants, and full-mouth rehabilitation in Beverly Hills, New York, Atlanta, Houston, Washington D.C., Tampa & Memphis. Real people. Real problems. Real results.",
+  metadataBase: new URL("https://teethbytrev.com"),
+  title: siteTitle,
+  description: siteDescription,
+  openGraph: {
+    title: siteTitle,
+    description: siteDescription,
+    url: "https://teethbytrev.com",
+    siteName: "Teeth by Trev",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteTitle,
+    description: siteDescription,
+  },
 };
 
 export default function RootLayout({
