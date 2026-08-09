@@ -727,6 +727,7 @@ export default function InquiryForm() {
     return (
       <form
         id="inquiry-form"
+        noValidate
         onSubmit={(event) => event.preventDefault()}
         className="mx-auto max-w-3xl scroll-mt-28"
       >
@@ -783,6 +784,8 @@ export default function InquiryForm() {
           </label>
           <input
             id="firstName"
+            required
+            aria-required="true"
             type="text"
             autoComplete="given-name"
             value={form.firstName}
@@ -798,6 +801,8 @@ export default function InquiryForm() {
           </label>
           <input
             id="lastName"
+            required
+            aria-required="true"
             type="text"
             autoComplete="family-name"
             value={form.lastName}
@@ -816,6 +821,8 @@ export default function InquiryForm() {
           </label>
           <input
             id="phone"
+            required={intent !== "general"}
+            aria-required={intent !== "general"}
             type="tel"
             autoComplete="tel"
             placeholder="(424) 000-0000"
@@ -832,6 +839,8 @@ export default function InquiryForm() {
           </label>
           <input
             id="email"
+            required
+            aria-required="true"
             type="email"
             autoComplete="email"
             placeholder="you@example.com"
@@ -850,6 +859,8 @@ export default function InquiryForm() {
         </label>
         <select
           id="preferredContact"
+          required
+          aria-required="true"
           value={form.preferredContact}
           onChange={(event) => {
             const preferredContact = event.target.value;
@@ -892,6 +903,8 @@ export default function InquiryForm() {
         </label>
         <input
           id="socialHandle"
+          required
+          aria-required="true"
           type="text"
           autoComplete="off"
           placeholder="@yourusername"
@@ -945,6 +958,7 @@ export default function InquiryForm() {
         </span>
         <input
           id="photos"
+          aria-required="true"
           type="file"
           accept="image/*"
           multiple
@@ -998,6 +1012,8 @@ export default function InquiryForm() {
         </label>
         <select
           id="city"
+          required
+          aria-required="true"
           value={form.city}
           onChange={set("city")}
           className={`${inputCls("city")} appearance-none`}
@@ -1044,6 +1060,8 @@ export default function InquiryForm() {
         </label>
         <textarea
           id="goals"
+          required
+          aria-required="true"
           rows={5}
           placeholder="What would you like to change or improve about your smile?"
           value={form.goals}
@@ -1060,6 +1078,8 @@ export default function InquiryForm() {
         </label>
         <select
           id="timeline"
+          required
+          aria-required="true"
           value={form.timeline}
           onChange={set("timeline")}
           className={`${inputCls("timeline")} appearance-none`}
@@ -1182,6 +1202,8 @@ export default function InquiryForm() {
         </label>
         <select
           id="city"
+          required
+          aria-required="true"
           value={form.city}
           onChange={set("city")}
           className={`${inputCls("city")} appearance-none`}
@@ -1205,6 +1227,8 @@ export default function InquiryForm() {
         </label>
         <select
           id="supportCategory"
+          required
+          aria-required="true"
           value={form.supportCategory}
           onChange={set("supportCategory")}
           className={`${inputCls("supportCategory")} appearance-none`}
@@ -1245,6 +1269,8 @@ export default function InquiryForm() {
         </label>
         <textarea
           id="supportMessage"
+          required
+          aria-required="true"
           rows={5}
           placeholder="Share only the details our support team needs to route your request."
           value={form.supportMessage}
@@ -1286,6 +1312,8 @@ export default function InquiryForm() {
         </label>
         <select
           id="enquiryType"
+          required
+          aria-required="true"
           value={form.enquiryType}
           onChange={set("enquiryType")}
           className={`${inputCls("enquiryType")} appearance-none`}
@@ -1313,6 +1341,8 @@ export default function InquiryForm() {
         </label>
         <textarea
           id="message"
+          required
+          aria-required="true"
           rows={6}
           value={form.message}
           onChange={set("message")}
@@ -1366,6 +1396,8 @@ export default function InquiryForm() {
         >
           <input
             id="contactConsent"
+            required
+            aria-required="true"
             type="checkbox"
             checked={contactConsent}
             onChange={(event) => {
@@ -1423,6 +1455,7 @@ export default function InquiryForm() {
   return (
     <form
       id="inquiry-form"
+      noValidate
       onSubmit={(event) => event.preventDefault()}
       className="mx-auto max-w-3xl scroll-mt-28"
     >
