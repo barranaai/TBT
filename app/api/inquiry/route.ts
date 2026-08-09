@@ -275,25 +275,34 @@ export async function POST(req: Request) {
   // The handle field is Instagram by definition; default the platform so the
   // Airtable "Social" column always reads "Instagram: <handle>".
   const socialPlatform = s(data.socialPlatform, 40) || (socialHandle ? "Instagram" : "");
-  const city = s(data.city, 120);
-  const goals = s(data.goals, 5000);
-  const timeline = s(data.timeline, 60);
-  const budget = s(data.budget, 40);
-  const financing = s(data.financing, 60);
-  const readiness = s(data.readiness, 100);
+  // Branch-scope the payload server-side as well (defense in depth): a
+  // submission only carries its own intent's answers, so stale fields from a
+  // client that switched enquiry type are dropped here even if sent. Legacy
+  // payloads (no intent) are treated as "new".
+  const forNew = !modernSubmission || intent === "new";
+  const forExisting = modernSubmission && intent === "existing";
+  const forGeneral = modernSubmission && intent === "general";
+  const city = forGeneral ? "" : s(data.city, 120);
+  const goals = forNew ? s(data.goals, 5000) : "";
+  const timeline = forNew ? s(data.timeline, 60) : "";
+  const budget = forNew ? s(data.budget, 40) : "";
+  const financing = forNew ? s(data.financing, 60) : "";
+  const readiness = forNew ? s(data.readiness, 100) : "";
   const hear = s(data.hear, 120);
-  const supportCategory = s(data.supportCategory, 100);
-  const appointmentDate = s(data.appointmentDate, 20);
-  const supportMessage = s(data.supportMessage, 5000);
-  const organization = s(data.organization, 190);
-  const enquiryType = s(data.enquiryType, 100);
-  const message = s(data.message, 5000);
+  const supportCategory = forExisting ? s(data.supportCategory, 100) : "";
+  const appointmentDate = forExisting ? s(data.appointmentDate, 20) : "";
+  const supportMessage = forExisting ? s(data.supportMessage, 5000) : "";
+  const organization = forGeneral ? s(data.organization, 190) : "";
+  const enquiryType = forGeneral ? s(data.enquiryType, 100) : "";
+  const message = forGeneral ? s(data.message, 5000) : "";
   const contactConsent = data.contactConsent === true;
   const marketingConsent = data.marketingConsent === true;
   const analyticsConsent = data.analyticsConsent === true;
-  const services = (Array.isArray(data.services) ? data.services : [])
-    .map((value) => s(value, 60))
-    .filter(Boolean);
+  const services = forNew
+    ? (Array.isArray(data.services) ? data.services : [])
+        .map((value) => s(value, 60))
+        .filter(Boolean)
+    : [];
   const servicesJoined = services.join(", ");
 
   if (!firstName || !lastName || !email) {

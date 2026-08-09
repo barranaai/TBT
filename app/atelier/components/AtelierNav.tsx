@@ -89,8 +89,12 @@ export default function AtelierNav() {
         </div>
       </nav>
 
-      {/* Full-screen overlay menu */}
+      {/* Full-screen overlay menu. When closed it is inert + aria-hidden so its
+          links are removed from the tab order and the accessibility tree (the
+          opacity/pointer-events classes only hide it visually). */}
       <div
+        inert={!open}
+        aria-hidden={!open}
         className={`fixed inset-0 z-0 bg-onyx transition-opacity duration-500 ${
           open
             ? "pointer-events-auto opacity-100"

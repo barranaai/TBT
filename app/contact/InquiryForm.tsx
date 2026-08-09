@@ -523,6 +523,33 @@ export default function InquiryForm() {
         )
       ).filter(Boolean);
 
+      // Only the ACTIVE branch's answers are submitted. Form state deliberately
+      // survives switching enquiry type (so nothing retyped), but stale fields
+      // from another branch must never ride along in the payload.
+      const branchFields =
+        intent === "new"
+          ? {
+              city: form.city,
+              services,
+              goals: form.goals,
+              timeline: form.timeline,
+              budget: form.budget,
+              financing: form.financing,
+              readiness: form.readiness,
+            }
+          : intent === "existing"
+            ? {
+                city: form.city,
+                supportCategory: form.supportCategory,
+                appointmentDate: form.appointmentDate,
+                supportMessage: form.supportMessage,
+              }
+            : {
+                organization: form.organization,
+                enquiryType: form.enquiryType,
+                message: form.message,
+              };
+
       const response = await fetch("/api/inquiry", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -539,20 +566,8 @@ export default function InquiryForm() {
           // The handle field is always an Instagram handle.
           socialPlatform: "Instagram",
           socialHandle: form.socialHandle,
-          city: form.city,
-          services,
-          goals: form.goals,
-          timeline: form.timeline,
-          budget: form.budget,
-          financing: form.financing,
-          readiness: form.readiness,
           hear: form.hear,
-          supportCategory: form.supportCategory,
-          appointmentDate: form.appointmentDate,
-          supportMessage: form.supportMessage,
-          organization: form.organization,
-          enquiryType: form.enquiryType,
-          message: form.message,
+          ...branchFields,
           contactConsent,
           consentVersion: CONSENT_VERSION,
           marketingConsent,
@@ -784,6 +799,7 @@ export default function InquiryForm() {
           </label>
           <input
             id="firstName"
+            name="firstName"
             required
             aria-required="true"
             type="text"
@@ -801,6 +817,7 @@ export default function InquiryForm() {
           </label>
           <input
             id="lastName"
+            name="lastName"
             required
             aria-required="true"
             type="text"
@@ -821,6 +838,7 @@ export default function InquiryForm() {
           </label>
           <input
             id="phone"
+            name="phone"
             required={intent !== "general"}
             aria-required={intent !== "general"}
             type="tel"
@@ -839,6 +857,7 @@ export default function InquiryForm() {
           </label>
           <input
             id="email"
+            name="email"
             required
             aria-required="true"
             type="email"
@@ -859,6 +878,7 @@ export default function InquiryForm() {
         </label>
         <select
           id="preferredContact"
+          name="preferredContact"
           required
           aria-required="true"
           value={form.preferredContact}
@@ -903,6 +923,7 @@ export default function InquiryForm() {
         </label>
         <input
           id="socialHandle"
+          name="socialHandle"
           required
           aria-required="true"
           type="text"
@@ -958,6 +979,7 @@ export default function InquiryForm() {
         </span>
         <input
           id="photos"
+          name="photos"
           aria-required="true"
           type="file"
           accept="image/*"
@@ -1012,6 +1034,7 @@ export default function InquiryForm() {
         </label>
         <select
           id="city"
+          name="city"
           required
           aria-required="true"
           value={form.city}
@@ -1060,6 +1083,7 @@ export default function InquiryForm() {
         </label>
         <textarea
           id="goals"
+          name="goals"
           required
           aria-required="true"
           rows={5}
@@ -1078,6 +1102,7 @@ export default function InquiryForm() {
         </label>
         <select
           id="timeline"
+          name="timeline"
           required
           aria-required="true"
           value={form.timeline}
@@ -1202,6 +1227,7 @@ export default function InquiryForm() {
         </label>
         <select
           id="city"
+          name="city"
           required
           aria-required="true"
           value={form.city}
@@ -1227,6 +1253,7 @@ export default function InquiryForm() {
         </label>
         <select
           id="supportCategory"
+          name="supportCategory"
           required
           aria-required="true"
           value={form.supportCategory}
@@ -1256,6 +1283,7 @@ export default function InquiryForm() {
         </label>
         <input
           id="appointmentDate"
+          name="appointmentDate"
           type="date"
           value={form.appointmentDate}
           onChange={set("appointmentDate")}
@@ -1269,6 +1297,7 @@ export default function InquiryForm() {
         </label>
         <textarea
           id="supportMessage"
+          name="supportMessage"
           required
           aria-required="true"
           rows={5}
@@ -1299,6 +1328,7 @@ export default function InquiryForm() {
         </label>
         <input
           id="organization"
+          name="organization"
           type="text"
           value={form.organization}
           onChange={set("organization")}
@@ -1312,6 +1342,7 @@ export default function InquiryForm() {
         </label>
         <select
           id="enquiryType"
+          name="enquiryType"
           required
           aria-required="true"
           value={form.enquiryType}
@@ -1341,6 +1372,7 @@ export default function InquiryForm() {
         </label>
         <textarea
           id="message"
+          name="message"
           required
           aria-required="true"
           rows={6}
@@ -1366,6 +1398,7 @@ export default function InquiryForm() {
         </label>
         <select
           id="hear"
+          name="hear"
           value={form.hear}
           onChange={set("hear")}
           className={`${inputCls("hear")} appearance-none`}
@@ -1396,6 +1429,7 @@ export default function InquiryForm() {
         >
           <input
             id="contactConsent"
+            name="contactConsent"
             required
             aria-required="true"
             type="checkbox"
