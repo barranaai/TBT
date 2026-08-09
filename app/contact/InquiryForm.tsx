@@ -444,11 +444,15 @@ export default function InquiryForm() {
         next.supportCategory = "Choose a support category";
       if (!form.supportMessage.trim())
         next.supportMessage = "Add a short description";
+      if (!photos.length)
+        next.photos = "Add at least one photo of your smile";
     }
 
     if (intent === "general" && index === 1) {
       if (!form.enquiryType) next.enquiryType = "Choose an enquiry type";
       if (!form.message.trim()) next.message = "Add a short message";
+      if (!photos.length)
+        next.photos = "Add at least one photo of your smile";
     }
 
     if (index === steps.length - 1 && !contactConsent) {
@@ -506,21 +510,18 @@ export default function InquiryForm() {
 
     try {
       // Downscale the required smile photos in-browser and send them as base64
-      // data URLs (only the new-consultation branch collects photos).
-      const photoPayload =
-        intent === "new"
-          ? (
-              await Promise.all(
-                photos.map(async (file, index) => {
-                  const dataUrl = await photoToDataUrl(file);
-                  if (!dataUrl) return null;
-                  const stem =
-                    file.name.replace(/\.[^.]+$/, "") || `photo-${index + 1}`;
-                  return { name: `${stem}.jpg`, dataUrl };
-                }),
-              )
-            ).filter(Boolean)
-          : [];
+      // data URLs — every enquiry type submits photos.
+      const photoPayload = (
+        await Promise.all(
+          photos.map(async (file, index) => {
+            const dataUrl = await photoToDataUrl(file);
+            if (!dataUrl) return null;
+            const stem =
+              file.name.replace(/\.[^.]+$/, "") || `photo-${index + 1}`;
+            return { name: `${stem}.jpg`, dataUrl };
+          }),
+        )
+      ).filter(Boolean);
 
       const response = await fetch("/api/inquiry", {
         method: "POST",
@@ -909,6 +910,86 @@ export default function InquiryForm() {
     </div>
   );
 
+  // Smile photos are required for every enquiry type, so each branch's
+  // substance step embeds this same upload block (state is shared, so photos
+  // survive switching enquiry type).
+  const renderPhotoUpload = (note: string) => (
+    <div>
+      <p className={labelClass}>
+        Photos of your smile <Req />
+      </p>
+      <label
+        htmlFor="photos"
+        className={`flex cursor-pointer flex-col items-center justify-center border border-dashed bg-ivory/[0.02] px-6 py-10 text-center transition-colors hover:border-gold/60 ${
+          errors.photos ? "border-rose-400/70" : "border-ivory/25"
+        }`}
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+          className="h-7 w-7 text-gold"
+        >
+          <path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2l1.2-1.6A1 1 0 0 1 9.5 5h5a1 1 0 0 1 .8.4L16.5 7h2A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5Z" />
+          <circle cx="12" cy="13" r="3" />
+        </svg>
+        <span className="mt-3 text-sm text-ivory/70">
+          <span className="text-gold">Tap to upload photos</span>
+        </span>
+        <span className="mt-1 text-xs text-ivory/40">
+          Front view, side view, and any areas of concern
+        </span>
+        <input
+          id="photos"
+          type="file"
+          accept="image/*"
+          multiple
+          className="hidden"
+          onChange={(event) => {
+            const files = Array.from(event.target.files ?? []);
+            if (files.length) {
+              setPhotos((current) => [...current, ...files]);
+              setErrors((current) => {
+                const next = { ...current };
+                delete next.photos;
+                return next;
+              });
+            }
+            event.target.value = "";
+          }}
+        />
+      </label>
+      {photos.length > 0 && (
+        <ul className="mt-4 flex flex-wrap gap-2">
+          {photos.map((file, index) => (
+            <li
+              key={`${file.name}-${index}`}
+              className="flex items-center gap-2 border border-gold/30 px-3 py-1 text-xs text-gold"
+            >
+              {file.name}
+              <button
+                type="button"
+                aria-label={`Remove ${file.name}`}
+                onClick={() =>
+                  setPhotos((current) => current.filter((_, i) => i !== index))
+                }
+                className="text-gold/60 transition-colors hover:text-gold"
+              >
+                ×
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+      <ErrorMessage name="photos" />
+      <p className="mt-3 text-xs text-ivory/40">{note}</p>
+    </div>
+  );
+
   const renderNewSmileStep = () => (
     <div className="space-y-9">
       <div>
@@ -1000,85 +1081,9 @@ export default function InquiryForm() {
         <ErrorMessage name="timeline" />
       </div>
 
-      <div>
-        <p className={labelClass}>
-          Photos of your smile <Req />
-        </p>
-        <label
-          htmlFor="photos"
-          className={`flex cursor-pointer flex-col items-center justify-center border border-dashed bg-ivory/[0.02] px-6 py-10 text-center transition-colors hover:border-gold/60 ${
-            errors.photos ? "border-rose-400/70" : "border-ivory/25"
-          }`}
-        >
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.3"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-            className="h-7 w-7 text-gold"
-          >
-            <path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2l1.2-1.6A1 1 0 0 1 9.5 5h5a1 1 0 0 1 .8.4L16.5 7h2A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5Z" />
-            <circle cx="12" cy="13" r="3" />
-          </svg>
-          <span className="mt-3 text-sm text-ivory/70">
-            <span className="text-gold">Tap to upload photos</span>
-          </span>
-          <span className="mt-1 text-xs text-ivory/40">
-            Front view, side view, and any areas of concern
-          </span>
-          <input
-            id="photos"
-            type="file"
-            accept="image/*"
-            multiple
-            className="hidden"
-            onChange={(event) => {
-              const files = Array.from(event.target.files ?? []);
-              if (files.length) {
-                setPhotos((current) => [...current, ...files]);
-                setErrors((current) => {
-                  const next = { ...current };
-                  delete next.photos;
-                  return next;
-                });
-              }
-              event.target.value = "";
-            }}
-          />
-        </label>
-        {photos.length > 0 && (
-          <ul className="mt-4 flex flex-wrap gap-2">
-            {photos.map((file, index) => (
-              <li
-                key={`${file.name}-${index}`}
-                className="flex items-center gap-2 border border-gold/30 px-3 py-1 text-xs text-gold"
-              >
-                {file.name}
-                <button
-                  type="button"
-                  aria-label={`Remove ${file.name}`}
-                  onClick={() =>
-                    setPhotos((current) =>
-                      current.filter((_, i) => i !== index),
-                    )
-                  }
-                  className="text-gold/60 transition-colors hover:text-gold"
-                >
-                  ×
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-        <ErrorMessage name="photos" />
-        <p className="mt-3 text-xs text-ivory/40">
-          JPG, PNG or HEIC. Photos help Dr. Trev assess your smile and prepare
-          an accurate plan before your consultation.
-        </p>
-      </div>
+      {renderPhotoUpload(
+        "JPG, PNG or HEIC. Photos help Dr. Trev assess your smile and prepare an accurate plan before your consultation.",
+      )}
     </div>
   );
 
@@ -1253,6 +1258,10 @@ export default function InquiryForm() {
           Contact the treating office or emergency services as appropriate.
         </p>
       </div>
+
+      {renderPhotoUpload(
+        "JPG, PNG or HEIC. Current photos of your smile help the team review your request accurately.",
+      )}
     </div>
   );
 
@@ -1312,6 +1321,10 @@ export default function InquiryForm() {
         />
         <ErrorMessage name="message" />
       </div>
+
+      {renderPhotoUpload(
+        "JPG, PNG or HEIC. Current photos of your smile help the team review your request accurately.",
+      )}
     </div>
   );
 

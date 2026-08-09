@@ -356,9 +356,9 @@ export async function POST(req: Request) {
         { status: 422 },
       );
     }
-    // Smile photos are mandatory for new consultations — require at least one
+    // Smile photos are mandatory for EVERY enquiry type — require at least one
     // that actually decodes (valid image data URL within the size cap).
-    if (intent === "new" && !decodePhotos(photos).length) {
+    if (!decodePhotos(photos).length) {
       return NextResponse.json(
         { ok: false, error: "Include at least one photo of your smile." },
         { status: 422 },
