@@ -309,6 +309,11 @@ export async function POST(req: Request) {
     );
   }
 
+  const photos = (Array.isArray(data.photos) ? data.photos : []).slice(
+    0,
+    MAX_PHOTOS,
+  );
+
   if (modernSubmission) {
     if (!preferredContact || !contactConsent) {
       return NextResponse.json(
@@ -348,6 +353,14 @@ export async function POST(req: Request) {
           ok: false,
           error: "Complete the required smile and investment questions.",
         },
+        { status: 422 },
+      );
+    }
+    // Smile photos are mandatory for new consultations — require at least one
+    // that actually decodes (valid image data URL within the size cap).
+    if (intent === "new" && !decodePhotos(photos).length) {
+      return NextResponse.json(
+        { ok: false, error: "Include at least one photo of your smile." },
         { status: 422 },
       );
     }
@@ -422,10 +435,6 @@ export async function POST(req: Request) {
 
   let photosUrl = "";
   let photosWritten = 0;
-  const photos = (Array.isArray(data.photos) ? data.photos : []).slice(
-    0,
-    MAX_PHOTOS,
-  );
   if (photos.length) {
     try {
       const storedPhotos = await storePhotos(req, photos, fullName, phone);

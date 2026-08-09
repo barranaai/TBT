@@ -148,6 +148,52 @@ function Check({ className = "h-6 w-6" }: { className?: string }) {
   );
 }
 
+// Shrink large phone photos in the browser, then return them as a base64 data
+// URL so they ride along in the JSON submission (no flaky multipart parsing).
+// Falls back to the original bytes if the image can't be decoded.
+function photoToDataUrl(file: File): Promise<string | null> {
+  return new Promise((resolve) => {
+    const MAX = 1600;
+    const QUALITY = 0.82;
+    const url = URL.createObjectURL(file);
+    const fallback = () => {
+      const reader = new FileReader();
+      reader.onload = () =>
+        resolve(typeof reader.result === "string" ? reader.result : null);
+      reader.onerror = () => resolve(null);
+      reader.readAsDataURL(file);
+    };
+    const img = new Image();
+    img.onload = () => {
+      try {
+        let w = img.naturalWidth || img.width;
+        let h = img.naturalHeight || img.height;
+        if (Math.max(w, h) > MAX) {
+          const scale = MAX / Math.max(w, h);
+          w = Math.round(w * scale);
+          h = Math.round(h * scale);
+        }
+        const canvas = document.createElement("canvas");
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) throw new Error("no 2d context");
+        ctx.drawImage(img, 0, 0, w, h);
+        URL.revokeObjectURL(url);
+        resolve(canvas.toDataURL("image/jpeg", QUALITY));
+      } catch {
+        URL.revokeObjectURL(url);
+        fallback();
+      }
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      fallback();
+    };
+    img.src = url;
+  });
+}
+
 function IntentMark({ kind }: { kind: Exclude<Intent, ""> }) {
   const paths = {
     new: (
@@ -259,6 +305,7 @@ export default function InquiryForm() {
     message: "",
   });
   const [services, setServices] = useState<string[]>([]);
+  const [photos, setPhotos] = useState<File[]>([]);
   const [contactConsent, setContactConsent] = useState(false);
   const [marketingConsent, setMarketingConsent] = useState(false);
 
@@ -381,6 +428,8 @@ export default function InquiryForm() {
       if (!services.length) next.services = "Choose at least one service";
       if (!form.goals.trim()) next.goals = "Tell us a little about your goals";
       if (!form.timeline) next.timeline = "Choose a timeline";
+      if (!photos.length)
+        next.photos = "Add at least one photo of your smile";
     }
 
     if (intent === "new" && index === 2) {
@@ -456,6 +505,23 @@ export default function InquiryForm() {
     const analyticsConsent = getAnalyticsConsent() === "granted";
 
     try {
+      // Downscale the required smile photos in-browser and send them as base64
+      // data URLs (only the new-consultation branch collects photos).
+      const photoPayload =
+        intent === "new"
+          ? (
+              await Promise.all(
+                photos.map(async (file, index) => {
+                  const dataUrl = await photoToDataUrl(file);
+                  if (!dataUrl) return null;
+                  const stem =
+                    file.name.replace(/\.[^.]+$/, "") || `photo-${index + 1}`;
+                  return { name: `${stem}.jpg`, dataUrl };
+                }),
+              )
+            ).filter(Boolean)
+          : [];
+
       const response = await fetch("/api/inquiry", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -491,6 +557,7 @@ export default function InquiryForm() {
           marketingConsent,
           analyticsConsent,
           attribution,
+          photos: photoPayload,
         }),
       });
       const result = await response.json().catch(() => ({}));
@@ -931,6 +998,86 @@ export default function InquiryForm() {
           ))}
         </select>
         <ErrorMessage name="timeline" />
+      </div>
+
+      <div>
+        <p className={labelClass}>
+          Photos of your smile <Req />
+        </p>
+        <label
+          htmlFor="photos"
+          className={`flex cursor-pointer flex-col items-center justify-center border border-dashed bg-ivory/[0.02] px-6 py-10 text-center transition-colors hover:border-gold/60 ${
+            errors.photos ? "border-rose-400/70" : "border-ivory/25"
+          }`}
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+            className="h-7 w-7 text-gold"
+          >
+            <path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2l1.2-1.6A1 1 0 0 1 9.5 5h5a1 1 0 0 1 .8.4L16.5 7h2A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5Z" />
+            <circle cx="12" cy="13" r="3" />
+          </svg>
+          <span className="mt-3 text-sm text-ivory/70">
+            <span className="text-gold">Tap to upload photos</span>
+          </span>
+          <span className="mt-1 text-xs text-ivory/40">
+            Front view, side view, and any areas of concern
+          </span>
+          <input
+            id="photos"
+            type="file"
+            accept="image/*"
+            multiple
+            className="hidden"
+            onChange={(event) => {
+              const files = Array.from(event.target.files ?? []);
+              if (files.length) {
+                setPhotos((current) => [...current, ...files]);
+                setErrors((current) => {
+                  const next = { ...current };
+                  delete next.photos;
+                  return next;
+                });
+              }
+              event.target.value = "";
+            }}
+          />
+        </label>
+        {photos.length > 0 && (
+          <ul className="mt-4 flex flex-wrap gap-2">
+            {photos.map((file, index) => (
+              <li
+                key={`${file.name}-${index}`}
+                className="flex items-center gap-2 border border-gold/30 px-3 py-1 text-xs text-gold"
+              >
+                {file.name}
+                <button
+                  type="button"
+                  aria-label={`Remove ${file.name}`}
+                  onClick={() =>
+                    setPhotos((current) =>
+                      current.filter((_, i) => i !== index),
+                    )
+                  }
+                  className="text-gold/60 transition-colors hover:text-gold"
+                >
+                  ×
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+        <ErrorMessage name="photos" />
+        <p className="mt-3 text-xs text-ivory/40">
+          JPG, PNG or HEIC. Photos help Dr. Trev assess your smile and prepare
+          an accurate plan before your consultation.
+        </p>
       </div>
     </div>
   );
