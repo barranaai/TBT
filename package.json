@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "echo \"Skipping platform build — serving the prebuilt .next shipped in the deploy (run build:next to rebuild)\"",
+    "dev": "NODE_ENV=production next start",
+    "dev:local": "next dev",
+    "build": "echo \"Skipping platform build \u2014 serving the prebuilt .next shipped in the deploy (run build:next to rebuild)\"",
     "build:next": "next build --webpack",
     "start": "NODE_ENV=production next start",
     "lint": "eslint"
