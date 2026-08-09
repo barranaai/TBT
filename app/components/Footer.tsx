@@ -142,9 +142,15 @@ export default function Footer() {
           <span>
             &copy; {new Date().getFullYear()} Teeth by Trev. All rights reserved.
           </span>
+          <Link
+            href="/privacy"
+            className="transition-colors hover:text-champagne"
+          >
+            Privacy &amp; analytics
+          </Link>
           <span>
-            Beverly Hills · New York · Atlanta · Houston · Washington D.C. ·
-            Tampa · Memphis
+            Beverly Hills · New York · Atlanta · Houston · Miami · Washington
+            D.C. · Tampa · Memphis
           </span>
         </div>
       </div>

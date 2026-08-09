@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Inter, Pinyon_Script } from "next/font/google";
 import "./globals.css";
+import AnalyticsConsent from "./components/AnalyticsConsent";
+import MetaPixel from "./components/MetaPixel";
 import SmoothScroll from "./components/SmoothScroll";
 
 const cormorant = Cormorant_Garamond({
@@ -27,7 +29,7 @@ const pinyon = Pinyon_Script({
 
 const siteTitle = "Teeth by Trev — Cosmetic & Implant Dentistry";
 const siteDescription =
-  "Dr. Trevor J. Thomas crafts life-changing smiles. Cosmetic dentistry, implants, and full-mouth rehabilitation in Beverly Hills, New York, Atlanta, Houston, Washington D.C., Tampa & Memphis. Real people. Real problems. Real results.";
+  "Dr. Trevor J. Thomas crafts life-changing smiles. Cosmetic dentistry, implants, and full-mouth rehabilitation in Beverly Hills, New York, Atlanta, Houston, Miami, Washington D.C., Tampa & Memphis. Real people. Real problems. Real results.";
 
 // metadataBase makes the auto-generated og:image / icon URLs absolute (social
 // scrapers require that). The preview image + icons come from the convention
@@ -62,10 +64,18 @@ export default function RootLayout({
       lang="en"
       className={`${cormorant.variable} ${inter.variable} ${pinyon.variable} h-full`}
     >
+      <head>
+        <meta
+          name="facebook-domain-verification"
+          content="b8gdf7ixkspje299s6h9umwv89cnpv"
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-ivory text-ink">
+        <MetaPixel />
         <SmoothScroll />
         {children}
         <div className="grain" aria-hidden="true" />
+        <AnalyticsConsent />
       </body>
     </html>
   );
