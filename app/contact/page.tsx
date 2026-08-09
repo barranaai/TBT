@@ -7,9 +7,9 @@ import Reveal from "../components/Reveal";
 import InquiryForm from "./InquiryForm";
 
 export const metadata: Metadata = {
-  title: "Start Your Smile Journey — Teeth by Trev",
+  title: "Contact the Teeth by Trev Concierge Team",
   description:
-    "Fill out the form and Dr. Trevor J. Thomas will personally review your inquiry. Tell us about your goals, your city, and the smile you imagine.",
+    "Start a smile consultation, request existing-patient support, or send a general enquiry to the Teeth by Trev concierge team.",
 };
 
 export default function ContactPage() {
@@ -19,9 +19,9 @@ export default function ContactPage() {
       <AtelierNav />
       <main>
         <PageHero
-          eyebrow="Begin"
-          title="Start your smile journey."
-          intro="Fill out the form below and Dr. Trev will personally review your inquiry."
+          eyebrow="Concierge"
+          title="Begin with the right team."
+          intro="Tell us what you need and the Teeth by Trev concierge team will guide your next step."
           image="/stock/contact-hero.jpg"
           imageAlt="The Teeth by Trev reception — a black marble wordmark wall, marble desk, and a city skyline view"
         />
@@ -40,14 +40,14 @@ export default function ContactPage() {
               >
                 424-394-6159
               </a>{" "}
-              · DM{" "}
+              · Continue on Instagram with{" "}
               <a
-                href="https://www.instagram.com/dr.trevthomas/"
+                href="https://www.instagram.com/teethbytrev.team/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-ivory/70 transition-colors hover:text-gold"
               >
-                @dr.trevthomas
+                @teethbytrev.team
               </a>
             </p>
           </div>

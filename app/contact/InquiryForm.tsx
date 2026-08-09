@@ -1,15 +1,39 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Magnetic from "../components/Magnetic";
-import { useSquareCard } from "../components/useSquareCard";
+import {
+  getAnalyticsConsent,
+  trackMetaLead,
+} from "../components/MetaPixel";
+
+type Intent = "" | "new" | "existing" | "general";
+
+type Attribution = {
+  landingUrl: string;
+  referrer: string;
+  utmSource: string;
+  utmMedium: string;
+  utmCampaign: string;
+  utmContent: string;
+  utmTerm: string;
+  fbclid: string;
+  ttclid: string;
+  entryChannel: string;
+  entryAccount: string;
+};
+
+const CONSENT_VERSION = "2026-07-23-v1";
+const TEAM_HANDLE = "@teethbytrev.team";
+const TEAM_URL = "https://www.instagram.com/teethbytrev.team/";
 
 const cities = [
   "Beverly Hills, CA",
   "New York, NY",
   "Atlanta, GA",
   "Houston, TX",
+  "Miami, FL",
   "Washington, D.C.",
   "Tampa, FL",
   "Memphis, TN",
@@ -33,39 +57,73 @@ const budgets = [
   "$10K – $20K",
   "$20K – $40K",
   "$40K+",
+  "I am not sure yet",
+];
+
+const timelines = [
+  "As soon as possible",
+  "Within 1–3 months",
+  "Within 3–6 months",
+  "Within 6–12 months",
+  "I am researching for the future",
+];
+
+const readinessOptions = [
+  "I am ready to schedule a consultation",
+  "I would like the concierge team to contact me first",
+  "I am comparing options",
+  "I am researching for the future",
 ];
 
 const hearOptions = [
-  "Instagram DM",
-  "Instagram Comment",
+  "Instagram — @dr.trevthomas",
+  "Instagram — @teethbytrev",
+  "Instagram — @teethbytrev.team",
+  "TikTok",
   "Facebook",
+  "Google or another search engine",
   "Referred by a friend or patient",
-  "Found on the website",
+  "Website",
   "Other",
 ];
 
-const financingPartners = [
-  { name: "CareCredit", href: "https://www.carecredit.com/go/276SNV/" },
-  { name: "Alphaeon", href: "https://goalphaeon.com/apply?src=cling" },
-  {
-    name: "Cherry",
-    href: "https://pay.withcherry.com/trevor-jamal-thomas-dds-inc?utm_source=practice&m=51934",
-  },
-  {
-    name: "Proceed Finance",
-    href: "https://www.proceedfinance.com/application/create?referrer=37783-13017-4FDA",
-  },
+const supportCategories = [
+  "Appointment scheduling or change",
+  "Post-appointment question",
+  "Billing or financing question",
+  "Records request",
+  "Other support",
 ];
 
-const steps = [
-  { label: "Contact", title: "Let's start with you." },
-  { label: "Your Smile", title: "Tell us about your smile." },
-  { label: "Investment", title: "Budget, financing & photos." },
-  { label: "Finish", title: "A few final touches." },
+const generalEnquiryTypes = [
+  "Media or speaking",
+  "Partnership",
+  "Vendor",
+  "Employment",
+  "General enquiry",
 ];
+
+const branchSteps: Record<Exclude<Intent, "">, { label: string; title: string }[]> = {
+  new: [
+    { label: "Contact", title: "Let’s start with you." },
+    { label: "Your Smile", title: "Tell us about your smile." },
+    { label: "Investment", title: "Plan the next step with confidence." },
+    { label: "Permission", title: "Choose how our team should respond." },
+  ],
+  existing: [
+    { label: "Contact", title: "Help us find the right patient record." },
+    { label: "Support", title: "Tell us what kind of help you need." },
+    { label: "Permission", title: "Choose how our team should respond." },
+  ],
+  general: [
+    { label: "Contact", title: "Tell us how to reach you." },
+    { label: "Enquiry", title: "What would you like to discuss?" },
+    { label: "Permission", title: "Choose how our team should respond." },
+  ],
+};
 
 const inputBase =
-  "w-full border bg-ivory/[0.03] px-4 py-3.5 text-ivory placeholder:text-ivory/30 transition-colors duration-300 focus:bg-ivory/[0.06] focus:outline-none";
+  "w-full border bg-ivory/[0.03] px-4 py-3.5 text-ivory placeholder:text-ivory/30 transition-colors duration-300 focus:bg-ivory/[0.06] focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/50";
 const labelClass =
   "mb-3 block text-[0.62rem] uppercase tracking-[0.22em] text-ivory/55";
 
@@ -90,90 +148,157 @@ function Check({ className = "h-6 w-6" }: { className?: string }) {
   );
 }
 
-// Shrink large phone photos in the browser, then return them as a base64 data
-// URL so they ride along in the JSON submission (no flaky multipart parsing).
-// Falls back to the original bytes if the image can't be decoded.
-function photoToDataUrl(file: File): Promise<string | null> {
-  return new Promise((resolve) => {
-    const MAX = 1600;
-    const QUALITY = 0.82;
-    const url = URL.createObjectURL(file);
-    const fallback = () => {
-      const reader = new FileReader();
-      reader.onload = () =>
-        resolve(typeof reader.result === "string" ? reader.result : null);
-      reader.onerror = () => resolve(null);
-      reader.readAsDataURL(file);
-    };
-    const img = new Image();
-    img.onload = () => {
-      try {
-        let w = img.naturalWidth || img.width;
-        let h = img.naturalHeight || img.height;
-        if (Math.max(w, h) > MAX) {
-          const scale = MAX / Math.max(w, h);
-          w = Math.round(w * scale);
-          h = Math.round(h * scale);
-        }
-        const canvas = document.createElement("canvas");
-        canvas.width = w;
-        canvas.height = h;
-        const ctx = canvas.getContext("2d");
-        if (!ctx) throw new Error("no 2d context");
-        ctx.drawImage(img, 0, 0, w, h);
-        URL.revokeObjectURL(url);
-        resolve(canvas.toDataURL("image/jpeg", QUALITY));
-      } catch {
-        URL.revokeObjectURL(url);
-        fallback();
-      }
-    };
-    img.onerror = () => {
-      URL.revokeObjectURL(url);
-      fallback();
-    };
-    img.src = url;
-  });
+function IntentMark({ kind }: { kind: Exclude<Intent, ""> }) {
+  const paths = {
+    new: (
+      <>
+        <path d="M12 3c2.8 0 5 2.2 5 5 0 4.4-2.8 9.4-5 13-2.2-3.6-5-8.6-5-13 0-2.8 2.2-5 5-5Z" />
+        <path d="M9.5 8.5h5M12 6v5" />
+      </>
+    ),
+    existing: (
+      <>
+        <path d="M5 5h14v14H5z" />
+        <path d="M8 9h8M8 12h8M8 15h5" />
+      </>
+    ),
+    general: (
+      <>
+        <path d="M4 6h16v12H4z" />
+        <path d="m5 7 7 6 7-6" />
+      </>
+    ),
+  };
+
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.25"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className="h-7 w-7"
+    >
+      {paths[kind]}
+    </svg>
+  );
+}
+
+function ChoiceButton({
+  active,
+  children,
+  onClick,
+}: {
+  active: boolean;
+  children: React.ReactNode;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={active}
+      className={`border px-4 py-3 text-left text-sm leading-snug transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/60 ${
+        active
+          ? "border-gold/70 bg-gold/10 text-ivory"
+          : "border-ivory/15 text-ivory/70 hover:border-ivory/35"
+      }`}
+    >
+      {children}
+    </button>
+  );
 }
 
 export default function InquiryForm() {
+  const [intent, setIntent] = useState<Intent>("");
   const [step, setStep] = useState(0);
-  const [shown, setShown] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [leadReference, setLeadReference] = useState("");
+  const [submitError, setSubmitError] = useState("");
+  const [copied, setCopied] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const submissionTokenRef = useRef("");
+
+  const [attribution, setAttribution] = useState<Attribution>({
+    landingUrl: "",
+    referrer: "",
+    utmSource: "",
+    utmMedium: "",
+    utmCampaign: "",
+    utmContent: "",
+    utmTerm: "",
+    fbclid: "",
+    ttclid: "",
+    entryChannel: "",
+    entryAccount: "",
+  });
 
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
     phone: "",
     email: "",
-    social: "",
+    preferredContact: "",
+    socialPlatform: "",
+    socialHandle: "",
     city: "",
     goals: "",
+    timeline: "",
     budget: "",
     financing: "",
+    readiness: "",
     hear: "",
+    supportCategory: "",
+    appointmentDate: "",
+    supportMessage: "",
+    organization: "",
+    enquiryType: "",
+    message: "",
   });
   const [services, setServices] = useState<string[]>([]);
-  const [videoConsult, setVideoConsult] = useState(false);
-  const [photos, setPhotos] = useState<File[]>([]);
-  const [paid, setPaid] = useState(false);
-  const [recordWarning, setRecordWarning] = useState(false);
+  const [contactConsent, setContactConsent] = useState(false);
+  const [marketingConsent, setMarketingConsent] = useState(false);
 
-  // Re-trigger the entrance transition whenever the step changes.
   useEffect(() => {
-    setShown(false);
-    const id = requestAnimationFrame(() => setShown(true));
-    return () => cancelAnimationFrame(id);
-  }, [step]);
+    const params = new URLSearchParams(window.location.search);
+    const routedIntent = params.get("intent");
 
-  const isLast = step === steps.length - 1;
+    submissionTokenRef.current =
+      window.crypto?.randomUUID?.() ||
+      `tbt-${Date.now()}-${Math.random().toString(36).slice(2)}`;
 
-  // Mount the secure Square card field only on the final step once the deposit
-  // box is ticked.
-  const payEnabled = videoConsult && isLast;
-  const square = useSquareCard(payEnabled);
+    const utmSource = params.get("utm_source") || "";
+    const utmContent = params.get("utm_content") || "";
+    const frame = requestAnimationFrame(() => {
+      if (
+        routedIntent === "new" ||
+        routedIntent === "existing" ||
+        routedIntent === "general"
+      ) {
+        setIntent(routedIntent);
+      }
+      setAttribution({
+        landingUrl: window.location.href,
+        referrer: document.referrer,
+        utmSource,
+        utmMedium: params.get("utm_medium") || "",
+        utmCampaign: params.get("utm_campaign") || "",
+        utmContent,
+        utmTerm: params.get("utm_term") || "",
+        fbclid: params.get("fbclid") || "",
+        ttclid: params.get("ttclid") || "",
+        entryChannel: params.get("entry_channel") || utmSource,
+        entryAccount: params.get("entry_account") || utmContent,
+      });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, []);
+
+  const steps = intent ? branchSteps[intent] : [];
+  const isLast = Boolean(intent) && step === steps.length - 1;
 
   const set =
     (key: keyof typeof form) =>
@@ -183,252 +308,1000 @@ export default function InquiryForm() {
       >,
     ) => {
       const { value } = e.target;
-      setForm((f) => ({ ...f, [key]: value }));
-      setErrors((er) => {
-        if (!er[key]) return er;
-        const next = { ...er };
+      setForm((current) => ({ ...current, [key]: value }));
+      setErrors((current) => {
+        if (!current[key]) return current;
+        const next = { ...current };
         delete next[key];
         return next;
       });
     };
 
-  const toggleService = (s: string) =>
-    setServices((prev) =>
-      prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s],
-    );
+  const inputCls = (key: string) =>
+    `${inputBase} ${
+      errors[key]
+        ? "border-rose-400/70"
+        : "border-ivory/15 focus:border-champagne"
+    }`;
 
-  const validate = (s: number): Record<string, string> => {
-    const e: Record<string, string> = {};
-    if (s === 0) {
-      if (!form.firstName.trim()) e.firstName = "Required";
-      if (!form.lastName.trim()) e.lastName = "Required";
-      if (!form.phone.trim()) e.phone = "Required";
-      if (!form.social.trim()) e.social = "Required";
-      if (!form.email.trim()) e.email = "Required";
+  const ErrorMessage = ({ name }: { name: string }) =>
+    errors[name] ? (
+      <p className="mt-2 text-xs text-rose-300/90" role="alert">
+        {errors[name]}
+      </p>
+    ) : null;
+
+  const chooseIntent = (nextIntent: Exclude<Intent, "">) => {
+    setIntent(nextIntent);
+    setStep(0);
+    setErrors({});
+    setSubmitError("");
+    window.requestAnimationFrame(() => {
+      document
+        .getElementById("inquiry-form")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  };
+
+  const toggleService = (service: string) => {
+    setServices((current) =>
+      current.includes(service)
+        ? current.filter((item) => item !== service)
+        : [...current, service],
+    );
+    setErrors((current) => {
+      if (!current.services) return current;
+      const next = { ...current };
+      delete next.services;
+      return next;
+    });
+  };
+
+  const validate = (index: number): Record<string, string> => {
+    const next: Record<string, string> = {};
+    if (!intent) return next;
+
+    if (index === 0) {
+      if (!form.firstName.trim()) next.firstName = "Required";
+      if (!form.lastName.trim()) next.lastName = "Required";
+      if (intent !== "general" && !form.phone.trim()) next.phone = "Required";
+      if (!form.email.trim()) next.email = "Required";
       else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email))
-        e.email = "Enter a valid email address";
+        next.email = "Enter a valid email address";
+      if (!form.preferredContact)
+        next.preferredContact = "Choose a contact method";
+      if (
+        form.preferredContact === "Instagram DM" &&
+        !form.socialHandle.trim()
+      ) {
+        next.socialHandle = "Enter your Instagram username";
+      }
     }
-    if (s === 1) {
-      if (!form.city) e.city = "Please choose a city";
-      if (!form.goals.trim()) e.goals = "Please tell us a little";
+
+    if (intent === "new" && index === 1) {
+      if (!form.city) next.city = "Choose a city";
+      if (!services.length) next.services = "Choose at least one service";
+      if (!form.goals.trim()) next.goals = "Tell us a little about your goals";
+      if (!form.timeline) next.timeline = "Choose a timeline";
     }
-    return e;
+
+    if (intent === "new" && index === 2) {
+      if (!form.budget) next.budget = "Choose an investment range";
+      if (!form.financing) next.financing = "Choose one option";
+      if (!form.readiness) next.readiness = "Choose your next step";
+    }
+
+    if (intent === "existing" && index === 1) {
+      if (!form.city) next.city = "Choose a city";
+      if (!form.supportCategory)
+        next.supportCategory = "Choose a support category";
+      if (!form.supportMessage.trim())
+        next.supportMessage = "Add a short description";
+    }
+
+    if (intent === "general" && index === 1) {
+      if (!form.enquiryType) next.enquiryType = "Choose an enquiry type";
+      if (!form.message.trim()) next.message = "Add a short message";
+    }
+
+    if (index === steps.length - 1 && !contactConsent) {
+      next.contactConsent = "Permission is required so the team can respond";
+    }
+
+    return next;
   };
 
   const scrollTop = () => {
-    if (typeof document === "undefined") return;
     document
       .getElementById("inquiry-form")
       ?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const goNext = () => {
-    const e = validate(step);
-    if (Object.keys(e).length) {
-      setErrors(e);
-      const first = document.getElementById(Object.keys(e)[0]);
-      first?.focus();
+    const nextErrors = validate(step);
+    if (Object.keys(nextErrors).length) {
+      setErrors(nextErrors);
+      document.getElementById(Object.keys(nextErrors)[0])?.focus();
       return;
     }
     setErrors({});
-    setStep((s) => Math.min(s + 1, steps.length - 1));
+    setStep((current) => Math.min(current + 1, steps.length - 1));
     scrollTop();
   };
 
   const goBack = () => {
     setErrors({});
-    setStep((s) => Math.max(s - 1, 0));
+    setSubmitError("");
+    if (step === 0) {
+      setIntent("");
+      return;
+    }
+    setStep((current) => Math.max(current - 1, 0));
     scrollTop();
   };
 
   const handleSubmit = async () => {
-    if (submitting) return;
-    // Guard: ensure earlier required steps are complete, jumping back if not.
-    for (const s of [0, 1]) {
-      const er = validate(s);
-      if (Object.keys(er).length) {
-        setErrors(er);
-        setStep(s);
+    if (!intent || submitting) return;
+
+    for (let index = 0; index < steps.length; index += 1) {
+      const nextErrors = validate(index);
+      if (Object.keys(nextErrors).length) {
+        setErrors(nextErrors);
+        setStep(index);
         scrollTop();
         return;
       }
     }
 
     setSubmitting(true);
+    setSubmitError("");
+    const analyticsConsent = getAnalyticsConsent() === "granted";
 
-    // If they're paying the deposit, tokenize the card BEFORE submitting so a
-    // bad card stops here (no lead saved, nothing charged) and they can fix it.
-    let payment:
-      | { sourceId: string; verificationToken?: string; idempotencyKey: string }
-      | undefined;
-    if (videoConsult && square.status === "ready") {
-      const tok = await square.tokenize({ amount: "250.00", email: form.email });
-      if (!tok) {
-        setSubmitting(false);
-        scrollTop();
-        return; // square.error is shown inline
-      }
-      payment = {
-        sourceId: tok.sourceId,
-        verificationToken: tok.verificationToken,
-        idempotencyKey: tok.idempotencyKey,
-      };
-    }
-
-    // Persist to Airtable + DB and upload photos via our own server route (which
-    // also runs the charge when a card was tokenized). Non-payment failures are
-    // logged server-side and never block the visitor.
     try {
-      const photoPayload = (
-        await Promise.all(
-          photos.map(async (file, i) => {
-            const dataUrl = await photoToDataUrl(file);
-            if (!dataUrl) return null;
-            const stem = file.name.replace(/\.[^.]+$/, "") || `photo-${i + 1}`;
-            return { name: `${stem}.jpg`, dataUrl };
-          }),
-        )
-      ).filter(Boolean);
-
-      const res = await fetch("/api/inquiry", {
+      const response = await fetch("/api/inquiry", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          intent,
+          submissionToken:
+            submissionTokenRef.current ||
+            `tbt-${Date.now()}-${Math.random().toString(36).slice(2)}`,
           firstName: form.firstName,
           lastName: form.lastName,
           phone: form.phone,
           email: form.email,
-          social: form.social,
+          preferredContact: form.preferredContact,
+          socialPlatform:
+            form.preferredContact === "Instagram DM" ? "Instagram" : "",
+          socialHandle: form.socialHandle,
           city: form.city,
           services,
           goals: form.goals,
+          timeline: form.timeline,
           budget: form.budget,
           financing: form.financing,
-          videoConsult,
+          readiness: form.readiness,
           hear: form.hear,
-          photos: photoPayload,
-          payment,
+          supportCategory: form.supportCategory,
+          appointmentDate: form.appointmentDate,
+          supportMessage: form.supportMessage,
+          organization: form.organization,
+          enquiryType: form.enquiryType,
+          message: form.message,
+          contactConsent,
+          consentVersion: CONSENT_VERSION,
+          marketingConsent,
+          analyticsConsent,
+          attribution,
         }),
       });
-      const result = await res.json().catch(() => ({}));
+      const result = await response.json().catch(() => ({}));
 
-      // Card declined — keep them on the form to fix it (nothing was charged).
-      if (payment && (!res.ok || result?.paymentFailed)) {
-        square.setError(
+      if (!response.ok || !result?.ok || result?.recorded === false) {
+        throw new Error(
           result?.error ||
-            "Your card couldn't be processed. Please check the details and try again.",
+            "Your enquiry was not saved. Please check your connection and try again.",
         );
-        setSubmitting(false);
-        scrollTop();
-        return;
       }
-      if (result?.paid) {
-        setPaid(true);
-        if (result?.recorded === false) setRecordWarning(true);
-      }
-    } catch {
-      // A network error while paying is ambiguous — don't risk a double charge.
-      if (payment) {
-        square.setError(
-          "We couldn't confirm your payment. Please contact us before trying again so you're not charged twice.",
-        );
-        setSubmitting(false);
-        scrollTop();
-        return;
-      }
-      // No payment involved — still complete the flow for the visitor.
-    }
 
-    setSubmitting(false);
-    setSubmitted(true);
-    if (typeof window !== "undefined") window.scrollTo({ top: 0 });
+      setLeadReference(result.leadReference || "");
+      if (analyticsConsent) {
+        trackMetaLead(
+          result.metaEventId ||
+            submissionTokenRef.current ||
+            result.leadReference,
+        );
+      }
+      setSubmitted(true);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (error) {
+      setSubmitError(
+        error instanceof Error
+          ? error.message
+          : "Your enquiry was not saved. Please try again.",
+      );
+      scrollTop();
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handoffMessage = `Hi, I just completed the Teeth by Trev ${
+    intent === "new" ? "smile assessment" : "enquiry"
+  }. My reference is ${leadReference}.`;
+
+  const copyHandoff = async () => {
+    try {
+      await navigator.clipboard.writeText(handoffMessage);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2500);
+    } catch {
+      setCopied(false);
+    }
   };
 
   if (submitted) {
     return (
-      <div className="mx-auto max-w-xl border border-ivory/10 bg-white/[0.02] px-8 py-16 text-center sm:px-12">
+      <div className="mx-auto max-w-2xl border border-ivory/10 bg-white/[0.02] px-6 py-12 text-center sm:px-12 sm:py-16">
         <div className="mx-auto mb-8 flex h-14 w-14 items-center justify-center rounded-full border border-gold text-gold">
           <Check />
         </div>
-        <h2 className="font-serif text-4xl font-light text-ivory sm:text-5xl">
-          We Received Your Inquiry
+        <p className="text-[0.6rem] uppercase tracking-[0.32em] text-gold">
+          Concierge handoff
+        </p>
+        <h2 className="mt-4 font-serif text-4xl font-light text-ivory sm:text-5xl">
+          Thank you — your enquiry is with our team.
         </h2>
-        <p className="mx-auto mt-6 max-w-md text-base leading-relaxed text-ivory/65">
-          Thank you for reaching out. Dr. Trev or a member of his team will
-          review your submission and get back to you shortly. We look forward to
-          being part of your smile journey.
+        <p className="mx-auto mt-6 max-w-lg text-base leading-relaxed text-ivory/65">
+          A Teeth by Trev concierge team member will review your submission and
+          respond using the contact method you selected.
         </p>
 
-        {paid ? (
-          <div className="mx-auto mt-10 max-w-md border-t border-ivory/10 pt-10">
-            <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-full border border-gold text-gold">
-              <Check className="h-5 w-5" />
-            </div>
-            <p className="text-sm leading-relaxed text-ivory/70">
-              Your{" "}
-              <span className="text-gold">
-                $250 consultation deposit is confirmed
-              </span>{" "}
-              and credited 100% toward your treatment. Dr. Trev&rsquo;s team will
-              reach out to schedule your private video consultation.
-            </p>
-            {recordWarning && (
-              <p className="mt-4 text-xs leading-relaxed text-ivory/55">
-                Please keep your card statement as confirmation — we&rsquo;ll be
-                in touch to finalize your booking details.
-              </p>
-            )}
-          </div>
-        ) : (
-          videoConsult && (
-            <div className="mx-auto mt-10 max-w-md border-t border-ivory/10 pt-10">
-              <p className="text-sm leading-relaxed text-ivory/65">
-                Your{" "}
-                <span className="text-gold">
-                  $250 deposit is credited 100% toward your treatment
-                </span>
-                . Reserve your private video consultation below — please use the
-                same email you entered above so your booking connects
-                automatically.
-              </p>
-              <Magnetic>
-                <Link
-                  href="/reserve?type=video"
-                  className="mt-8 inline-flex items-center gap-3 rounded-full bg-champagne px-8 py-4 text-[0.66rem] uppercase tracking-[0.22em] text-onyx transition-colors duration-300 hover:bg-gold"
-                >
-                  Reserve My Consultation — $250 →
-                </Link>
-              </Magnetic>
-            </div>
-          )
-        )}
+        <div className="mx-auto mt-10 max-w-lg border border-gold/25 bg-gold/[0.05] p-6 text-left">
+          <p className="text-[0.58rem] uppercase tracking-[0.25em] text-ivory/45">
+            Your private reference
+          </p>
+          <p className="mt-2 font-serif text-3xl font-light tracking-wide text-gold">
+            {leadReference}
+          </p>
+          <p className="mt-4 text-sm leading-relaxed text-ivory/60">
+            Keep this reference. It lets our team match your Instagram
+            conversation with your form securely.
+          </p>
+        </div>
+
+        <div className="mx-auto mt-6 max-w-lg border border-ivory/10 p-5 text-left">
+          <p className="text-[0.58rem] uppercase tracking-[0.25em] text-ivory/45">
+            Message to send
+          </p>
+          <p
+            id="handoff-message"
+            className="mt-3 text-sm leading-relaxed text-ivory/75"
+          >
+            {handoffMessage}
+          </p>
+          <button
+            type="button"
+            onClick={copyHandoff}
+            className="mt-4 text-[0.65rem] uppercase tracking-[0.2em] text-gold transition-colors hover:text-champagne focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/60"
+          >
+            {copied ? "Copied" : "Copy message"}
+          </button>
+        </div>
+
+        <p className="mx-auto mt-8 max-w-lg text-sm leading-relaxed text-ivory/60">
+          For the fastest Instagram response, follow our official concierge
+          account and send the message above. This starts the conversation in
+          the correct team inbox.
+        </p>
+
+        <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <Magnetic>
+            <a
+              href={TEAM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center rounded-full bg-champagne px-7 py-4 text-[0.68rem] font-medium uppercase tracking-[0.2em] text-onyx transition-colors hover:bg-gold"
+            >
+              Follow &amp; message {TEAM_HANDLE} →
+            </a>
+          </Magnetic>
+          {intent === "new" &&
+          form.readiness === "I am ready to schedule a consultation" ? (
+            <Link
+              href="/reserve?type=video"
+              className="inline-flex items-center justify-center rounded-full border border-ivory/20 px-7 py-4 text-[0.68rem] uppercase tracking-[0.2em] text-ivory/75 transition-colors hover:border-gold hover:text-gold"
+            >
+              Reserve a private video consultation
+            </Link>
+          ) : (
+            <Link
+              href="/"
+              className="text-[0.68rem] uppercase tracking-[0.2em] text-ivory/55 transition-colors hover:text-gold"
+            >
+              Return to the website
+            </Link>
+          )}
+        </div>
+
+        <p className="mx-auto mt-10 max-w-lg border-t border-ivory/10 pt-6 text-xs leading-relaxed text-ivory/40">
+          Please do not send medical records, payment-card information,
+          passwords or verification codes through social media.
+        </p>
       </div>
     );
   }
 
-  const inputCls = (key: string) =>
-    `${inputBase} ${errors[key] ? "border-rose-400/70" : "border-ivory/15 focus:border-champagne"}`;
+  if (!intent) {
+    const options: {
+      kind: Exclude<Intent, "">;
+      title: string;
+      description: string;
+    }[] = [
+      {
+        kind: "new",
+        title: "New smile consultation",
+        description:
+          "Share your goals, timeline and investment readiness with our concierge team.",
+      },
+      {
+        kind: "existing",
+        title: "Existing-patient support",
+        description:
+          "Get help with an appointment, billing, records or a general support question.",
+      },
+      {
+        kind: "general",
+        title: "General or business enquiry",
+        description:
+          "Contact us about media, speaking, partnerships, vendors or employment.",
+      },
+    ];
 
-  const Error = ({ name }: { name: string }) =>
-    errors[name] ? (
-      <p className="mt-2 text-xs text-rose-300/90">{errors[name]}</p>
-    ) : null;
+    return (
+      <form
+        id="inquiry-form"
+        onSubmit={(event) => event.preventDefault()}
+        className="mx-auto max-w-3xl scroll-mt-28"
+      >
+        <div className="relative border border-ivory/10 bg-white/[0.02] p-6 sm:p-10 lg:p-12">
+          <span className="pointer-events-none absolute left-0 top-0 h-14 w-px bg-gold/60" />
+          <span className="pointer-events-none absolute left-0 top-0 h-px w-14 bg-gold/60" />
+          <p className="text-[0.6rem] uppercase tracking-[0.34em] text-gold/75">
+            Concierge desk
+          </p>
+          <h2 className="mt-4 font-serif text-3xl font-light leading-[1.1] text-ivory sm:text-4xl">
+            How can the Teeth by Trev team help?
+          </h2>
+          <p className="mt-4 max-w-xl text-sm leading-relaxed text-ivory/55">
+            Choose the option that best matches your enquiry. We will only ask
+            for information relevant to that request.
+          </p>
+
+          <div className="mt-9 grid gap-4">
+            {options.map((option) => (
+              <button
+                key={option.kind}
+                type="button"
+                onClick={() => chooseIntent(option.kind)}
+                className="group grid grid-cols-[auto_1fr_auto] items-center gap-5 border border-ivory/15 p-5 text-left transition-colors hover:border-gold/60 hover:bg-gold/[0.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/60 sm:p-6"
+              >
+                <span className="flex h-12 w-12 items-center justify-center rounded-full border border-gold/35 text-gold transition-colors group-hover:border-gold">
+                  <IntentMark kind={option.kind} />
+                </span>
+                <span>
+                  <span className="block font-serif text-xl font-light text-ivory sm:text-2xl">
+                    {option.title}
+                  </span>
+                  <span className="mt-1 block text-sm leading-relaxed text-ivory/50">
+                    {option.description}
+                  </span>
+                </span>
+                <span className="text-gold transition-transform group-hover:translate-x-1">
+                  →
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </form>
+    );
+  }
+
+  const renderContactStep = () => (
+    <div className="space-y-6">
+      <div className="grid gap-6 sm:grid-cols-2">
+        <div>
+          <label htmlFor="firstName" className={labelClass}>
+            First name <Req />
+          </label>
+          <input
+            id="firstName"
+            type="text"
+            autoComplete="given-name"
+            value={form.firstName}
+            onChange={set("firstName")}
+            className={inputCls("firstName")}
+            aria-invalid={Boolean(errors.firstName)}
+          />
+          <ErrorMessage name="firstName" />
+        </div>
+        <div>
+          <label htmlFor="lastName" className={labelClass}>
+            Last name <Req />
+          </label>
+          <input
+            id="lastName"
+            type="text"
+            autoComplete="family-name"
+            value={form.lastName}
+            onChange={set("lastName")}
+            className={inputCls("lastName")}
+            aria-invalid={Boolean(errors.lastName)}
+          />
+          <ErrorMessage name="lastName" />
+        </div>
+      </div>
+
+      <div className="grid gap-6 sm:grid-cols-2">
+        <div>
+          <label htmlFor="phone" className={labelClass}>
+            Mobile number {intent !== "general" && <Req />}
+          </label>
+          <input
+            id="phone"
+            type="tel"
+            autoComplete="tel"
+            placeholder="(424) 000-0000"
+            value={form.phone}
+            onChange={set("phone")}
+            className={inputCls("phone")}
+            aria-invalid={Boolean(errors.phone)}
+          />
+          <ErrorMessage name="phone" />
+        </div>
+        <div>
+          <label htmlFor="email" className={labelClass}>
+            Email address <Req />
+          </label>
+          <input
+            id="email"
+            type="email"
+            autoComplete="email"
+            placeholder="you@example.com"
+            value={form.email}
+            onChange={set("email")}
+            className={inputCls("email")}
+            aria-invalid={Boolean(errors.email)}
+          />
+          <ErrorMessage name="email" />
+        </div>
+      </div>
+
+      <div>
+        <label htmlFor="preferredContact" className={labelClass}>
+          How should our concierge team contact you? <Req />
+        </label>
+        <select
+          id="preferredContact"
+          value={form.preferredContact}
+          onChange={(event) => {
+            const preferredContact = event.target.value;
+            setForm((current) => ({
+              ...current,
+              preferredContact,
+              socialPlatform:
+                preferredContact === "Instagram DM" ? "Instagram" : "",
+              socialHandle:
+                preferredContact === "Instagram DM"
+                  ? current.socialHandle
+                  : "",
+            }));
+            setErrors((current) => {
+              const next = { ...current };
+              delete next.preferredContact;
+              delete next.socialHandle;
+              return next;
+            });
+          }}
+          className={`${inputCls("preferredContact")} appearance-none`}
+          aria-invalid={Boolean(errors.preferredContact)}
+        >
+          <option value="" disabled>
+            Select a contact method
+          </option>
+          {["Instagram DM", "Text message", "Phone call", "Email"].map(
+            (option) => (
+              <option key={option} value={option} className="bg-onyx text-ivory">
+                {option}
+              </option>
+            ),
+          )}
+        </select>
+        <ErrorMessage name="preferredContact" />
+      </div>
+
+      {form.preferredContact === "Instagram DM" && (
+        <div className="border-l border-gold/45 pl-5">
+          <label htmlFor="socialHandle" className={labelClass}>
+            Your Instagram username <Req />
+          </label>
+          <input
+            id="socialHandle"
+            type="text"
+            autoComplete="off"
+            placeholder="@yourusername"
+            value={form.socialHandle}
+            onChange={set("socialHandle")}
+            className={inputCls("socialHandle")}
+            aria-invalid={Boolean(errors.socialHandle)}
+          />
+          <ErrorMessage name="socialHandle" />
+          <p className="mt-3 text-xs leading-relaxed text-ivory/45">
+            Our official concierge response may come from {TEAM_HANDLE}. You
+            will see this again after submission so you can follow and message
+            the correct account.
+          </p>
+        </div>
+      )}
+    </div>
+  );
+
+  const renderNewSmileStep = () => (
+    <div className="space-y-9">
+      <div>
+        <label htmlFor="city" className={labelClass}>
+          Which city would you like to be seen in? <Req />
+        </label>
+        <select
+          id="city"
+          value={form.city}
+          onChange={set("city")}
+          className={`${inputCls("city")} appearance-none`}
+          aria-invalid={Boolean(errors.city)}
+        >
+          <option value="" disabled>
+            Select a city
+          </option>
+          {cities.map((city) => (
+            <option key={city} value={city} className="bg-onyx text-ivory">
+              {city}
+            </option>
+          ))}
+        </select>
+        <ErrorMessage name="city" />
+      </div>
+
+      <fieldset>
+        <legend className={labelClass}>
+          Services you are interested in <Req />
+        </legend>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+          {serviceOptions.map((service) => (
+            <ChoiceButton
+              key={service}
+              active={services.includes(service)}
+              onClick={() => toggleService(service)}
+            >
+              <span className="flex items-center justify-between gap-2">
+                {service}
+                {services.includes(service) && (
+                  <Check className="h-3.5 w-3.5 text-gold" />
+                )}
+              </span>
+            </ChoiceButton>
+          ))}
+        </div>
+        <ErrorMessage name="services" />
+      </fieldset>
+
+      <div>
+        <label htmlFor="goals" className={labelClass}>
+          Your goals and concerns <Req />
+        </label>
+        <textarea
+          id="goals"
+          rows={5}
+          placeholder="What would you like to change or improve about your smile?"
+          value={form.goals}
+          onChange={set("goals")}
+          className={`${inputCls("goals")} resize-none`}
+          aria-invalid={Boolean(errors.goals)}
+        />
+        <ErrorMessage name="goals" />
+      </div>
+
+      <div>
+        <label htmlFor="timeline" className={labelClass}>
+          When would you like to begin? <Req />
+        </label>
+        <select
+          id="timeline"
+          value={form.timeline}
+          onChange={set("timeline")}
+          className={`${inputCls("timeline")} appearance-none`}
+          aria-invalid={Boolean(errors.timeline)}
+        >
+          <option value="" disabled>
+            Select a timeline
+          </option>
+          {timelines.map((timeline) => (
+            <option
+              key={timeline}
+              value={timeline}
+              className="bg-onyx text-ivory"
+            >
+              {timeline}
+            </option>
+          ))}
+        </select>
+        <ErrorMessage name="timeline" />
+      </div>
+    </div>
+  );
+
+  const renderInvestmentStep = () => (
+    <div className="space-y-10">
+      <fieldset>
+        <legend className={labelClass}>
+          What investment range are you currently planning? <Req />
+        </legend>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+          {budgets.map((budget) => (
+            <ChoiceButton
+              key={budget}
+              active={form.budget === budget}
+              onClick={() => {
+                setForm((current) => ({ ...current, budget }));
+                setErrors((current) => {
+                  const next = { ...current };
+                  delete next.budget;
+                  return next;
+                });
+              }}
+            >
+              {budget}
+            </ChoiceButton>
+          ))}
+        </div>
+        <ErrorMessage name="budget" />
+        <p className="mt-4 text-xs leading-relaxed text-ivory/45">
+          This helps the team prepare relevant options. It does not determine
+          your clinical eligibility.
+        </p>
+      </fieldset>
+
+      <fieldset>
+        <legend className={labelClass}>
+          Would financing or monthly payment options be helpful? <Req />
+        </legend>
+        <div className="grid gap-3 sm:grid-cols-3">
+          {[
+            "Yes",
+            "No, I plan to pay directly",
+            "I am not sure yet",
+          ].map((financing) => (
+            <ChoiceButton
+              key={financing}
+              active={form.financing === financing}
+              onClick={() => {
+                setForm((current) => ({ ...current, financing }));
+                setErrors((current) => {
+                  const next = { ...current };
+                  delete next.financing;
+                  return next;
+                });
+              }}
+            >
+              {financing}
+            </ChoiceButton>
+          ))}
+        </div>
+        <ErrorMessage name="financing" />
+      </fieldset>
+
+      <fieldset>
+        <legend className={labelClass}>
+          Which best describes your next step? <Req />
+        </legend>
+        <div className="grid gap-3">
+          {readinessOptions.map((readiness) => (
+            <ChoiceButton
+              key={readiness}
+              active={form.readiness === readiness}
+              onClick={() => {
+                setForm((current) => ({ ...current, readiness }));
+                setErrors((current) => {
+                  const next = { ...current };
+                  delete next.readiness;
+                  return next;
+                });
+              }}
+            >
+              {readiness}
+            </ChoiceButton>
+          ))}
+        </div>
+        <ErrorMessage name="readiness" />
+      </fieldset>
+    </div>
+  );
+
+  const renderExistingSupportStep = () => (
+    <div className="space-y-8">
+      <div>
+        <label htmlFor="city" className={labelClass}>
+          Preferred office or city <Req />
+        </label>
+        <select
+          id="city"
+          value={form.city}
+          onChange={set("city")}
+          className={`${inputCls("city")} appearance-none`}
+          aria-invalid={Boolean(errors.city)}
+        >
+          <option value="" disabled>
+            Select a city
+          </option>
+          {cities.map((city) => (
+            <option key={city} value={city} className="bg-onyx text-ivory">
+              {city}
+            </option>
+          ))}
+        </select>
+        <ErrorMessage name="city" />
+      </div>
+
+      <div>
+        <label htmlFor="supportCategory" className={labelClass}>
+          Support category <Req />
+        </label>
+        <select
+          id="supportCategory"
+          value={form.supportCategory}
+          onChange={set("supportCategory")}
+          className={`${inputCls("supportCategory")} appearance-none`}
+          aria-invalid={Boolean(errors.supportCategory)}
+        >
+          <option value="" disabled>
+            Select a category
+          </option>
+          {supportCategories.map((category) => (
+            <option
+              key={category}
+              value={category}
+              className="bg-onyx text-ivory"
+            >
+              {category}
+            </option>
+          ))}
+        </select>
+        <ErrorMessage name="supportCategory" />
+      </div>
+
+      <div>
+        <label htmlFor="appointmentDate" className={labelClass}>
+          Appointment date, if applicable
+        </label>
+        <input
+          id="appointmentDate"
+          type="date"
+          value={form.appointmentDate}
+          onChange={set("appointmentDate")}
+          className={inputCls("appointmentDate")}
+        />
+      </div>
+
+      <div>
+        <label htmlFor="supportMessage" className={labelClass}>
+          Short description <Req />
+        </label>
+        <textarea
+          id="supportMessage"
+          rows={5}
+          placeholder="Share only the details our support team needs to route your request."
+          value={form.supportMessage}
+          onChange={set("supportMessage")}
+          className={`${inputCls("supportMessage")} resize-none`}
+          aria-invalid={Boolean(errors.supportMessage)}
+        />
+        <ErrorMessage name="supportMessage" />
+        <p className="mt-3 text-xs leading-relaxed text-ivory/45">
+          Do not use this form or social media for urgent clinical concerns.
+          Contact the treating office or emergency services as appropriate.
+        </p>
+      </div>
+    </div>
+  );
+
+  const renderGeneralEnquiryStep = () => (
+    <div className="space-y-8">
+      <div>
+        <label htmlFor="organization" className={labelClass}>
+          Organization, if applicable
+        </label>
+        <input
+          id="organization"
+          type="text"
+          value={form.organization}
+          onChange={set("organization")}
+          className={inputCls("organization")}
+        />
+      </div>
+
+      <div>
+        <label htmlFor="enquiryType" className={labelClass}>
+          Enquiry type <Req />
+        </label>
+        <select
+          id="enquiryType"
+          value={form.enquiryType}
+          onChange={set("enquiryType")}
+          className={`${inputCls("enquiryType")} appearance-none`}
+          aria-invalid={Boolean(errors.enquiryType)}
+        >
+          <option value="" disabled>
+            Select an enquiry type
+          </option>
+          {generalEnquiryTypes.map((enquiryType) => (
+            <option
+              key={enquiryType}
+              value={enquiryType}
+              className="bg-onyx text-ivory"
+            >
+              {enquiryType}
+            </option>
+          ))}
+        </select>
+        <ErrorMessage name="enquiryType" />
+      </div>
+
+      <div>
+        <label htmlFor="message" className={labelClass}>
+          Message <Req />
+        </label>
+        <textarea
+          id="message"
+          rows={6}
+          value={form.message}
+          onChange={set("message")}
+          className={`${inputCls("message")} resize-none`}
+          aria-invalid={Boolean(errors.message)}
+        />
+        <ErrorMessage name="message" />
+      </div>
+    </div>
+  );
+
+  const renderPermissionStep = () => (
+    <div className="space-y-8">
+      <div>
+        <label htmlFor="hear" className={labelClass}>
+          How did you hear about us?
+        </label>
+        <select
+          id="hear"
+          value={form.hear}
+          onChange={set("hear")}
+          className={`${inputCls("hear")} appearance-none`}
+        >
+          <option value="" disabled>
+            Select one
+          </option>
+          {hearOptions.map((option) => (
+            <option key={option} value={option} className="bg-onyx text-ivory">
+              {option}
+            </option>
+          ))}
+        </select>
+        <p className="mt-3 text-xs leading-relaxed text-ivory/40">
+          This answer is secondary to the campaign information captured
+          automatically from your link.
+        </p>
+      </div>
+
+      <div>
+        <label
+          htmlFor="contactConsent"
+          className={`flex cursor-pointer items-start gap-4 border p-5 transition-colors ${
+            errors.contactConsent
+              ? "border-rose-400/70 bg-rose-400/[0.04]"
+              : "border-gold/30 bg-gold/[0.05] hover:border-gold/60"
+          }`}
+        >
+          <input
+            id="contactConsent"
+            type="checkbox"
+            checked={contactConsent}
+            onChange={(event) => {
+              setContactConsent(event.target.checked);
+              setErrors((current) => {
+                const next = { ...current };
+                delete next.contactConsent;
+                return next;
+              });
+            }}
+            className="mt-1 h-4 w-4 shrink-0 accent-gold"
+          />
+          <span className="text-sm leading-relaxed text-ivory/80">
+            I authorize the Teeth by Trev concierge team to contact me about
+            this enquiry using my selected contact method. If I selected
+            Instagram, I understand that the message may come from the official
+            account <span className="text-gold">{TEAM_HANDLE}</span>. <Req />
+          </span>
+        </label>
+        <ErrorMessage name="contactConsent" />
+      </div>
+
+      <label className="flex cursor-pointer items-start gap-4 border border-ivory/12 p-5 transition-colors hover:border-ivory/25">
+        <input
+          type="checkbox"
+          checked={marketingConsent}
+          onChange={(event) => setMarketingConsent(event.target.checked)}
+          className="mt-1 h-4 w-4 shrink-0 accent-gold"
+        />
+        <span className="text-sm leading-relaxed text-ivory/60">
+          Optional: I would like to receive occasional Teeth by Trev news and
+          offers. I can unsubscribe at any time.
+        </span>
+      </label>
+
+      <p className="border-t border-ivory/10 pt-6 text-xs leading-relaxed text-ivory/45">
+        Instagram and other social messages are for general conversation and
+        scheduling. Do not send medical records, payment-card information,
+        passwords or verification codes by DM.
+      </p>
+    </div>
+  );
+
+  const stepContent = () => {
+    if (step === 0) return renderContactStep();
+    if (intent === "new" && step === 1) return renderNewSmileStep();
+    if (intent === "new" && step === 2) return renderInvestmentStep();
+    if (intent === "existing" && step === 1)
+      return renderExistingSupportStep();
+    if (intent === "general" && step === 1)
+      return renderGeneralEnquiryStep();
+    return renderPermissionStep();
+  };
 
   return (
     <form
       id="inquiry-form"
-      onSubmit={(e) => e.preventDefault()}
-      className="mx-auto max-w-2xl scroll-mt-28"
+      onSubmit={(event) => event.preventDefault()}
+      className="mx-auto max-w-3xl scroll-mt-28"
     >
-      {/* Progress stepper */}
-      <ol className="mb-10 flex items-center">
-        {steps.map((s, i) => {
-          const done = i < step;
-          const current = i === step;
+      <div className="mb-7 flex items-center justify-between gap-4">
+        <p className="text-[0.6rem] uppercase tracking-[0.25em] text-ivory/40">
+          {intent === "new"
+            ? "New smile consultation"
+            : intent === "existing"
+              ? "Existing-patient support"
+              : "General or business enquiry"}
+        </p>
+        <button
+          type="button"
+          onClick={() => {
+            setIntent("");
+            setStep(0);
+            setErrors({});
+          }}
+          className="text-[0.6rem] uppercase tracking-[0.2em] text-gold transition-colors hover:text-champagne focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/60"
+        >
+          Change enquiry type
+        </button>
+      </div>
+
+      <ol className="mb-10 flex items-center" aria-label="Form progress">
+        {steps.map((currentStep, index) => {
+          const done = index < step;
+          const current = index === step;
           return (
             <li
-              key={s.label}
-              className={`flex items-center ${i < steps.length - 1 ? "flex-1" : ""}`}
+              key={currentStep.label}
+              className={`flex items-center ${
+                index < steps.length - 1 ? "flex-1" : ""
+              }`}
             >
               <div className="flex items-center gap-2.5">
                 <span
@@ -439,8 +1312,13 @@ export default function InquiryForm() {
                         ? "border-gold text-gold"
                         : "border-ivory/20 text-ivory/40"
                   }`}
+                  aria-current={current ? "step" : undefined}
                 >
-                  {done ? <Check className="h-4 w-4" /> : `0${i + 1}`}
+                  {done ? (
+                    <Check className="h-4 w-4" />
+                  ) : (
+                    `0${index + 1}`
+                  )}
                 </span>
                 <span
                   className={`hidden text-[0.62rem] uppercase tracking-[0.2em] transition-colors duration-300 lg:inline ${
@@ -451,10 +1329,10 @@ export default function InquiryForm() {
                         : "text-ivory/35"
                   }`}
                 >
-                  {s.label}
+                  {currentStep.label}
                 </span>
               </div>
-              {i < steps.length - 1 && (
+              {index < steps.length - 1 && (
                 <span
                   className={`mx-3 h-px flex-1 transition-colors duration-500 ${
                     done ? "bg-gold/60" : "bg-ivory/15"
@@ -467,11 +1345,9 @@ export default function InquiryForm() {
       </ol>
 
       <div className="relative border border-ivory/10 bg-white/[0.02] p-6 sm:p-10 lg:p-12">
-        {/* gold corner accent */}
         <span className="pointer-events-none absolute left-0 top-0 h-12 w-px bg-gold/50" />
         <span className="pointer-events-none absolute left-0 top-0 h-px w-12 bg-gold/50" />
 
-        {/* Step heading */}
         <p className="text-[0.6rem] uppercase tracking-[0.34em] text-gold/70">
           Step 0{step + 1} / 0{steps.length} — {steps[step].label}
         </p>
@@ -480,432 +1356,39 @@ export default function InquiryForm() {
         </h2>
 
         <div
-          key={step}
-          className={`mt-10 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-            shown ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
-          }`}
+          key={`${intent}-${step}`}
+          className="mt-10 translate-y-0 opacity-100"
         >
-          {/* STEP 1 — Contact */}
-          {step === 0 && (
-            <div className="space-y-6">
-              <div className="grid gap-6 sm:grid-cols-2">
-                <div>
-                  <label htmlFor="firstName" className={labelClass}>
-                    First Name <Req />
-                  </label>
-                  <input
-                    id="firstName"
-                    type="text"
-                    autoComplete="given-name"
-                    value={form.firstName}
-                    onChange={set("firstName")}
-                    className={inputCls("firstName")}
-                  />
-                  <Error name="firstName" />
-                </div>
-                <div>
-                  <label htmlFor="lastName" className={labelClass}>
-                    Last Name <Req />
-                  </label>
-                  <input
-                    id="lastName"
-                    type="text"
-                    autoComplete="family-name"
-                    value={form.lastName}
-                    onChange={set("lastName")}
-                    className={inputCls("lastName")}
-                  />
-                  <Error name="lastName" />
-                </div>
-              </div>
-              <div className="grid gap-6 sm:grid-cols-2">
-                <div>
-                  <label htmlFor="phone" className={labelClass}>
-                    Phone Number <Req />
-                  </label>
-                  <input
-                    id="phone"
-                    type="tel"
-                    autoComplete="tel"
-                    placeholder="(424) 000-0000"
-                    value={form.phone}
-                    onChange={set("phone")}
-                    className={inputCls("phone")}
-                  />
-                  <Error name="phone" />
-                </div>
-                <div>
-                  <label htmlFor="email" className={labelClass}>
-                    Email Address <Req />
-                  </label>
-                  <input
-                    id="email"
-                    type="email"
-                    autoComplete="email"
-                    placeholder="you@example.com"
-                    value={form.email}
-                    onChange={set("email")}
-                    className={inputCls("email")}
-                  />
-                  <Error name="email" />
-                </div>
-              </div>
-              <div>
-                <label htmlFor="social" className={labelClass}>
-                  Social Media Handle(s) <Req />
-                </label>
-                <input
-                  id="social"
-                  type="text"
-                  placeholder="@yourhandle — Instagram, TikTok, etc."
-                  value={form.social}
-                  onChange={set("social")}
-                  className={inputCls("social")}
-                />
-                <Error name="social" />
-              </div>
-            </div>
-          )}
-
-          {/* STEP 2 — Your Smile */}
-          {step === 1 && (
-            <div className="space-y-10">
-              <div>
-                <label htmlFor="city" className={labelClass}>
-                  Which city would you like to be seen in? <Req />
-                </label>
-                <select
-                  id="city"
-                  value={form.city}
-                  onChange={set("city")}
-                  className={`${inputCls("city")} appearance-none`}
-                >
-                  <option value="" disabled>
-                    Select a city
-                  </option>
-                  {cities.map((c) => (
-                    <option key={c} value={c} className="bg-onyx text-ivory">
-                      {c}
-                    </option>
-                  ))}
-                </select>
-                <Error name="city" />
-              </div>
-
-              <div>
-                <p className={labelClass}>Services interested in</p>
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                  {serviceOptions.map((s) => {
-                    const active = services.includes(s);
-                    return (
-                      <button
-                        key={s}
-                        type="button"
-                        onClick={() => toggleService(s)}
-                        aria-pressed={active}
-                        className={`flex items-center justify-between gap-2 border px-4 py-3 text-left text-sm transition-colors duration-200 ${
-                          active
-                            ? "border-gold/70 bg-gold/10 text-ivory"
-                            : "border-ivory/15 text-ivory/70 hover:border-ivory/35"
-                        }`}
-                      >
-                        {s}
-                        {active && <Check className="h-3.5 w-3.5 text-gold" />}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div>
-                <label htmlFor="goals" className={labelClass}>
-                  Tell us about your goals and concerns <Req />
-                </label>
-                <textarea
-                  id="goals"
-                  rows={5}
-                  placeholder="Describe what you'd like to change or improve about your smile. The more detail, the better Dr. Trev can assist you."
-                  value={form.goals}
-                  onChange={set("goals")}
-                  className={`${inputCls("goals")} resize-none`}
-                />
-                <Error name="goals" />
-              </div>
-            </div>
-          )}
-
-          {/* STEP 3 — Investment */}
-          {step === 2 && (
-            <div className="space-y-10">
-              <div>
-                <p className={labelClass}>Estimated budget</p>
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                  {budgets.map((b) => {
-                    const active = form.budget === b;
-                    return (
-                      <button
-                        key={b}
-                        type="button"
-                        onClick={() => setForm((f) => ({ ...f, budget: b }))}
-                        aria-pressed={active}
-                        className={`border px-4 py-3 text-center text-sm transition-colors duration-200 ${
-                          active
-                            ? "border-gold/70 bg-gold/10 text-ivory"
-                            : "border-ivory/15 text-ivory/70 hover:border-ivory/35"
-                        }`}
-                      >
-                        {b}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div>
-                <p className={labelClass}>Would you like financing options?</p>
-                <div className="flex flex-wrap gap-3">
-                  {[
-                    { v: "Yes", t: "Yes, I'd like financing options" },
-                    { v: "No", t: "No, paying out of pocket" },
-                  ].map((o) => {
-                    const active = form.financing === o.v;
-                    return (
-                      <button
-                        key={o.v}
-                        type="button"
-                        onClick={() =>
-                          setForm((f) => ({ ...f, financing: o.v }))
-                        }
-                        aria-pressed={active}
-                        className={`border px-5 py-3 text-sm transition-colors duration-200 ${
-                          active
-                            ? "border-gold/70 bg-gold/10 text-ivory"
-                            : "border-ivory/15 text-ivory/70 hover:border-ivory/35"
-                        }`}
-                      >
-                        {o.t}
-                      </button>
-                    );
-                  })}
-                </div>
-                <p className="mt-6 text-[0.6rem] uppercase tracking-[0.2em] text-ivory/40">
-                  Financing partners — apply with any of these:
-                </p>
-                <div className="mt-3 flex flex-wrap gap-x-6 gap-y-2">
-                  {financingPartners.map((p) => (
-                    <a
-                      key={p.name}
-                      href={p.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm text-ivory/70 underline-offset-4 transition-colors hover:text-gold hover:underline"
-                    >
-                      {p.name} ↗
-                    </a>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <p className={labelClass}>Photos of your teeth</p>
-                <label
-                  htmlFor="photos"
-                  className="flex cursor-pointer flex-col items-center justify-center border border-dashed border-ivory/25 bg-ivory/[0.02] px-6 py-10 text-center transition-colors hover:border-gold/60"
-                >
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden="true"
-                    className="h-7 w-7 text-gold"
-                  >
-                    <path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2l1.2-1.6A1 1 0 0 1 9.5 5h5a1 1 0 0 1 .8.4L16.5 7h2A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5Z" />
-                    <circle cx="12" cy="13" r="3" />
-                  </svg>
-                  <span className="mt-3 text-sm text-ivory/70">
-                    <span className="text-gold">Tap to upload photos</span>
-                  </span>
-                  <span className="mt-1 text-xs text-ivory/40">
-                    Front view, side view, and any areas of concern
-                  </span>
-                  <input
-                    id="photos"
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    className="hidden"
-                    onChange={(e) => {
-                      const fs = Array.from(e.target.files ?? []);
-                      setPhotos((p) => [...p, ...fs]);
-                      e.target.value = "";
-                    }}
-                  />
-                </label>
-                {photos.length > 0 && (
-                  <ul className="mt-4 flex flex-wrap gap-2">
-                    {photos.map((f, idx) => (
-                      <li
-                        key={`${f.name}-${idx}`}
-                        className="flex items-center gap-2 border border-gold/30 px-3 py-1 text-xs text-gold"
-                      >
-                        {f.name}
-                        <button
-                          type="button"
-                          aria-label={`Remove ${f.name}`}
-                          onClick={() =>
-                            setPhotos((p) => p.filter((_, i) => i !== idx))
-                          }
-                          className="text-gold/60 transition-colors hover:text-gold"
-                        >
-                          ×
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-                <p className="mt-3 text-xs text-ivory/40">
-                  JPG, PNG or HEIC. Max 10MB per photo. Photos help Dr. Trev
-                  provide an accurate estimate.
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* STEP 4 — Finish */}
-          {step === 3 && (
-            <div className="space-y-10">
-              <label className="flex cursor-pointer items-start gap-4 border border-gold/30 bg-gold/[0.05] p-5 transition-colors hover:border-gold/60">
-                <input
-                  type="checkbox"
-                  checked={videoConsult}
-                  onChange={(e) => setVideoConsult(e.target.checked)}
-                  className="mt-1 h-4 w-4 accent-gold"
-                />
-                <span className="text-sm leading-relaxed text-ivory/80">
-                  Reserve a private video consultation with Dr. Trev —{" "}
-                  <span className="text-gold">$250, credited 100%</span> toward
-                  your treatment.
-                </span>
-              </label>
-
-              {videoConsult && (
-                <div className="border border-gold/25 bg-ivory px-6 py-7 text-onyx">
-                  <div className="flex items-baseline justify-between">
-                    <p className="text-[0.62rem] uppercase tracking-[0.28em] text-gold">
-                      Secure payment
-                    </p>
-                    <span className="font-serif text-2xl font-light">$250</span>
-                  </div>
-
-                  {square.status === "unconfigured" ? (
-                    <p className="mt-3 text-sm leading-relaxed text-onyx/70">
-                      Submit your inquiry and we&rsquo;ll send you a secure link
-                      to reserve your consultation.
-                    </p>
-                  ) : square.status === "error" ? (
-                    <p className="mt-3 text-sm leading-relaxed text-red-700">
-                      {square.error} You can still submit your inquiry below.
-                    </p>
-                  ) : (
-                    <>
-                      <p className="mt-3 text-xs leading-relaxed text-onyx/60">
-                        Your $250 deposit, credited 100% toward your treatment.
-                      </p>
-                      <span className="mt-5 block text-[0.7rem] uppercase tracking-[0.18em] text-onyx/55">
-                        Card details
-                      </span>
-                      {/* Square Web Payments SDK mounts its secure card iframe here. */}
-                      <div ref={square.containerRef} className="mt-2 min-h-[52px]" />
-                      {square.error && (
-                        <p
-                          className="mt-2 text-xs text-red-700"
-                          role="alert"
-                          aria-live="polite"
-                        >
-                          {square.error}
-                        </p>
-                      )}
-                      <p className="mt-4 flex items-start gap-2 text-[0.68rem] leading-relaxed text-onyx/55">
-                        <svg
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          aria-hidden="true"
-                          className="mt-px h-3.5 w-3.5 shrink-0 text-onyx/50"
-                        >
-                          <rect x="5" y="11" width="14" height="9" rx="1.5" />
-                          <path d="M8 11V8a4 4 0 0 1 8 0v3" />
-                        </svg>
-                        Secured &amp; encrypted by Square. No payment information
-                        is saved on this website.
-                      </p>
-                    </>
-                  )}
-                </div>
-              )}
-
-              <div>
-                <label htmlFor="hear" className={labelClass}>
-                  How did you hear about us?
-                </label>
-                <select
-                  id="hear"
-                  value={form.hear}
-                  onChange={set("hear")}
-                  className={`${inputCls("hear")} appearance-none`}
-                >
-                  <option value="" disabled>
-                    Select one
-                  </option>
-                  {hearOptions.map((o) => (
-                    <option key={o} value={o} className="bg-onyx text-ivory">
-                      {o}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <p className="border-t border-ivory/10 pt-6 text-sm leading-relaxed text-ivory/55">
-                Almost there — review your details, then send your inquiry and
-                Dr. Trev will personally take it from here.
-              </p>
-            </div>
-          )}
+          {stepContent()}
         </div>
 
-        {/* Navigation */}
+        {submitError && (
+          <div
+            className="mt-8 border border-rose-400/50 bg-rose-400/[0.05] p-4 text-sm leading-relaxed text-rose-200"
+            role="alert"
+          >
+            {submitError}
+          </div>
+        )}
+
         <div className="mt-12 flex items-center justify-between gap-4">
-          {step > 0 ? (
-            <button
-              type="button"
-              onClick={goBack}
-              className="inline-flex items-center gap-2 text-[0.7rem] uppercase tracking-[0.2em] text-ivory/55 transition-colors duration-300 hover:text-ivory"
-            >
-              ← Back
-            </button>
-          ) : (
-            <span aria-hidden="true" />
-          )}
+          <button
+            type="button"
+            onClick={goBack}
+            className="inline-flex items-center gap-2 text-[0.7rem] uppercase tracking-[0.2em] text-ivory/55 transition-colors duration-300 hover:text-ivory focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/60"
+          >
+            ← Back
+          </button>
 
           {isLast ? (
             <Magnetic key="submit">
               <button
                 type="button"
-                onClick={() => handleSubmit()}
-                disabled={submitting || (payEnabled && square.status === "loading")}
-                className="inline-flex items-center gap-3 rounded-full bg-champagne px-8 py-4 text-[0.72rem] font-medium uppercase tracking-[0.22em] text-onyx transition-colors duration-300 hover:bg-gold disabled:cursor-not-allowed disabled:opacity-60"
+                onClick={handleSubmit}
+                disabled={submitting}
+                className="inline-flex items-center gap-3 rounded-full bg-champagne px-8 py-4 text-[0.7rem] font-medium uppercase tracking-[0.2em] text-onyx transition-colors duration-300 hover:bg-gold disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/60"
               >
-                {submitting
-                  ? videoConsult
-                    ? "Processing…"
-                    : "Submitting…"
-                  : videoConsult
-                    ? "Submit My Inquiry & Pay"
-                    : "Submit My Inquiry"}
+                {submitting ? "Saving your enquiry…" : "Send to the concierge team"}
               </button>
             </Magnetic>
           ) : (
@@ -913,7 +1396,7 @@ export default function InquiryForm() {
               <button
                 type="button"
                 onClick={goNext}
-                className="inline-flex items-center gap-3 rounded-full bg-champagne px-8 py-4 text-[0.72rem] font-medium uppercase tracking-[0.22em] text-onyx transition-colors duration-300 hover:bg-gold"
+                className="inline-flex items-center gap-3 rounded-full bg-champagne px-8 py-4 text-[0.7rem] font-medium uppercase tracking-[0.2em] text-onyx transition-colors duration-300 hover:bg-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/60"
               >
                 Continue →
               </button>
@@ -922,8 +1405,9 @@ export default function InquiryForm() {
         </div>
       </div>
 
-      <p className="mt-5 text-center text-xs text-ivory/40">
-        Your information is kept private and used only to assist with your care.
+      <p className="mt-5 text-center text-xs leading-relaxed text-ivory/40">
+        Your information is kept private and used to respond to this enquiry.
+        Clinical records and card details are never collected in this form.
       </p>
     </form>
   );
