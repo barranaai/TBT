@@ -370,10 +370,8 @@ export default function InquiryForm() {
         next.email = "Enter a valid email address";
       if (!form.preferredContact)
         next.preferredContact = "Choose a contact method";
-      if (
-        form.preferredContact === "Instagram DM" &&
-        !form.socialHandle.trim()
-      ) {
+      // Required for every enquiry, whatever the preferred contact method.
+      if (!form.socialHandle.trim()) {
         next.socialHandle = "Enter your Instagram username";
       }
     }
@@ -471,8 +469,8 @@ export default function InquiryForm() {
           phone: form.phone,
           email: form.email,
           preferredContact: form.preferredContact,
-          socialPlatform:
-            form.preferredContact === "Instagram DM" ? "Instagram" : "",
+          // The handle field is always an Instagram handle.
+          socialPlatform: "Instagram",
           socialHandle: form.socialHandle,
           city: form.city,
           services,
@@ -787,20 +785,16 @@ export default function InquiryForm() {
           value={form.preferredContact}
           onChange={(event) => {
             const preferredContact = event.target.value;
+            // The Instagram handle is collected for every enquiry, so switching
+            // contact method must never clear or hide it.
             setForm((current) => ({
               ...current,
               preferredContact,
-              socialPlatform:
-                preferredContact === "Instagram DM" ? "Instagram" : "",
-              socialHandle:
-                preferredContact === "Instagram DM"
-                  ? current.socialHandle
-                  : "",
+              socialPlatform: "Instagram",
             }));
             setErrors((current) => {
               const next = { ...current };
               delete next.preferredContact;
-              delete next.socialHandle;
               return next;
             });
           }}
@@ -821,29 +815,30 @@ export default function InquiryForm() {
         <ErrorMessage name="preferredContact" />
       </div>
 
-      {form.preferredContact === "Instagram DM" && (
-        <div className="border-l border-gold/45 pl-5">
-          <label htmlFor="socialHandle" className={labelClass}>
-            Your Instagram username <Req />
-          </label>
-          <input
-            id="socialHandle"
-            type="text"
-            autoComplete="off"
-            placeholder="@yourusername"
-            value={form.socialHandle}
-            onChange={set("socialHandle")}
-            className={inputCls("socialHandle")}
-            aria-invalid={Boolean(errors.socialHandle)}
-          />
-          <ErrorMessage name="socialHandle" />
-          <p className="mt-3 text-xs leading-relaxed text-ivory/45">
-            Our official concierge response may come from {TEAM_HANDLE}. You
-            will see this again after submission so you can follow and message
-            the correct account.
-          </p>
-        </div>
-      )}
+      {/* The Instagram handle is required for every enquiry regardless of the
+          preferred contact method — it is how the concierge team matches the
+          enquiry to the visitor's profile. */}
+      <div className="border-l border-gold/45 pl-5">
+        <label htmlFor="socialHandle" className={labelClass}>
+          Your Instagram username <Req />
+        </label>
+        <input
+          id="socialHandle"
+          type="text"
+          autoComplete="off"
+          placeholder="@yourusername"
+          value={form.socialHandle}
+          onChange={set("socialHandle")}
+          className={inputCls("socialHandle")}
+          aria-invalid={Boolean(errors.socialHandle)}
+        />
+        <ErrorMessage name="socialHandle" />
+        <p className="mt-3 text-xs leading-relaxed text-ivory/45">
+          {form.preferredContact === "Instagram DM"
+            ? `Our official concierge response may come from ${TEAM_HANDLE}. You will see this again after submission so you can follow and message the correct account.`
+            : "This lets our concierge team connect your enquiry with your Instagram profile."}
+        </p>
+      </div>
     </div>
   );
 

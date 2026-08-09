@@ -271,8 +271,10 @@ export async function POST(req: Request) {
   const phone = s(data.phone, 40);
   const email = s(data.email, 160);
   const preferredContact = s(data.preferredContact, 40);
-  const socialPlatform = s(data.socialPlatform, 40);
   const socialHandle = s(data.socialHandle || data.social, 190);
+  // The handle field is Instagram by definition; default the platform so the
+  // Airtable "Social" column always reads "Instagram: <handle>".
+  const socialPlatform = s(data.socialPlatform, 40) || (socialHandle ? "Instagram" : "");
   const city = s(data.city, 120);
   const goals = s(data.goals, 5000);
   const timeline = s(data.timeline, 60);
@@ -317,7 +319,9 @@ export async function POST(req: Request) {
         { status: 422 },
       );
     }
-    if (preferredContact === "Instagram DM" && !socialHandle) {
+    // The Instagram handle is mandatory for every enquiry type and contact
+    // method — the concierge team uses it to match enquiries to profiles.
+    if (!socialHandle) {
       return NextResponse.json(
         { ok: false, error: "Enter your Instagram username." },
         { status: 422 },
