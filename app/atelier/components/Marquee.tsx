@@ -4,6 +4,7 @@ const items = [
   "New York",
   "Atlanta",
   "Houston",
+  "Miami",
   "Washington D.C.",
   "Tampa",
   "Memphis",

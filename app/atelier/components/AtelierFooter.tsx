@@ -133,8 +133,8 @@ export default function AtelierFooter() {
             &copy; {new Date().getFullYear()} Teeth by Trev. All rights reserved.
           </span>
           <span>
-            Beverly Hills · New York · Atlanta · Houston · Washington D.C. ·
-            Tampa · Memphis
+            Beverly Hills · New York · Atlanta · Houston · Miami · Washington
+            D.C. · Tampa · Memphis
           </span>
         </div>
       </div>

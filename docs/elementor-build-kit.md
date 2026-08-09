@@ -192,6 +192,7 @@ Source files: `/Users/faran/TBT/app/globals.css` and `/Users/faran/TBT/app/layou
 - `New York`
 - `Atlanta`
 - `Houston`
+- `Miami`
 - `Washington D.C.`
 - `Tampa`
 - `Memphis`
@@ -267,7 +268,7 @@ Each city is followed by a gold star glyph: `✦`
 
 **Verbatim copy** (number + label, in order):
 1. `10` `+` — `Years in Practice`
-2. `7` — `Cities Served`
+2. `8` — `Cities Served`
 3. `5000` `+` — `Smiles Transformed` (number renders with a thousands separator → displays as **5,000+**)
 4. `100` `%` — `Care, Every Visit`
 
@@ -511,7 +512,7 @@ Six list items (number is auto `01`–`06`, label, right-side meta tag). All ite
   - LinkedIn → `https://www.linkedin.com/in/drtrev/`
 - Nav links (label → href, in order): `Home` → `/`, `About` → `/about`, `Services` → `/services`, `Gallery` → `/gallery`, `Financing` → `/financing`, `Contact` → `/contact`
 - Copyright: `© [current year] Teeth by Trev. All rights reserved.` (year is dynamic — `new Date().getFullYear()`)
-- Cities bar: `Beverly Hills · New York · Atlanta · Houston · Washington D.C. · Tampa · Memphis`
+- Cities bar: `Beverly Hills · New York · Atlanta · Houston · Miami · Washington D.C. · Tampa · Memphis`
 
 **Layout:**
 - Top border (`border-ivory/10`); section `py-16`; wide container `max-w-[1600px]`.
@@ -616,7 +617,7 @@ Six list items (number is auto `01`–`06`, label, right-side meta tag). All ite
 - Item 3 title: `Hands-On, Every Case`
   - body: `Every restoration is designed and finished by Dr. Thomas himself. Nothing is outsourced, nothing is templated.`
 - Item 4 title: `Cities Coast to Coast`
-  - body: `Caring for patients across Beverly Hills, New York, Atlanta, Houston, Washington D.C., Tampa, and Memphis — by appointment.`
+  - body: `Caring for patients across Beverly Hills, New York, Atlanta, Houston, Miami, Washington D.C., Tampa, and Memphis — by appointment.`
 
 **Layout:** Heading block (eyebrow + H2) left-aligned in a narrow ~max-w-2xl column. Below it, a **2-column grid** of the four items (1 column on mobile). Each item has a **thin top border rule** (ivory, ~15% opacity), then a serif title, then a body paragraph (constrained ~max-w-md width).
 
@@ -1246,7 +1247,7 @@ Note on animations: every section uses a "Reveal" on-scroll fade/slide-in (stagg
     - **LinkedIn** → `https://www.linkedin.com/in/drtrev/`
   - Footer nav links: **Home** (/), **About** (/about), **Services** (/services), **Gallery** (/gallery), **Financing** (/financing), **Contact** (/contact)
   - Copyright: **© {current year} Teeth by Trev. All rights reserved.** (the year is generated dynamically — e.g. `© 2026 Teeth by Trev. All rights reserved.`)
-  - Locations line: **Beverly Hills · New York · Atlanta · Houston · Washington D.C. · Tampa · Memphis**
+  - Locations line: **Beverly Hills · New York · Atlanta · Houston · Miami · Washington D.C. · Tampa · Memphis**
 - **Layout:** onyx footer with a top hairline border, padded (`py-16`), inner `max-w-[1600px]`. Top block is two-column on desktop (`lg:flex-row`, bottom-aligned, space-between), stacked on mobile:
   - **Left column:** logo → tagline (`max-w-xs`) → address block → row of four circular social icon buttons.
   - **Right column:** vertical list of the six nav links (right-aligned on desktop, `lg:items-end`).
@@ -1311,7 +1312,7 @@ Field labels, input types, required flags, and verbatim option lists are taken f
 | Phone Number | Phone / tel | Yes | — | `Phone Number` |
 | Email Address | Email | Yes | — | `Email` |
 | Social Media Handle(s) | Single-line text | Yes | — | `Social` |
-| Which city would you like to be seen in? | Dropdown (select) | Yes | Beverly Hills, CA · New York, NY · Atlanta, GA · Houston, TX · Washington, D.C. · Tampa, FL · Memphis, TN · Other — I am flexible | `City` |
+| Which city would you like to be seen in? | Dropdown (select) | Yes | Beverly Hills, CA · New York, NY · Atlanta, GA · Houston, TX · Miami, FL · Washington, D.C. · Tampa, FL · Memphis, TN · Other — I am flexible | `City` |
 | Services interested in | Checkboxes (multi-select) | No | Implants · Veneers · Whitening · Crowns · Cleaning · Extraction · Full Smile Makeover | `Services` (comma-joined) |
 | Tell us about your goals and concerns | Paragraph / textarea | Yes | — | `Treatment Interest` |
 | Estimated budget | Radio (single-select) | No | Under $2K · $2K – $5K · $5K – $10K · $10K – $20K · $20K – $40K · $40K+ | `Budget` |
