@@ -17,7 +17,7 @@ import { sendMetaLead } from "../../lib/meta-conversions";
 
 export const runtime = "nodejs";
 
-const CONSENT_VERSION = "2026-08-10-v2";
+const CONSENT_VERSION = "2026-08-10-v3";
 const UPLOAD_DIR =
   process.env.UPLOAD_DIR || path.join(process.cwd(), ".uploads");
 
@@ -79,6 +79,7 @@ type Payload = {
   message?: string;
   contactConsent?: boolean;
   consentVersion?: string;
+  smsConsent?: boolean;
   marketingConsent?: boolean;
   analyticsConsent?: boolean;
   attribution?: AttributionIn;
@@ -306,6 +307,7 @@ export async function POST(req: Request) {
   const enquiryType = forGeneral ? s(data.enquiryType, 100) : "";
   const message = forGeneral ? s(data.message, 5000) : "";
   const contactConsent = data.contactConsent === true;
+  const smsConsent = data.smsConsent === true;
   const marketingConsent = data.marketingConsent === true;
   const analyticsConsent = data.analyticsConsent === true;
   const services = forNew
@@ -488,6 +490,7 @@ export async function POST(req: Request) {
       contactConsent,
       consentTimestamp,
       consentVersion: modernSubmission ? CONSENT_VERSION : "",
+      smsConsent,
       marketingConsent,
       analyticsConsent,
       submittedAtUtc,
@@ -568,6 +571,7 @@ export async function POST(req: Request) {
     add("Contact Consent", contactConsent ? "Yes" : "No");
     add("Consent Timestamp", consentTimestamp);
     add("Consent Version", modernSubmission ? CONSENT_VERSION : "");
+    add("SMS Consent", smsConsent ? "Yes" : "No");
     add("Marketing Consent", marketingConsent ? "Yes" : "No");
     add("Submitted At UTC", submittedAtUtc);
     add("Landing URL", landingUrl);

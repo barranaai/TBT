@@ -37,6 +37,7 @@ export type InquiryRow = {
   contactConsent: boolean;
   consentTimestamp: string;
   consentVersion: string;
+  smsConsent: boolean;
   marketingConsent: boolean;
   analyticsConsent: boolean;
   submittedAtUtc: string;
@@ -86,6 +87,7 @@ const legacyColumns: Record<string, string> = {
   contact_consent: "contact_consent TINYINT(1) NOT NULL DEFAULT 0",
   consent_timestamp: "consent_timestamp DATETIME(3) NULL",
   consent_version: "consent_version VARCHAR(60) NULL",
+  sms_consent: "sms_consent TINYINT(1) NOT NULL DEFAULT 0",
   marketing_consent: "marketing_consent TINYINT(1) NOT NULL DEFAULT 0",
   analytics_consent: "analytics_consent TINYINT(1) NOT NULL DEFAULT 0",
   submitted_at_utc: "submitted_at_utc DATETIME(3) NULL",
@@ -138,6 +140,7 @@ async function ensureSchema(): Promise<void> {
            contact_consent TINYINT(1) NOT NULL DEFAULT 0,
            consent_timestamp DATETIME(3) NULL,
            consent_version VARCHAR(60) NULL,
+           sms_consent TINYINT(1) NOT NULL DEFAULT 0,
            marketing_consent TINYINT(1) NOT NULL DEFAULT 0,
            analytics_consent TINYINT(1) NOT NULL DEFAULT 0,
            submitted_at_utc DATETIME(3) NULL,
@@ -261,7 +264,7 @@ export async function saveInquiry(
           services, goals, timeline, budget, financing, readiness, hear,
           support_category, appointment_date, support_message, organization,
           enquiry_type, message, priority, contact_consent, consent_timestamp,
-          consent_version, marketing_consent, analytics_consent,
+          consent_version, sms_consent, marketing_consent, analytics_consent,
           submitted_at_utc, landing_url, referrer_url, utm_source, utm_medium,
           utm_campaign, utm_content, utm_term, fbclid, ttclid, entry_channel,
           entry_account, video_consult, deposit_paid, payment_id, photos_url)
@@ -297,6 +300,7 @@ export async function saveInquiry(
         row.contactConsent ? 1 : 0,
         mysqlDateTime(row.consentTimestamp),
         row.consentVersion || null,
+        row.smsConsent ? 1 : 0,
         row.marketingConsent ? 1 : 0,
         row.analyticsConsent ? 1 : 0,
         mysqlDateTime(row.submittedAtUtc),

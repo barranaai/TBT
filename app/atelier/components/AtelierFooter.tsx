@@ -137,6 +137,17 @@ export default function AtelierFooter() {
             D.C. · Tampa · Memphis
           </span>
         </div>
+
+        {/* Policy links must stay discoverable from every page — carrier review
+            for SMS (A2P 10DLC) checks that these are reachable on the site. */}
+        <div className="mt-6 flex flex-wrap items-center gap-x-8 gap-y-3 text-[0.58rem] uppercase tracking-[0.26em] text-ivory/35">
+          <Link href="/privacy" className="transition-colors hover:text-gold">
+            Privacy Policy
+          </Link>
+          <Link href="/terms" className="transition-colors hover:text-gold">
+            Terms &amp; Conditions
+          </Link>
+        </div>
       </div>
     </footer>
   );

@@ -24,7 +24,7 @@ type Attribution = {
   entryAccount: string;
 };
 
-const CONSENT_VERSION = "2026-08-10-v2";
+const CONSENT_VERSION = "2026-08-10-v3";
 const TEAM_HANDLE = "@teethbytrev.team";
 const TEAM_URL = "https://www.instagram.com/teethbytrev.team/";
 
@@ -308,6 +308,7 @@ export default function InquiryForm() {
   const [services, setServices] = useState<string[]>([]);
   const [photos, setPhotos] = useState<File[]>([]);
   const [contactConsent, setContactConsent] = useState(false);
+  const [smsConsent, setSmsConsent] = useState(false);
   const [marketingConsent, setMarketingConsent] = useState(false);
 
   useEffect(() => {
@@ -566,6 +567,7 @@ export default function InquiryForm() {
           ...branchFields,
           contactConsent,
           consentVersion: CONSENT_VERSION,
+          smsConsent,
           marketingConsent,
           analyticsConsent,
           attribution,
@@ -1497,17 +1499,49 @@ export default function InquiryForm() {
           />
           <span className="text-sm leading-relaxed text-ivory/80">
             I authorize the Teeth by Trev concierge team to contact me about
-            this enquiry and my care using my selected contact method, as well
-            as by text message (SMS) and email for service communications —
-            including appointment availability, booking and payment
-            confirmations, rescheduling, and follow-ups. Message &amp; data
-            rates may apply; reply STOP to opt out of texts. If I selected
-            Instagram, messages may come from the official account{" "}
+            this enquiry and my care using my selected contact method, and by
+            email where needed to respond. If I selected Instagram, messages may
+            come from the official account{" "}
             <span className="text-gold">{TEAM_HANDLE}</span>. <Req />
           </span>
         </label>
         <ErrorMessage name="contactConsent" />
       </div>
+
+      {/* SMS consent is deliberately a SEPARATE, OPTIONAL, UNCHECKED control.
+          Carrier review (A2P 10DLC) rejects messaging consent that is bundled
+          with required terms or made a condition of submitting the form, and
+          requires the four disclosures — message types, frequency, rates and
+          opt-out — at the point of consent rather than only in a linked page. */}
+      <label
+        htmlFor="smsConsent"
+        className="flex cursor-pointer items-start gap-4 border border-ivory/12 p-5 transition-colors hover:border-ivory/25"
+      >
+        <input
+          id="smsConsent"
+          name="smsConsent"
+          type="checkbox"
+          checked={smsConsent}
+          onChange={(event) => setSmsConsent(event.target.checked)}
+          className="mt-1 h-4 w-4 shrink-0 accent-gold"
+        />
+        <span className="text-sm leading-relaxed text-ivory/60">
+          Optional: I agree to receive service text messages (SMS) from Teeth by
+          Trev at the mobile number provided — appointment availability, booking
+          and payment confirmations, rescheduling, and follow-ups. Message
+          frequency varies. Message and data rates may apply. Consent is not a
+          condition of purchase. Reply STOP to unsubscribe or HELP for help. See
+          our{" "}
+          <Link href="/privacy" className="text-gold underline-offset-4 hover:underline">
+            Privacy Policy
+          </Link>{" "}
+          and{" "}
+          <Link href="/terms" className="text-gold underline-offset-4 hover:underline">
+            Terms &amp; Conditions
+          </Link>
+          .
+        </span>
+      </label>
 
       <label className="flex cursor-pointer items-start gap-4 border border-ivory/12 p-5 transition-colors hover:border-ivory/25">
         <input
