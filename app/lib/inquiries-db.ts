@@ -38,6 +38,8 @@ export type InquiryRow = {
   consentTimestamp: string;
   consentVersion: string;
   smsConsent: boolean;
+  consentIp: string;
+  consentUserAgent: string;
   marketingConsent: boolean;
   analyticsConsent: boolean;
   submittedAtUtc: string;
@@ -88,6 +90,8 @@ const legacyColumns: Record<string, string> = {
   consent_timestamp: "consent_timestamp DATETIME(3) NULL",
   consent_version: "consent_version VARCHAR(60) NULL",
   sms_consent: "sms_consent TINYINT(1) NOT NULL DEFAULT 0",
+  consent_ip: "consent_ip VARCHAR(64) NULL",
+  consent_user_agent: "consent_user_agent VARCHAR(255) NULL",
   marketing_consent: "marketing_consent TINYINT(1) NOT NULL DEFAULT 0",
   analytics_consent: "analytics_consent TINYINT(1) NOT NULL DEFAULT 0",
   submitted_at_utc: "submitted_at_utc DATETIME(3) NULL",
@@ -141,6 +145,8 @@ async function ensureSchema(): Promise<void> {
            consent_timestamp DATETIME(3) NULL,
            consent_version VARCHAR(60) NULL,
            sms_consent TINYINT(1) NOT NULL DEFAULT 0,
+           consent_ip VARCHAR(64) NULL,
+           consent_user_agent VARCHAR(255) NULL,
            marketing_consent TINYINT(1) NOT NULL DEFAULT 0,
            analytics_consent TINYINT(1) NOT NULL DEFAULT 0,
            submitted_at_utc DATETIME(3) NULL,
@@ -264,13 +270,13 @@ export async function saveInquiry(
           services, goals, timeline, budget, financing, readiness, hear,
           support_category, appointment_date, support_message, organization,
           enquiry_type, message, priority, contact_consent, consent_timestamp,
-          consent_version, sms_consent, marketing_consent, analytics_consent,
+          consent_version, sms_consent, consent_ip, consent_user_agent, marketing_consent, analytics_consent,
           submitted_at_utc, landing_url, referrer_url, utm_source, utm_medium,
           utm_campaign, utm_content, utm_term, fbclid, ttclid, entry_channel,
           entry_account, video_consult, deposit_paid, payment_id, photos_url)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-               ?, ?, ?, ?)`,
+               ?, ?, ?, ?, ?, ?, ?)`,
       [
         row.leadReference,
         row.internalLeadId,
@@ -301,6 +307,8 @@ export async function saveInquiry(
         mysqlDateTime(row.consentTimestamp),
         row.consentVersion || null,
         row.smsConsent ? 1 : 0,
+        row.consentIp || null,
+        row.consentUserAgent || null,
         row.marketingConsent ? 1 : 0,
         row.analyticsConsent ? 1 : 0,
         mysqlDateTime(row.submittedAtUtc),

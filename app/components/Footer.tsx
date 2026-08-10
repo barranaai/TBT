@@ -146,7 +146,13 @@ export default function Footer() {
             href="/privacy"
             className="transition-colors hover:text-champagne"
           >
-            Privacy &amp; analytics
+            Privacy Policy
+          </Link>
+          <Link
+            href="/terms"
+            className="transition-colors hover:text-champagne"
+          >
+            Terms &amp; Conditions
           </Link>
           <span>
             Beverly Hills · New York · Atlanta · Houston · Miami · Washington

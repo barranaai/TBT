@@ -353,6 +353,12 @@ export async function POST(req: Request) {
         { status: 422 },
       );
     }
+    if (smsConsent && !phone) {
+      return NextResponse.json(
+        { ok: false, error: "Add a mobile number to receive text messages." },
+        { status: 422 },
+      );
+    }
     if (intent !== "general" && !phone) {
       return NextResponse.json(
         { ok: false, error: "Enter a mobile number." },
@@ -493,6 +499,8 @@ export async function POST(req: Request) {
       smsConsent,
       marketingConsent,
       analyticsConsent,
+      consentIp: clientIp(req),
+      consentUserAgent: (req.headers.get("user-agent") || "").slice(0, 255),
       submittedAtUtc,
       landingUrl,
       referrerUrl,
@@ -572,6 +580,7 @@ export async function POST(req: Request) {
     add("Consent Timestamp", consentTimestamp);
     add("Consent Version", modernSubmission ? CONSENT_VERSION : "");
     add("SMS Consent", smsConsent ? "Yes" : "No");
+    add("Consent IP", clientIp(req));
     add("Marketing Consent", marketingConsent ? "Yes" : "No");
     add("Submitted At UTC", submittedAtUtc);
     add("Landing URL", landingUrl);

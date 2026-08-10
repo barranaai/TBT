@@ -39,14 +39,20 @@ export default function TermsPage() {
               Message frequency varies, and is typically two to four messages
               per month depending on your appointments. Message and data rates
               may apply. Consent is not a condition of any purchase or of using
-              our services.
+              our services. No mobile information will be shared with third
+              parties or affiliates for marketing or promotional purposes.
+              Information sharing to subcontractors in support services, such as
+              customer service, is permitted.
             </p>
             <p className="mt-3">
-              You can opt out at any time by replying STOP, UNSUBSCRIBE or
-              CANCEL to any message. We will send a single message confirming
-              that you have been removed, after which you will receive no
-              further texts. Reply HELP for assistance, or contact us at
-              424-394-6159 or TeethByTrev@gmail.com.
+              You can opt out at any time by replying STOP, END, QUIT, CANCEL,
+              UNSUBSCRIBE, REVOKE or OPT-OUT to any message. Keywords are not
+              case sensitive. We will send a single message confirming that you
+              have been removed, after which you will receive no further texts.
+              You may also opt out by calling 424-394-6159, emailing
+              TeethByTrev@gmail.com, or simply asking us in your own words to
+              stop texting you; we honor every request. Reply HELP for
+              assistance at any time.
             </p>
             <p className="mt-3">
               Carriers are not liable for delayed or undelivered messages.

@@ -57,14 +57,21 @@ export default function PrivacyPage() {
               </strong>{" "}
               We do not share, sell, rent, or transfer your mobile phone number
               or SMS consent data to third parties or affiliates for marketing
-              or promotional purposes. Your number is used only by Teeth by Trev
-              and the messaging provider that delivers our texts on our behalf.
+              or promotional purposes. Information sharing to subcontractors in
+              support services, such as customer service, is permitted: your
+              number is handled by Teeth by Trev, the enquiry and
+              practice-management systems we use to run the practice, and the
+              licensed messaging provider that delivers our texts. Each works
+              under contract, may use your information only to provide that
+              service to us, and may not use it for any purpose of its own.
             </p>
             <p className="mt-3">
-              You may opt out at any time by replying STOP, UNSUBSCRIBE or
-              CANCEL to any message; we will send one confirmation of your
-              removal. Reply HELP for assistance, call 424-394-6159, or email
-              TeethByTrev@gmail.com. Full messaging terms are in our{" "}
+              You may opt out at any time by replying STOP, END, QUIT, CANCEL,
+              UNSUBSCRIBE, REVOKE or OPT-OUT to any message; keywords are not
+              case sensitive, and we will send one confirmation of your removal.
+              You may also simply ask us to stop in your own words, call
+              424-394-6159, or email TeethByTrev@gmail.com — we honor every
+              request. Reply HELP for assistance. Full messaging terms are in our{" "}
               <Link href="/terms" className="text-gold underline-offset-4 hover:underline">
                 Terms &amp; Conditions
               </Link>

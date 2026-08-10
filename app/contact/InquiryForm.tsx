@@ -451,6 +451,13 @@ export default function InquiryForm() {
       if (!form.message.trim()) next.message = "Add a short message";
     }
 
+    // A text-message opt-in is meaningless without a number to text, and the
+    // general-enquiry branch does not otherwise require a phone.
+    if (index === steps.length - 1 && smsConsent && !form.phone.trim()) {
+      next.smsConsent =
+        "Add a mobile number on the Contact step to receive text messages, or untick this box";
+    }
+
     if (index === steps.length - 1 && !contactConsent) {
       next.contactConsent = "Permission is required so the team can respond";
     }
@@ -1530,7 +1537,7 @@ export default function InquiryForm() {
           Trev at the mobile number provided — appointment availability, booking
           and payment confirmations, rescheduling, and follow-ups. Message
           frequency varies. Message and data rates may apply. Consent is not a
-          condition of purchase. Reply STOP to unsubscribe or HELP for help. See
+          condition of purchase. Reply STOP, END, QUIT, CANCEL or UNSUBSCRIBE to opt out, or HELP for help. See
           our{" "}
           <Link href="/privacy" className="text-gold underline-offset-4 hover:underline">
             Privacy Policy
@@ -1542,6 +1549,7 @@ export default function InquiryForm() {
           .
         </span>
       </label>
+      <ErrorMessage name="smsConsent" />
 
       <label className="flex cursor-pointer items-start gap-4 border border-ivory/12 p-5 transition-colors hover:border-ivory/25">
         <input
@@ -1552,7 +1560,8 @@ export default function InquiryForm() {
         />
         <span className="text-sm leading-relaxed text-ivory/60">
           Optional: I would like to receive occasional Teeth by Trev news and
-          offers. I can unsubscribe at any time.
+          offers by email. I can unsubscribe at any time. This does not sign me
+          up for text messages.
         </span>
       </label>
 
