@@ -11,6 +11,7 @@ on `main` while parity work happens on `codex/wordpress-migration`.
   consent, Meta events, and operational data.
 - `blueprint.json` — reproducible local WordPress setup for WordPress Playground.
 - `docs/parity-contract.md` — the implementation and acceptance contract.
+- `docs/release-evidence.md` — immutable package evidence and staging gates.
 
 WordPress core, uploads, secrets, database files, and generated caches are not
 committed.
@@ -74,9 +75,10 @@ npm run package
 
 This writes `dist/teeth-by-trev-theme.zip` and
 `dist/tbt-core-plugin.zip`, plus `dist/SHA256SUMS`. The source-only asset
-directories are excluded; the compiled browser assets are included. Verify the
-archives before installing them with `cd dist && shasum -a 256 -c SHA256SUMS`
-and `unzip -t`.
+directories are excluded; the compiled browser assets are included. Package
+timestamps, entry order, locale, and timezone are normalized, so identical
+source produces identical archives with the same build toolchain. Verify them with
+`cd dist && shasum -a 256 -c SHA256SUMS` and `unzip -t`.
 
 ## Production configuration
 
@@ -91,8 +93,9 @@ activation creates the operational tables, canonical pages, front-page setting,
 and rewrite rules.
 
 See `docs/deployment-runbook.md` for the staged cutover and rollback procedure,
-and `docs/verification-log.md` for current evidence and remaining external
-checks.
+`docs/verification-log.md` for detailed test results, and
+`docs/release-evidence.md` for package checksums and the production approval
+gates.
 
 ## Non-negotiable rules
 

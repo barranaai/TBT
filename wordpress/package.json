@@ -12,7 +12,7 @@
     "verify:local": "node ./scripts/verify-local.mjs",
     "verify:responsive": "node ./scripts/verify-responsive.mjs",
     "verify:integrations": "node ./scripts/verify-integrations.mjs",
-    "package": "npm run build && mkdir -p dist && cd wp-content/themes && zip -FSqr ../../dist/teeth-by-trev-theme.zip teeth-by-trev -x '*/assets/src/*' && cd ../plugins && zip -FSqr ../../dist/tbt-core-plugin.zip tbt-core -x '*/assets/src/*' && cd ../.. && node ./scripts/write-package-manifest.mjs",
+    "package": "npm run build && node ./scripts/package-release.mjs && node ./scripts/write-package-manifest.mjs",
     "dev:css": "tailwindcss -i ./wp-content/themes/teeth-by-trev/assets/src/theme.css -o ./wp-content/themes/teeth-by-trev/assets/dist/theme.css --watch",
     "playground": "wp-playground-cli server --wp=latest --php=8.3 --port=9400 --login --mount=./wp-content/themes/teeth-by-trev:/wordpress/wp-content/themes/teeth-by-trev --mount=./wp-content/plugins/tbt-core:/wordpress/wp-content/plugins/tbt-core --blueprint=./blueprint.json",
     "playground:debug": "npm run playground -- --debug --verbosity=debug",

@@ -59,8 +59,8 @@ Updated: 2026-08-10
   MIME type.
 - Dependency audit reports zero known vulnerabilities.
 - Production theme and plugin ZIP archives build and pass `unzip -t` integrity
-  checks; a SHA-256 manifest is generated and verified; generated archives
-  remain untracked.
+  checks; two consecutive normalized builds produce identical SHA-256 hashes;
+  the manifest verifies; generated archives remain untracked.
 
 ## Requires staging credentials or infrastructure
 
