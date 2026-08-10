@@ -303,6 +303,7 @@ export default function InquiryForm() {
     organization: "",
     enquiryType: "",
     message: "",
+    videoConsult: "",
   });
   const [services, setServices] = useState<string[]>([]);
   const [photos, setPhotos] = useState<File[]>([]);
@@ -428,8 +429,6 @@ export default function InquiryForm() {
       if (!services.length) next.services = "Choose at least one service";
       if (!form.goals.trim()) next.goals = "Tell us a little about your goals";
       if (!form.timeline) next.timeline = "Choose a timeline";
-      if (!photos.length)
-        next.photos = "Add at least one photo of your smile";
     }
 
     if (intent === "new" && index === 2) {
@@ -444,15 +443,11 @@ export default function InquiryForm() {
         next.supportCategory = "Choose a support category";
       if (!form.supportMessage.trim())
         next.supportMessage = "Add a short description";
-      if (!photos.length)
-        next.photos = "Add at least one photo of your smile";
     }
 
     if (intent === "general" && index === 1) {
       if (!form.enquiryType) next.enquiryType = "Choose an enquiry type";
       if (!form.message.trim()) next.message = "Add a short message";
-      if (!photos.length)
-        next.photos = "Add at least one photo of your smile";
     }
 
     if (index === steps.length - 1 && !contactConsent) {
@@ -536,6 +531,7 @@ export default function InquiryForm() {
               budget: form.budget,
               financing: form.financing,
               readiness: form.readiness,
+              videoConsult: form.videoConsult === "Yes",
             }
           : intent === "existing"
             ? {
@@ -650,6 +646,29 @@ export default function InquiryForm() {
             conversation with your form securely.
           </p>
         </div>
+
+        {intent === "new" && form.videoConsult === "Yes" && (
+          <div className="mx-auto mt-6 max-w-lg border border-gold/25 bg-gold/[0.05] p-6 text-left">
+            <p className="text-[0.58rem] uppercase tracking-[0.25em] text-ivory/45">
+              Your video consultation
+            </p>
+            <p className="mt-3 text-sm leading-relaxed text-ivory/70">
+              You expressed interest in a private video consult with Dr. Trev —{" "}
+              <span className="text-gold">
+                a $250 deposit reserves it and is credited 100%
+              </span>{" "}
+              toward your treatment.
+            </p>
+            <Magnetic>
+              <Link
+                href="/reserve?type=video"
+                className="mt-5 inline-flex items-center gap-3 rounded-full bg-champagne px-7 py-3.5 text-[0.64rem] uppercase tracking-[0.22em] text-onyx transition-colors duration-300 hover:bg-gold"
+              >
+                Reserve My Video Consult — $250 →
+              </Link>
+            </Magnetic>
+          </div>
+        )}
 
         <div className="mx-auto mt-6 max-w-lg border border-ivory/10 p-5 text-left">
           <p className="text-[0.58rem] uppercase tracking-[0.25em] text-ivory/45">
@@ -944,13 +963,16 @@ export default function InquiryForm() {
     </div>
   );
 
-  // Smile photos are required for every enquiry type, so each branch's
-  // substance step embeds this same upload block (state is shared, so photos
-  // survive switching enquiry type).
+  // Every branch offers the same OPTIONAL photo upload (state is shared, so
+  // photos survive switching enquiry type). Visitors who prefer to show their
+  // smile in person or on a video consult can submit without photos.
   const renderPhotoUpload = (note: string) => (
     <div>
       <p className={labelClass}>
-        Photos of your smile <Req />
+        Photos of your smile{" "}
+        <span className="normal-case tracking-normal text-ivory/40">
+          (optional)
+        </span>
       </p>
       <label
         htmlFor="photos"
@@ -980,7 +1002,6 @@ export default function InquiryForm() {
         <input
           id="photos"
           name="photos"
-          aria-required="true"
           type="file"
           accept="image/*"
           multiple
@@ -1215,6 +1236,32 @@ export default function InquiryForm() {
           ))}
         </div>
         <ErrorMessage name="readiness" />
+      </fieldset>
+
+      <fieldset>
+        <legend className={labelClass}>
+          Interested in a private video consult with Dr. Trev?
+        </legend>
+        <div className="flex flex-wrap gap-3">
+          {["Yes, I am interested", "Not right now"].map((option) => {
+            const value = option.startsWith("Yes") ? "Yes" : "No";
+            return (
+              <ChoiceButton
+                key={option}
+                active={form.videoConsult === value}
+                onClick={() =>
+                  setForm((current) => ({ ...current, videoConsult: value }))
+                }
+              >
+                {option}
+              </ChoiceButton>
+            );
+          })}
+        </div>
+        <p className="mt-3 text-xs leading-relaxed text-ivory/45">
+          A $250 deposit reserves a private video consultation and is credited
+          100% toward your treatment.
+        </p>
       </fieldset>
     </div>
   );

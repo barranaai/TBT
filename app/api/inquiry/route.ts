@@ -126,6 +126,16 @@ function safeStem(name: string, index: number): string {
   return stem || `photo-${index + 1}`;
 }
 
+// Turn whatever the visitor typed (@handle, bare handle, or a pasted profile
+// link) into a canonical clickable profile URL, or "" if nothing valid remains.
+function instagramProfileUrl(handle: string): string {
+  let value = (handle || "").trim().toLowerCase();
+  value = value.replace(/^https?:\/\/(www\.)?instagram\.com\//, "");
+  value = value.replace(/^@+/, "").split(/[/?#\s]/)[0] || "";
+  value = value.replace(/[^a-z0-9._]/g, "").slice(0, 30);
+  return value ? `https://www.instagram.com/${value}/` : "";
+}
+
 function decodePhotos(photos: PhotoIn[]): DecodedPhoto[] {
   const output: DecodedPhoto[] = [];
   photos.forEach((photo, index) => {
@@ -365,14 +375,6 @@ export async function POST(req: Request) {
         { status: 422 },
       );
     }
-    // Smile photos are mandatory for EVERY enquiry type — require at least one
-    // that actually decodes (valid image data URL within the size cap).
-    if (!decodePhotos(photos).length) {
-      return NextResponse.json(
-        { ok: false, error: "Include at least one photo of your smile." },
-        { status: 422 },
-      );
-    }
     if (
       intent === "existing" &&
       (!city || !supportCategory || !supportMessage)
@@ -542,12 +544,10 @@ export async function POST(req: Request) {
     add("Email", email);
     add("Preferred Contact", preferredContact);
     add("Social Platform", socialPlatform);
-    add(
-      "Social",
-      socialPlatform && socialHandle
-        ? `${socialPlatform}: ${socialHandle}`
-        : socialHandle,
-    );
+    // Store the profile URL so the Social cell is clickable straight to the
+    // visitor's Instagram page (falls back to the raw text if the handle
+    // doesn't sanitize to a valid username).
+    add("Social", instagramProfileUrl(socialHandle) || socialHandle);
     add("City", city);
     add("Services", servicesJoined);
     add("Treatment Interest", goals);
