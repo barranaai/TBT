@@ -17,7 +17,7 @@ import { sendMetaLead } from "../../lib/meta-conversions";
 
 export const runtime = "nodejs";
 
-const CONSENT_VERSION = "2026-07-23-v1";
+const CONSENT_VERSION = "2026-08-10-v2";
 const UPLOAD_DIR =
   process.env.UPLOAD_DIR || path.join(process.cwd(), ".uploads");
 

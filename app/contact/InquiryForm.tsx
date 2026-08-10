@@ -24,7 +24,7 @@ type Attribution = {
   entryAccount: string;
 };
 
-const CONSENT_VERSION = "2026-07-23-v1";
+const CONSENT_VERSION = "2026-08-10-v2";
 const TEAM_HANDLE = "@teethbytrev.team";
 const TEAM_URL = "https://www.instagram.com/teethbytrev.team/";
 
@@ -1497,9 +1497,13 @@ export default function InquiryForm() {
           />
           <span className="text-sm leading-relaxed text-ivory/80">
             I authorize the Teeth by Trev concierge team to contact me about
-            this enquiry using my selected contact method. If I selected
-            Instagram, I understand that the message may come from the official
-            account <span className="text-gold">{TEAM_HANDLE}</span>. <Req />
+            this enquiry and my care using my selected contact method, as well
+            as by text message (SMS) and email for service communications —
+            including appointment availability, booking and payment
+            confirmations, rescheduling, and follow-ups. Message &amp; data
+            rates may apply; reply STOP to opt out of texts. If I selected
+            Instagram, messages may come from the official account{" "}
+            <span className="text-gold">{TEAM_HANDLE}</span>. <Req />
           </span>
         </label>
         <ErrorMessage name="contactConsent" />
