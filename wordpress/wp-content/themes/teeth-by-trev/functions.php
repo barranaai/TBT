@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TBT_THEME_VERSION', '0.1.0' );
+define( 'TBT_THEME_VERSION', '0.2.0' );
 
 function tbt_theme_setup(): void {
 	add_theme_support( 'title-tag' );
@@ -61,7 +61,7 @@ function tbt_page_hero( string $eyebrow, string $title, string $intro, string $i
 
 function tbt_page_cta( string $title, string $label = 'Book Your Consultation' ): void {
 	?>
-	<section class="border-t border-ivory/10 bg-onyx py-24 lg:py-32"><div class="mx-auto flex max-w-7xl flex-col items-start justify-between gap-10 px-6 lg:flex-row lg:items-center lg:px-10"><h2 class="reveal max-w-2xl font-serif text-4xl font-light leading-[1.08] text-ivory sm:text-5xl"><?php echo esc_html( $title ); ?></h2><div class="reveal"><a href="<?php echo esc_url( home_url( '/consultation/' ) ); ?>" class="inline-flex items-center justify-center border border-gold px-8 py-4 text-[0.72rem] font-medium uppercase tracking-[0.2em] text-gold transition-colors duration-300 hover:bg-gold hover:text-onyx"><?php echo esc_html( $label ); ?></a></div></div></section>
+	<section class="border-t border-ivory/10 bg-onyx py-24 lg:py-32"><div class="mx-auto flex max-w-7xl flex-col items-start justify-between gap-10 px-6 lg:flex-row lg:items-center lg:px-10"><h2 class="reveal max-w-2xl font-serif text-4xl font-light leading-[1.08] text-ivory sm:text-5xl"><?php echo esc_html( $title ); ?></h2><div class="reveal"><span class="inline-block transition-transform duration-300 ease-out will-change-transform" data-tbt-magnetic><a href="<?php echo esc_url( home_url( '/consultation/' ) ); ?>" class="inline-flex items-center justify-center border border-gold px-8 py-4 text-[0.72rem] font-medium uppercase tracking-[0.2em] text-gold transition-colors duration-300 hover:bg-gold hover:text-onyx"><?php echo esc_html( $label ); ?></a></span></div></div></section>
 	<?php
 }
 
@@ -72,7 +72,54 @@ function tbt_experience_process(): void {
 		array( 'no' => 'III', 'title' => 'The Reveal', 'body' => 'Precision execution, hand-finished detail, and the moment you see yourself fully — often for the very first time.' ),
 	);
 	?>
-	<section class="relative isolate overflow-hidden bg-espresso py-28 text-ivory lg:py-40"><div class="mx-auto grid max-w-7xl gap-16 px-6 lg:grid-cols-[0.85fr_1fr] lg:items-center lg:gap-20 lg:px-10"><div class="reveal"><div class="relative aspect-[3/2] overflow-hidden"><img src="<?php echo tbt_asset( 'stock/process.jpg' ); ?>" alt="Dr. Trevor J. Thomas holding a mirror and explorer in the Teeth by Trev operatory" class="h-full w-full object-cover" loading="lazy"><div class="absolute inset-0 ring-1 ring-inset ring-ivory/10"></div></div></div><div><div class="reveal max-w-xl"><p class="mb-6 text-[0.6rem] uppercase tracking-[0.34em] text-champagne">04 <span class="mx-2">—</span> The Experience</p><h2 class="font-serif text-4xl font-light leading-[1.1] text-ivory sm:text-5xl">Three steps to the smile that’s always been yours.</h2></div><div class="mt-14 space-y-12"><?php foreach ( $steps as $step ) : ?><div class="reveal"><div class="flex gap-6 border-t border-ivory/15 pt-8"><span class="font-serif text-4xl font-light leading-none text-champagne"><?php echo esc_html( $step['no'] ); ?></span><div><h3 class="font-serif text-2xl font-light text-ivory"><?php echo esc_html( $step['title'] ); ?></h3><p class="mt-3 max-w-md text-base leading-relaxed text-ivory/70"><?php echo esc_html( $step['body'] ); ?></p></div></div></div><?php endforeach; ?></div></div></div></section>
+	<section class="relative isolate overflow-hidden bg-espresso py-28 text-ivory lg:py-40"><?php tbt_section_motifs( 3 ); ?><div class="mx-auto grid max-w-7xl gap-16 px-6 lg:grid-cols-[0.85fr_1fr] lg:items-center lg:gap-20 lg:px-10"><div class="reveal"><div class="relative aspect-[3/2] overflow-hidden"><img src="<?php echo tbt_asset( 'stock/process.jpg' ); ?>" alt="Dr. Trevor J. Thomas holding a mirror and explorer in the Teeth by Trev operatory" class="h-full w-full object-cover" loading="lazy"><div class="absolute inset-0 ring-1 ring-inset ring-ivory/10"></div></div></div><div><div class="reveal max-w-xl"><p class="mb-6 text-[0.6rem] uppercase tracking-[0.34em] text-champagne">04 <span class="mx-2">—</span> The Experience</p><h2 class="font-serif text-4xl font-light leading-[1.1] text-ivory sm:text-5xl">Three steps to the smile that’s always been yours.</h2></div><div class="mt-14 space-y-12"><?php foreach ( $steps as $step ) : ?><div class="reveal"><div class="flex gap-6 border-t border-ivory/15 pt-8"><span class="font-serif text-4xl font-light leading-none text-champagne"><?php echo esc_html( $step['no'] ); ?></span><div><h3 class="font-serif text-2xl font-light text-ivory"><?php echo esc_html( $step['title'] ); ?></h3><p class="mt-3 max-w-md text-base leading-relaxed text-ivory/70"><?php echo esc_html( $step['body'] ); ?></p></div></div></div><?php endforeach; ?></div></div></div></section>
+	<?php
+}
+
+/**
+ * Render the same decorative dental line-art fields used by the Next.js site.
+ */
+function tbt_section_motifs( int $variant = 0 ): void {
+	$layouts = array(
+		array(
+			array( 'type' => 'tooth', 'top' => '12%', 'left' => '4%', 'size' => 120, 'duration' => 18, 'delay' => 0, 'animation' => 'motifFloatA' ),
+			array( 'type' => 'implant', 'top' => '64%', 'left' => '90%', 'size' => 96, 'duration' => 21, 'delay' => 1.5, 'animation' => 'motifFloatB' ),
+			array( 'type' => 'veneer', 'top' => '78%', 'left' => '16%', 'size' => 78, 'duration' => 19, 'delay' => 0.8, 'animation' => 'motifFloatC' ),
+		),
+		array(
+			array( 'type' => 'veneer', 'top' => '8%', 'left' => '88%', 'size' => 96, 'duration' => 20, 'delay' => 0.5, 'animation' => 'motifFloatB' ),
+			array( 'type' => 'tooth', 'top' => '70%', 'left' => '8%', 'size' => 132, 'duration' => 22, 'delay' => 1.2, 'animation' => 'motifFloatC' ),
+			array( 'type' => 'implant', 'top' => '40%', 'left' => '70%', 'size' => 70, 'duration' => 17, 'delay' => 2.4, 'animation' => 'motifFloatA' ),
+		),
+		array(
+			array( 'type' => 'tooth', 'top' => '10%', 'left' => '82%', 'size' => 110, 'duration' => 19, 'delay' => 0, 'animation' => 'motifFloatB' ),
+			array( 'type' => 'implant', 'top' => '20%', 'left' => '10%', 'size' => 84, 'duration' => 23, 'delay' => 1.8, 'animation' => 'motifFloatA' ),
+			array( 'type' => 'veneer', 'top' => '74%', 'left' => '30%', 'size' => 80, 'duration' => 18, 'delay' => 0.6, 'animation' => 'motifFloatC' ),
+			array( 'type' => 'tooth', 'top' => '62%', 'left' => '92%', 'size' => 96, 'duration' => 21, 'delay' => 2.2, 'animation' => 'motifFloatA' ),
+		),
+		array(
+			array( 'type' => 'implant', 'top' => '14%', 'left' => '6%', 'size' => 100, 'duration' => 20, 'delay' => 0.4, 'animation' => 'motifFloatC' ),
+			array( 'type' => 'veneer', 'top' => '68%', 'left' => '86%', 'size' => 92, 'duration' => 22, 'delay' => 1.6, 'animation' => 'motifFloatA' ),
+		),
+		array(
+			array( 'type' => 'tooth', 'top' => '16%', 'left' => '90%', 'size' => 116, 'duration' => 19, 'delay' => 0, 'animation' => 'motifFloatA' ),
+			array( 'type' => 'implant', 'top' => '76%', 'left' => '12%', 'size' => 82, 'duration' => 21, 'delay' => 1.3, 'animation' => 'motifFloatB' ),
+			array( 'type' => 'veneer', 'top' => '30%', 'left' => '24%', 'size' => 72, 'duration' => 18, 'delay' => 2.6, 'animation' => 'motifFloatC' ),
+		),
+	);
+	$set = $layouts[ abs( $variant ) % count( $layouts ) ];
+	?>
+	<div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+		<?php foreach ( $set as $motif ) : ?>
+			<span class="dental-motif" style="top:<?php echo esc_attr( $motif['top'] ); ?>;left:<?php echo esc_attr( $motif['left'] ); ?>;width:<?php echo esc_attr( (string) $motif['size'] ); ?>px;height:<?php echo esc_attr( (string) $motif['size'] ); ?>px;animation:<?php echo esc_attr( $motif['animation'] . ' ' . $motif['duration'] . 's ease-in-out ' . $motif['delay'] . 's infinite' ); ?>">
+				<svg viewBox="0 0 32 32" class="h-full w-full" focusable="false">
+					<?php if ( 'tooth' === $motif['type'] ) : ?><path d="M9 6c-2.2 0-3.6 2-3.4 4.6.2 2.4 1.3 3.8 1.7 6.4.3 2 .3 4.2.9 6.4.5 1.8 2.3 1.9 2.8 0 .4-1.6.5-3.4 1-4.8.3-.9 1.3-.9 1.6 0 .5 1.4.6 3.2 1 4.8.5 1.9 2.3 1.8 2.8 0 .6-2.2.6-4.4.9-6.4.4-2.6 1.5-4 1.7-6.4C21.6 8 20.2 6 18 6c-1.6 0-2.6 1.1-4.5 1.1S10.6 6 9 6Z"></path><?php endif; ?>
+					<?php if ( 'veneer' === $motif['type'] ) : ?><path d="M11 4c4-1 8 .4 9.5 1.2.6 4-1 9.4-4 13.8-1.2 1.8-2.6 1.8-3.8 0C9.6 14.6 8 9.2 8.6 5.2 9.2 4.8 10 4.3 11 4Z"></path><path d="M12 7.2c2.6-.7 5.2-.1 6.7.6"></path><?php endif; ?>
+					<?php if ( 'implant' === $motif['type'] ) : ?><path d="M13 4.5c0-1.4 1.3-2.5 3-2.5s3 1.1 3 2.5V7h-6Z"></path><path d="M12 8.5h8l-1.2 13.5a2.8 2.8 0 0 1-5.6 0Z"></path><path d="M12.5 11.6h7M12.8 14.6h6.4M13.1 17.6h5.8M13.4 20.6h5.2"></path><?php endif; ?>
+				</svg>
+			</span>
+		<?php endforeach; ?>
+	</div>
 	<?php
 }
 
@@ -84,9 +131,10 @@ function tbt_page_description(): string {
 		'gallery'      => 'Real transformations by Dr. Trevor J. Thomas — veneers, implants, whitening, and full-mouth makeovers. Transformations, not just teeth.',
 		'financing'    => 'Smile now, pay later. Flexible financing and monthly payment plans make life-changing dentistry by Dr. Trevor J. Thomas accessible.',
 		'contact'      => 'Start a smile consultation, request existing-patient support, or send a general enquiry to the Teeth by Trev concierge team.',
-		'consultation' => 'Reserve a private in-person or video consultation with Dr. Trevor J. Thomas.',
-		'reserve'      => 'Secure a private Teeth by Trev consultation with a $250 deposit.',
+		'consultation' => 'Reserve a private consultation with Dr. Trevor J. Thomas — in person or by video. A considered $250 conversation about the smile you imagine.',
+		'reserve'      => 'Secure your private consultation with Dr. Trevor J. Thomas with a $250 deposit, credited 100% toward your treatment.',
 		'privacy'      => 'How Teeth by Trev handles website enquiries and optional analytics.',
+		'classic'      => 'The classic Teeth by Trev experience. Cosmetic & implant dentistry by Dr. Trevor J. Thomas.',
 	);
 	$slug = is_front_page() ? 'home' : get_post_field( 'post_name', get_queried_object_id() );
 	return $descriptions[ $slug ] ?? 'A couture atelier of cosmetic and implant dentistry by Dr. Trevor J. Thomas.';
@@ -112,6 +160,7 @@ function tbt_document_title( string $title ): string {
 		'consultation' => 'Book a Consultation — Teeth by Trev',
 		'reserve' => 'Reserve Your Consultation — Teeth by Trev',
 		'privacy' => 'Privacy & Analytics — Teeth by Trev',
+		'classic' => 'Teeth by Trev — Classic',
 	);
 	return $titles[ $slug ] ?? $title;
 }
@@ -133,7 +182,7 @@ add_action( 'wp_head', 'tbt_social_meta', 3 );
 
 function tbt_legacy_redirects(): void {
 	$path = trim( (string) wp_parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ), '/' );
-	if ( in_array( $path, array( 'atelier', 'classic' ), true ) ) {
+	if ( 'atelier' === $path ) {
 		wp_safe_redirect( home_url( '/' ), 301, 'Teeth by Trev' );
 		exit;
 	}

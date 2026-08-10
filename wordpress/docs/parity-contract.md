@@ -16,9 +16,11 @@ every item in this contract is verified against the current live website.
 | `/consultation` | `page-consultation.php` | In-person/video consultation options |
 | `/reserve` | `page-reserve.php` | Square $250 deposit; `noindex` |
 | `/privacy` | `page-privacy.php` | Enquiry and optional analytics disclosures |
+| `/classic` | `page-classic.php` | Complete preserved Classic homepage experience |
 
-`/atelier` and `/classic` permanently redirect to `/`, matching the current
-canonical homepage decision.
+`/atelier` permanently redirects to `/`, matching the current canonical
+homepage decision. `/classic` remains a complete alternate visitor experience,
+as defined by the authoritative Next.js route.
 
 ## Global visual contract
 

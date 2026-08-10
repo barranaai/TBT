@@ -3,6 +3,9 @@ const nav = document.querySelector("[data-tbt-nav]");
 const menu = document.querySelector("[data-tbt-menu]");
 const toggle = document.querySelector("[data-tbt-menu-toggle]");
 const menuLabel = document.querySelector("[data-tbt-menu-label]");
+const classicNav = document.querySelector("[data-tbt-classic-nav]");
+const classicMenu = document.querySelector("[data-tbt-classic-menu]");
+const classicToggle = document.querySelector("[data-tbt-classic-toggle]");
 
 const setMenu = (open) => {
   root.classList.toggle("tbt-menu-open", open);
@@ -16,13 +19,31 @@ const setMenu = (open) => {
 
 toggle?.addEventListener("click", () => setMenu(!root.classList.contains("tbt-menu-open")));
 menu?.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => setMenu(false)));
+
+const setClassicMenu = (open) => {
+  if (!classicNav || !classicMenu || !classicToggle) return;
+  classicNav.classList.toggle("is-open", open);
+  root.classList.toggle("tbt-classic-menu-open", open);
+  classicToggle.setAttribute("aria-expanded", String(open));
+  classicToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+  classicMenu.setAttribute("aria-hidden", String(!open));
+  classicMenu.toggleAttribute("inert", !open);
+};
+
+classicToggle?.addEventListener("click", () => setClassicMenu(!classicNav.classList.contains("is-open")));
+classicMenu?.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => setClassicMenu(false)));
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") setMenu(false);
+  if (event.key === "Escape") {
+    setMenu(false);
+    setClassicMenu(false);
+  }
 });
 
 const updateNav = () => nav?.classList.toggle("is-scrolled", window.scrollY > 32);
+const updateClassicNav = () => classicNav?.classList.toggle("is-scrolled", window.scrollY > 24);
 updateNav();
-window.addEventListener("scroll", updateNav, { passive: true });
+updateClassicNav();
+window.addEventListener("scroll", () => { updateNav(); updateClassicNav(); }, { passive: true });
 
 const observer = new IntersectionObserver(
   (entries) => entries.forEach((entry) => {
@@ -35,7 +56,22 @@ const observer = new IntersectionObserver(
 document.querySelectorAll(".reveal, .line-reveal, .img-reveal").forEach((element) => observer.observe(element));
 
 window.addEventListener("load", () => {
-  window.setTimeout(() => document.querySelector(".tbt-intro-veil")?.classList.add("is-complete"), 120);
+  const veil = document.querySelector(".tbt-intro-veil");
+  if (!veil) return;
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const seen = sessionStorage.getItem("tbt-intro-seen");
+  if (seen || reduced) {
+    veil.remove();
+    return;
+  }
+  sessionStorage.setItem("tbt-intro-seen", "1");
+  root.classList.add("tbt-intro-active");
+  window.setTimeout(() => veil.classList.add("is-in"), 60);
+  window.setTimeout(() => veil.classList.add("is-lift"), 1100);
+  window.setTimeout(() => {
+    root.classList.remove("tbt-intro-active");
+    veil.remove();
+  }, 2050);
 });
 
 const stats = document.querySelector("[data-tbt-stats]");
@@ -136,3 +172,41 @@ document.querySelectorAll("[data-tbt-before-after]").forEach((comparison) => {
     render();
   });
 });
+
+if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  document.querySelectorAll("[data-tbt-magnetic]").forEach((element) => {
+    const strength = Number(element.dataset.tbtMagnetic || 0.3);
+    element.addEventListener("pointermove", (event) => {
+      const rect = element.getBoundingClientRect();
+      const x = event.clientX - (rect.left + rect.width / 2);
+      const y = event.clientY - (rect.top + rect.height / 2);
+      element.style.transform = `translate(${(x * strength).toFixed(2)}px, ${(y * strength).toFixed(2)}px)`;
+    });
+    element.addEventListener("pointerleave", () => { element.style.transform = "translate(0px, 0px)"; });
+  });
+
+  const parallaxFrames = [...document.querySelectorAll("[data-tbt-parallax]")];
+  if (parallaxFrames.length) {
+    let parallaxTicking = false;
+    const updateParallax = () => {
+      parallaxTicking = false;
+      const viewportHeight = window.innerHeight;
+      parallaxFrames.forEach((frame) => {
+        const inner = frame.querySelector("[data-tbt-parallax-inner]");
+        if (!inner) return;
+        const rect = frame.getBoundingClientRect();
+        if (rect.bottom < 0 || rect.top > viewportHeight) return;
+        const progress = (rect.top + rect.height / 2 - viewportHeight / 2) / (viewportHeight / 2 + rect.height / 2);
+        inner.style.transform = `translate3d(0, ${(-progress * 8).toFixed(2)}%, 0)`;
+      });
+    };
+    const queueParallax = () => {
+      if (parallaxTicking) return;
+      parallaxTicking = true;
+      requestAnimationFrame(updateParallax);
+    };
+    updateParallax();
+    window.addEventListener("scroll", queueParallax, { passive: true });
+    window.addEventListener("resize", queueParallax, { passive: true });
+  }
+}

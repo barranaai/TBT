@@ -318,8 +318,14 @@ if (root) {
     }
   });
 
-  const routedIntent = new URLSearchParams(window.location.search).get("intent");
+  const routedParams = new URLSearchParams(window.location.search);
+  const routedIntent = routedParams.get("intent");
   if (["new", "existing", "general"].includes(routedIntent)) chooseIntent(routedIntent);
+  ["firstName", "lastName", "email", "phone", "goals"].forEach((name) => {
+    const field = form.elements[name];
+    const routedValue = routedParams.get(name);
+    if (field && routedValue) field.value = routedValue.slice(0, name === "goals" ? 5000 : 190);
+  });
 }
 
-window.TBTInquiry = Object.freeze({ version: "0.2.2", ready: Boolean(root) });
+window.TBTInquiry = Object.freeze({ version: "0.2.3", ready: Boolean(root) });

@@ -2,7 +2,7 @@
 /**
  * Plugin Name: TBT Core
  * Description: Operational features for the Teeth by Trev WordPress site.
- * Version: 0.2.2
+ * Version: 0.2.3
  * Requires at least: 6.6
  * Requires PHP: 8.1
  * Author: Barrana AI
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TBT_CORE_VERSION', '0.2.2' );
+define( 'TBT_CORE_VERSION', '0.2.3' );
 define( 'TBT_CORE_PATH', plugin_dir_path( __FILE__ ) );
 define( 'TBT_CORE_URL', plugin_dir_url( __FILE__ ) );
 
@@ -24,6 +24,7 @@ require_once TBT_CORE_PATH . 'includes/class-tbt-core-ui.php';
 function tbt_core_boot(): void {
 	if ( get_option( 'tbt_core_schema_version' ) !== TBT_CORE_VERSION ) {
 		TBT_Core_Schema::install();
+		tbt_core_seed_pages();
 	}
 	TBT_Core_REST::register();
 	TBT_Core_UI::register();
@@ -41,6 +42,7 @@ function tbt_core_seed_pages(): void {
 		'consultation' => 'Consultation',
 		'reserve'      => 'Reserve',
 		'privacy'      => 'Privacy',
+		'classic'      => 'Classic',
 	);
 	$ids = array();
 	foreach ( $pages as $slug => $title ) {

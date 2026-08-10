@@ -1,5 +1,6 @@
 node_modules/
 /dist/
+/artifacts/
 .wordpress-playground/
 playground-storage/
 wp-content/uploads/

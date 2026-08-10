@@ -30,6 +30,24 @@ The local site runs at `http://127.0.0.1:9400` by default. The theme and plugin
 directories are mounted into the Playground instance and activated by the
 blueprint.
 
+With Playground running, execute the repeatable parity checks in another
+terminal:
+
+```bash
+npm run verify:local
+npm run verify:responsive
+```
+
+The verifier covers every source route (including `/classic`), exact titles and
+descriptions, canonicals, redirects, internal links, visitor assets, health and
+legacy Square endpoints, 404 behavior, and server-side mandatory-photo rules
+for all three enquiry types. The responsive verifier uses an installed Chrome
+or Chromium browser to check all routes at 375×844, 768×1024, and 1440×950. It
+also exercises both menus, the comparison slider, counters, parallax, Classic
+form handoff, enquiry requirements, default-off analytics consent, and the safe
+Square fallback. Set `CHROME_PATH` only when the browser is not installed in a
+standard location.
+
 To create production-ready install archives after a successful build:
 
 ```bash
