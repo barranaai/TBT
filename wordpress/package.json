@@ -1,0 +1,22 @@
+{
+  "name": "tbt-wordpress",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build:css": "tailwindcss -i ./wp-content/themes/teeth-by-trev/assets/src/theme.css -o ./wp-content/themes/teeth-by-trev/assets/dist/theme.css --minify",
+    "build:theme-js": "esbuild ./wp-content/themes/teeth-by-trev/assets/src/theme.js --bundle --minify --target=es2020 --outfile=./wp-content/themes/teeth-by-trev/assets/dist/theme.js",
+    "build:form-js": "esbuild ./wp-content/plugins/tbt-core/assets/src/inquiry.js --bundle --minify --target=es2020 --outfile=./wp-content/plugins/tbt-core/assets/dist/inquiry.js",
+    "build:square-js": "esbuild ./wp-content/plugins/tbt-core/assets/src/square.js --bundle --minify --target=es2020 --outfile=./wp-content/plugins/tbt-core/assets/dist/square.js",
+    "build:analytics-js": "esbuild ./wp-content/plugins/tbt-core/assets/src/analytics.js --bundle --minify --target=es2020 --outfile=./wp-content/plugins/tbt-core/assets/dist/analytics.js",
+    "build": "npm run build:css && npm run build:theme-js && npm run build:form-js && npm run build:square-js && npm run build:analytics-js",
+    "package": "npm run build && mkdir -p dist && cd wp-content/themes && zip -FSqr ../../dist/teeth-by-trev-theme.zip teeth-by-trev -x '*/assets/src/*' && cd ../plugins && zip -FSqr ../../dist/tbt-core-plugin.zip tbt-core -x '*/assets/src/*'",
+    "dev:css": "tailwindcss -i ./wp-content/themes/teeth-by-trev/assets/src/theme.css -o ./wp-content/themes/teeth-by-trev/assets/dist/theme.css --watch",
+    "playground": "wp-playground-cli server --wp=latest --php=8.3 --port=9400 --login --mount=./wp-content/themes/teeth-by-trev:/wordpress/wp-content/themes/teeth-by-trev --mount=./wp-content/plugins/tbt-core:/wordpress/wp-content/plugins/tbt-core --blueprint=./blueprint.json",
+    "playground:debug": "npm run playground -- --debug --verbosity=debug"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "4.3.3",
+    "@wp-playground/cli": "3.1.48",
+    "esbuild": "0.28.2"
+  }
+}

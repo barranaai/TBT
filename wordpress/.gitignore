@@ -1,0 +1,13 @@
+node_modules/
+/dist/
+.wordpress-playground/
+playground-storage/
+wp-content/uploads/
+wp-content/cache/
+wp-config.php
+*.sql
+*.sqlite
+*.log
+.env
+.env.*
+!.env.example

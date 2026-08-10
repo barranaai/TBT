@@ -1,0 +1,23 @@
+{
+  "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+  "preferredVersions": {
+    "php": "8.3",
+    "wp": "latest"
+  },
+  "landingPage": "/",
+  "login": true,
+  "steps": [
+    {
+      "step": "setSiteOptions",
+      "options": {
+        "blogname": "Teeth by Trev",
+        "blogdescription": "Cosmetic & Implant Dentistry",
+        "permalink_structure": "/%postname%/"
+      }
+    },
+    {
+      "step": "runPHP",
+      "code": "<?php require_once '/wordpress/wp-load.php'; require_once ABSPATH . 'wp-admin/includes/plugin.php'; activate_plugin('tbt-core/tbt-core.php'); switch_theme('teeth-by-trev'); if (function_exists('tbt_core_seed_pages')) { tbt_core_seed_pages(); } flush_rewrite_rules();"
+    }
+  ]
+}

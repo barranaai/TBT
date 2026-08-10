@@ -1,0 +1,63 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 3,
+  "settings": {
+    "appearanceTools": false,
+    "layout": {
+      "contentSize": "768px",
+      "wideSize": "1600px"
+    },
+    "color": {
+      "custom": false,
+      "customGradient": false,
+      "defaultPalette": false,
+      "palette": [
+        { "slug": "ivory", "name": "Ivory", "color": "#f7f3ec" },
+        { "slug": "cream", "name": "Cream", "color": "#efe8dc" },
+        { "slug": "sand", "name": "Sand", "color": "#e3d8c6" },
+        { "slug": "taupe", "name": "Taupe", "color": "#9a8f7d" },
+        { "slug": "stone", "name": "Stone", "color": "#6f6557" },
+        { "slug": "espresso", "name": "Espresso", "color": "#2a241d" },
+        { "slug": "ink", "name": "Ink", "color": "#16130f" },
+        { "slug": "onyx", "name": "Onyx", "color": "#0c0a08" },
+        { "slug": "champagne", "name": "Champagne", "color": "#b89b6e" },
+        { "slug": "gold", "name": "Gold", "color": "#a8895c" }
+      ]
+    },
+    "spacing": {
+      "customSpacingSize": false,
+      "units": ["px", "rem", "vw", "vh", "%"]
+    },
+    "typography": {
+      "customFontSize": false,
+      "defaultFontSizes": false,
+      "dropCap": false,
+      "fontFamilies": [
+        {
+          "slug": "serif",
+          "name": "Cormorant Garamond",
+          "fontFamily": "'Cormorant Garamond', Georgia, 'Times New Roman', serif"
+        },
+        {
+          "slug": "sans",
+          "name": "Inter",
+          "fontFamily": "Inter, ui-sans-serif, system-ui, sans-serif"
+        },
+        {
+          "slug": "script",
+          "name": "Pinyon Script",
+          "fontFamily": "'Pinyon Script', 'Snell Roundhand', cursive"
+        }
+      ]
+    }
+  },
+  "styles": {
+    "color": {
+      "background": "#f7f3ec",
+      "text": "#16130f"
+    },
+    "typography": {
+      "fontFamily": "var(--wp--preset--font-family--sans)"
+    }
+  }
+}

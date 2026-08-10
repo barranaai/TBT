@@ -1,0 +1,9 @@
+<?php
+/** @package TeethByTrev */
+$GLOBALS['tbt_minimal_header'] = array( 'path' => '/consultation/', 'label' => '← Consultation' );
+get_header();
+$kind = isset( $_GET['type'] ) && in_array( $_GET['type'], array( 'in-person', 'video' ), true ) ? sanitize_key( $_GET['type'] ) : '';
+$label = 'in-person' === $kind ? 'In-person consultation' : ( 'video' === $kind ? 'Video consultation' : 'Private consultation' );
+?>
+<main id="main-content" class="min-h-screen bg-onyx text-ivory"><section class="relative overflow-hidden"><div class="tbt-top-glow absolute inset-0"></div><div class="relative mx-auto max-w-[1600px] px-6 pb-20 pt-40 lg:px-12 lg:pb-28 lg:pt-52"><div class="grid items-start gap-12 lg:grid-cols-2 lg:gap-20"><div class="reveal"><p class="text-[0.62rem] uppercase tracking-[0.3em] text-gold">Reserve · <?php echo esc_html( $label ); ?></p><h1 class="mt-6 max-w-xl font-serif text-4xl font-light leading-[1.06] text-ivory sm:text-5xl lg:text-6xl">Secure your place with Dr. Trev.</h1><p class="mt-7 max-w-md text-base leading-relaxed text-ivory/65">A $250 deposit confirms your private consultation and is credited 100% toward your treatment. Consultations are by appointment and limited each month.</p><ul class="mt-9 space-y-3"><li class="flex items-center gap-3 text-[0.72rem] uppercase tracking-[0.16em] text-ivory/55"><span class="text-gold">—</span>Credited fully toward your treatment</li><li class="flex items-center gap-3 text-[0.72rem] uppercase tracking-[0.16em] text-ivory/55"><span class="text-gold">—</span>Secured &amp; encrypted by Square</li><li class="flex items-center gap-3 text-[0.72rem] uppercase tracking-[0.16em] text-ivory/55"><span class="text-gold">—</span>A considered, unhurried conversation</li></ul></div><div class="reveal"><?php echo do_shortcode( '[tbt_square_deposit type="' . esc_attr( $kind ) . '"]' ); ?></div></div></div></section></main>
+<?php get_footer(); ?>
