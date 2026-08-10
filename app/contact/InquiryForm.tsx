@@ -667,6 +667,10 @@ export default function InquiryForm() {
                 Reserve My Video Consult — $250 →
               </Link>
             </Magnetic>
+            <p className="mt-4 text-xs leading-relaxed text-ivory/50">
+              No need to decide now — our concierge team will reach out either
+              way.
+            </p>
           </div>
         )}
 
