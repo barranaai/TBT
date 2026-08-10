@@ -48,6 +48,24 @@ form handoff, enquiry requirements, default-off analytics consent, and the safe
 Square fallback. Set `CHROME_PATH` only when the browser is not installed in a
 standard location.
 
+The credential-shaped Airtable, Square, and Meta paths have a separate
+hermetic environment. It uses fake server constants and a mounted test-only
+WordPress must-use plugin; no request can reach a real external account.
+
+```bash
+# Terminal 1
+npm run playground:integration
+
+# Terminal 2
+npm run verify:integrations
+```
+
+This suite submits all three enquiry types, inspects exact Airtable fields,
+retrieves private photos, proves failure/retry and scheduled recovery, verifies
+Meta consent/deduplication without form-data leakage, and exercises Square
+success, decline, idempotent retry, ambiguous-network handling, deposit
+reconciliation, and browser SDK states.
+
 To create production-ready install archives after a successful build:
 
 ```bash
@@ -55,8 +73,10 @@ npm run package
 ```
 
 This writes `dist/teeth-by-trev-theme.zip` and
-`dist/tbt-core-plugin.zip`. The source-only asset directories are excluded;
-the compiled browser assets are included.
+`dist/tbt-core-plugin.zip`, plus `dist/SHA256SUMS`. The source-only asset
+directories are excluded; the compiled browser assets are included. Verify the
+archives before installing them with `cd dist && shasum -a 256 -c SHA256SUMS`
+and `unzip -t`.
 
 ## Production configuration
 

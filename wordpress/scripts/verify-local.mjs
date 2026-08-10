@@ -1,4 +1,6 @@
 const base = new URL(process.env.TBT_BASE_URL || "http://127.0.0.1:9400/");
+const basicAuth = process.env.TBT_BASIC_AUTH || "";
+const expectNoindex = process.env.TBT_EXPECT_NOINDEX === "1";
 const cookies = new Map();
 
 function rememberCookies(response) {
@@ -19,6 +21,7 @@ async function request(path, options = {}, follow = false) {
   for (let attempt = 0; attempt < (follow ? 5 : 1); attempt += 1) {
     const headers = new Headers(options.headers || {});
     if (cookies.size) headers.set("Cookie", cookieHeader());
+    if (basicAuth) headers.set("Authorization", `Basic ${Buffer.from(basicAuth).toString("base64")}`);
     const response = await fetch(url, { ...options, headers, redirect: "manual" });
     rememberCookies(response);
     if (!follow || ![301, 302, 303, 307, 308].includes(response.status)) return response;
@@ -65,8 +68,17 @@ for (const [path, title, description, marker] of routes) {
   assert(html.includes(`name="description" content="${escapeAttribute(description)}"`), `${path}: description mismatch`);
   assert(html.includes(marker), `${path}: missing source marker ${marker}`);
   assert(count(html, /rel=["']canonical["']/g) === 1, `${path}: expected exactly one canonical`);
+  const canonical = html.match(/<link\s+rel=["']canonical["']\s+href=["']([^"']+)["'][^>]*>/i)?.[1];
+  assert(canonical && new URL(canonical).origin === base.origin, `${path}: canonical does not use the tested origin`);
   assert(!html.includes('id="wpadminbar"'), `${path}: frontend admin bar leaked into output`);
-  if (path.startsWith("/reserve/")) assert(html.includes('content="noindex,follow"'), `${path}: reserve must be noindex`);
+  if (expectNoindex) {
+    const stagingRobots = [...html.matchAll(/<meta\s+name=["']robots["']\s+content=["']([^"']+)["'][^>]*>/gi)];
+    assert(stagingRobots.some((match) => match[1].includes("noindex")), `${path}: protected staging page is indexable`);
+  }
+  if (path.startsWith("/reserve/")) {
+    const robots = [...html.matchAll(/<meta\s+name=["']robots["']\s+content=["']([^"']+)["'][^>]*>/gi)];
+    assert(robots.length === 1 && robots[0][1].includes("noindex") && robots[0][1].includes("follow"), `${path}: reserve must emit one noindex,follow directive`);
+  }
   htmlByRoute.set(path, html);
   console.log(`PASS ${path} · ${title}`);
 }
@@ -74,7 +86,7 @@ for (const [path, title, description, marker] of routes) {
 const assetUrls = new Set();
 const internalUrls = new Set();
 for (const html of htmlByRoute.values()) {
-  for (const match of html.matchAll(/<(?:img|source)[^>]+(?:src|poster)=["']([^"']+)["']/g)) {
+  for (const match of html.matchAll(/<(?:img|source|video)[^>]+(?:src|poster)=["']([^"']+)["']/g)) {
     const url = new URL(match[1], base);
     if (url.origin === base.origin) assetUrls.add(url.href);
   }
@@ -105,11 +117,19 @@ assert(atelier.status === 301, `/atelier: expected 301, received ${atelier.statu
 assert(new URL(atelier.headers.get("location"), base).href === base.href, "/atelier: incorrect redirect target");
 
 const missing = await request("/definitely-not-a-tbt-route/");
+const missingHtml = await missing.text();
 assert(missing.status === 404, `unknown route: expected 404, received ${missing.status}`);
+assert(count(missingHtml, /rel=["']canonical["']/g) === 0, "unknown route: must not canonicalize to the homepage");
+assert(count(missingHtml, /name=["']description["']/g) === 0, "unknown route: must not emit a page description");
+
+const sitemapResponse = await request("/wp-sitemap-posts-page-1.xml");
+const sitemap = await sitemapResponse.text();
+assert(sitemapResponse.status === 200, `page sitemap failed: ${sitemapResponse.status}`);
+assert(!sitemap.includes("/reserve/"), "reserve noindex URL leaked into the page sitemap");
 
 const healthResponse = await request("/wp-json/tbt/v1/health");
 const health = await healthResponse.json();
-assert(healthResponse.status === 200 && health.ok && health.plugin === "0.2.3", "health endpoint/version mismatch");
+assert(healthResponse.status === 200 && health.ok && health.plugin === "0.2.5", "health endpoint/version mismatch");
 
 const squareResponse = await request("/api/square/config");
 const square = await squareResponse.json();
@@ -140,4 +160,13 @@ for (const payload of inquiryPayloads) {
   assert(response.status === 422 && result.code === "photos_required", `${payload.intent}: missing smile photos were not rejected`);
 }
 console.log("PASS mandatory smile-photo enforcement for new, existing, and general enquiries");
+const spoofedPhoto = { ...commonInquiry, intent: "general", enquiryType: "General enquiry", message: "Verification", photos: [{ name: "not-a-photo.png", dataUrl: "data:image/png;base64,SGVsbG8=" }] };
+const spoofedPhotoResponse = await request("/wp-json/tbt/v1/inquiry", {
+  method: "POST",
+  headers: { "Content-Type": "application/json", Origin: base.origin, "X-Forwarded-For": "198.51.100.44" },
+  body: JSON.stringify(spoofedPhoto),
+});
+const spoofedPhotoResult = await spoofedPhotoResponse.json();
+assert(spoofedPhotoResponse.status === 422 && spoofedPhotoResult.code === "photos_required", "declared image MIME with invalid bytes was accepted");
+console.log("PASS image signature validation and private-photo MIME hardening");
 console.log(`PASS WordPress parity verification at ${base.href}`);

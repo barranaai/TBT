@@ -4,6 +4,7 @@ import path from "node:path";
 import { chromium } from "playwright-core";
 
 const base = new URL(process.env.TBT_BASE_URL || "http://127.0.0.1:9400/");
+const basicAuth = process.env.TBT_BASIC_AUTH || "";
 const artifactDir = path.resolve("artifacts/responsive");
 const chromeCandidates = [
   process.env.CHROME_PATH,
@@ -52,7 +53,13 @@ function routeName(route) {
 }
 
 async function createContext(browser, viewport, { consent = "denied", reducedMotion = "reduce" } = {}) {
-  const context = await browser.newContext({ viewport, deviceScaleFactor: 1, reducedMotion });
+  const [username, ...passwordParts] = basicAuth.split(":");
+  const context = await browser.newContext({
+    viewport,
+    deviceScaleFactor: 1,
+    reducedMotion,
+    ...(basicAuth ? { httpCredentials: { username, password: passwordParts.join(":") } } : {}),
+  });
   await context.addInitScript(({ savedConsent }) => {
     sessionStorage.setItem("tbt-intro-seen", "1");
     if (savedConsent) localStorage.setItem("tbt.analytics-consent.v1", savedConsent);
@@ -194,6 +201,24 @@ try {
   assert(await consentPage.locator("#tbt-meta-pixel-script").count() === 0, "Meta Pixel loaded after analytics was denied");
   await consentContext.close();
   console.log("PASS default-off analytics consent and Essential-only behavior");
+
+  const analyticsContext = await createContext(browser, viewports[0], { consent: null });
+  const analyticsPage = await analyticsContext.newPage();
+  await analyticsPage.route("https://connect.facebook.net/**", (route) => route.abort());
+  await analyticsPage.goto(base.href, { waitUntil: "networkidle" });
+  await analyticsPage.locator('[data-tbt-privacy-choice="granted"]').click();
+  await analyticsPage.waitForFunction(() => Boolean(window.fbq?.queue?.length));
+  await analyticsPage.evaluate(() => window.TBTAnalytics.trackLead("integration-dedupe-id"));
+  const analyticsState = await analyticsPage.evaluate(() => ({
+    consent: window.TBTAnalytics.consent(),
+    calls: (window.fbq?.queue || []).map((args) => Array.from(args)),
+    script: document.getElementById("tbt-meta-pixel-script")?.getAttribute("src") || "",
+  }));
+  assert(analyticsState.consent === "granted" && analyticsState.script.includes("connect.facebook.net/en_US/fbevents.js"), "Analytics consent did not initialize Meta Pixel");
+  assert(analyticsState.calls.some((call) => call[0] === "trackSingle" && call[2] === "PageView"), "Consented Meta PageView was not queued");
+  assert(analyticsState.calls.some((call) => call[0] === "trackSingle" && call[2] === "Lead" && call[4]?.eventID === "integration-dedupe-id"), "Browser Lead event did not preserve the server dedupe ID");
+  await analyticsContext.close();
+  console.log("PASS consented Meta Pixel initialization and browser/server Lead dedupe ID");
 
   const reserveContext = await createContext(browser, viewports[0]);
   const reservePage = await reserveContext.newPage();

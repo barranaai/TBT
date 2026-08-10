@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TBT_THEME_VERSION', '0.2.0' );
+define( 'TBT_THEME_VERSION', '0.2.1' );
 
 function tbt_theme_setup(): void {
 	add_theme_support( 'title-tag' );
@@ -141,12 +141,23 @@ function tbt_page_description(): string {
 }
 
 function tbt_meta_description(): void {
+	if ( is_404() ) return;
 	echo '<meta name="description" content="' . esc_attr( tbt_page_description() ) . '">' . "\n";
-	if ( is_page( 'reserve' ) ) {
-		echo '<meta name="robots" content="noindex,follow">' . "\n";
-	}
 }
 add_action( 'wp_head', 'tbt_meta_description', 2 );
+
+function tbt_robots( array $robots ): array {
+	if ( is_page( 'reserve' ) ) {
+		$robots['noindex'] = true;
+		unset( $robots['index'] );
+		if ( (bool) get_option( 'blog_public' ) ) {
+			$robots['follow'] = true;
+			unset( $robots['nofollow'] );
+		}
+	}
+	return $robots;
+}
+add_filter( 'wp_robots', 'tbt_robots' );
 
 function tbt_document_title( string $title ): string {
 	$slug = is_front_page() ? 'home' : get_post_field( 'post_name', get_queried_object_id() );
@@ -167,6 +178,7 @@ function tbt_document_title( string $title ): string {
 add_filter( 'pre_get_document_title', 'tbt_document_title' );
 
 function tbt_social_meta(): void {
+	if ( is_404() ) return;
 	$title = tbt_document_title( wp_get_document_title() );
 	$description = tbt_page_description();
 	$url = is_singular() ? get_permalink() : home_url( '/' );
@@ -179,6 +191,14 @@ function tbt_social_meta(): void {
 	echo '<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="' . esc_attr( $title ) . '"><meta name="twitter:description" content="' . esc_attr( $description ) . '"><meta name="twitter:image" content="' . esc_url( $image ) . '">' . "\n";
 }
 add_action( 'wp_head', 'tbt_social_meta', 3 );
+
+function tbt_sitemap_pages( array $args, string $post_type ): array {
+	if ( 'page' !== $post_type ) return $args;
+	$reserve = get_page_by_path( 'reserve' );
+	if ( $reserve ) $args['post__not_in'] = array_values( array_unique( array_merge( $args['post__not_in'] ?? array(), array( (int) $reserve->ID ) ) ) );
+	return $args;
+}
+add_filter( 'wp_sitemaps_posts_query_args', 'tbt_sitemap_pages', 10, 2 );
 
 function tbt_legacy_redirects(): void {
 	$path = trim( (string) wp_parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ), '/' );

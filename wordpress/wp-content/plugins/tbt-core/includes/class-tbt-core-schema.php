@@ -65,6 +65,7 @@ final class TBT_Core_Schema {
 			service varchar(120) NULL,
 			amount_cents int unsigned NOT NULL DEFAULT 25000,
 			status varchar(30) NOT NULL,
+			airtable_saved tinyint(1) NOT NULL DEFAULT 0,
 			created_at datetime NOT NULL,
 			PRIMARY KEY  (id),
 			UNIQUE KEY payment_id (payment_id),

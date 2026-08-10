@@ -41,11 +41,26 @@ Updated: 2026-08-10
   private photo and lead reference.
 - Submission-token retry returned the original lead reference without a
   duplicate.
+- Hermetic Airtable verification confirms exact `Social = Instagram: <handle>`
+  and `Photos` mappings, intent-specific field scoping, required-field
+  protection, optional-column compatibility, and PATCH upserts keyed by
+  `Submission Token`.
+- A temporary Airtable failure remains recorded locally, appears in health as
+  pending, and is recovered by the scheduled upsert without duplicating the
+  enquiry. The same recovery is verified for deposits keyed by `Payment ID`.
+- Hermetic Meta verification confirms default-off behavior, consented browser
+  and server `Lead` events with the same dedupe ID, retry reuse of that ID, and
+  no form answers or contact data in the server payload.
+- Hermetic Square verification confirms the server-fixed $250 USD amount,
+  client-safe public configuration, sandbox endpoint, success, decline, local
+  idempotency, ambiguous-network same-key recovery, lead matching, local and
+  Airtable deposit logs, browser tokenization errors, and unsafe-retry lockout.
 - Private gallery and image URLs return 200, `noindex`, and the original image
   MIME type.
 - Dependency audit reports zero known vulnerabilities.
 - Production theme and plugin ZIP archives build and pass `unzip -t` integrity
-  checks; generated archives remain untracked.
+  checks; a SHA-256 manifest is generated and verified; generated archives
+  remain untracked.
 
 ## Requires staging credentials or infrastructure
 

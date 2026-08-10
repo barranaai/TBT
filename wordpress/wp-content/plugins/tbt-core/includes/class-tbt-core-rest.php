@@ -20,6 +20,7 @@ final class TBT_Core_REST {
 		add_action( 'init', array( __CLASS__, 'maybe_flush_photo_rewrites' ), 99 );
 		add_filter( 'query_vars', array( __CLASS__, 'photo_query_vars' ) );
 		add_action( 'template_redirect', array( __CLASS__, 'serve_photo_request' ) );
+		add_action( 'tbt_core_sync_airtable', array( __CLASS__, 'sync_unsaved_airtable' ) );
 	}
 
 	public static function routes(): void {
@@ -30,7 +31,14 @@ final class TBT_Core_REST {
 	}
 
 	public static function health(): WP_REST_Response {
-		return new WP_REST_Response( array( 'ok' => true, 'plugin' => TBT_CORE_VERSION, 'php' => PHP_VERSION, 'wp' => get_bloginfo( 'version' ), 'storage' => 'wordpress-database', 'airtable' => (bool) ( self::config( 'AIRTABLE_TOKEN' ) && self::config( 'AIRTABLE_BASE_ID' ) ), 'square' => self::square_is_configured() ), 200 );
+		global $wpdb;
+		$pending = self::airtable_is_configured() ? (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}tbt_inquiries WHERE airtable_saved = 0" ) : 0; // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$pending_deposits = self::airtable_is_configured() ? (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}tbt_deposits WHERE airtable_saved = 0" ) : 0; // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		return new WP_REST_Response( array( 'ok' => true, 'plugin' => TBT_CORE_VERSION, 'php' => PHP_VERSION, 'wp' => get_bloginfo( 'version' ), 'storage' => 'wordpress-database', 'airtable' => self::airtable_is_configured(), 'airtablePending' => $pending, 'airtablePendingDeposits' => $pending_deposits, 'square' => self::square_is_configured() ), 200 );
+	}
+
+	public static function airtable_is_configured(): bool {
+		return (bool) ( self::config( 'AIRTABLE_TOKEN' ) && self::config( 'AIRTABLE_BASE_ID' ) );
 	}
 
 	public static function allow_public_write( WP_REST_Request $request ): bool {
@@ -91,6 +99,7 @@ final class TBT_Core_REST {
 			$bytes = base64_decode( preg_replace( '/\s+/', '', $match[2] ), true );
 			if ( false === $bytes || 0 === strlen( $bytes ) || strlen( $bytes ) > self::MAX_PHOTO_BYTES ) continue;
 			$mime = strtolower( $match[1] );
+			if ( ! self::photo_signature_matches( $bytes, $mime ) ) continue;
 			$name = is_array( $photo ) ? self::clean( $photo['name'] ?? '', 100 ) : '';
 			$stem = sanitize_file_name( pathinfo( $name, PATHINFO_FILENAME ) );
 			if ( '' === $stem ) $stem = 'photo-' . ( $index + 1 );
@@ -99,6 +108,47 @@ final class TBT_Core_REST {
 		}
 		if ( ! $decoded ) return new WP_Error( 'photos_required', 'Include at least one valid photo of your smile.', array( 'status' => 422 ) );
 		return $decoded;
+	}
+
+	private static function photo_signature_matches( string $bytes, string $mime ): bool {
+		if ( in_array( $mime, array( 'image/jpeg', 'image/jpg' ), true ) ) return str_starts_with( $bytes, "\xFF\xD8\xFF" );
+		if ( 'image/png' === $mime ) return str_starts_with( $bytes, "\x89PNG\r\n\x1A\n" );
+		if ( 'image/gif' === $mime ) return str_starts_with( $bytes, 'GIF87a' ) || str_starts_with( $bytes, 'GIF89a' );
+		if ( 'image/webp' === $mime ) return strlen( $bytes ) >= 12 && 'RIFF' === substr( $bytes, 0, 4 ) && 'WEBP' === substr( $bytes, 8, 4 );
+		if ( in_array( $mime, array( 'image/heic', 'image/heif' ), true ) ) {
+			if ( strlen( $bytes ) < 12 || 'ftyp' !== substr( $bytes, 4, 4 ) ) return false;
+			$brand = strtolower( substr( $bytes, 8, 4 ) );
+			return in_array( $brand, array( 'heic', 'heix', 'hevc', 'hevx', 'heim', 'heis', 'hevm', 'hevs', 'mif1', 'msf1' ), true );
+		}
+		return false;
+	}
+
+	private static function existing_inquiry_response( array $existing, string $submission_token ): WP_REST_Response {
+		$payload = json_decode( (string) ( $existing['payload'] ?? '' ), true );
+		$airtable_saved = (bool) ( $existing['airtable_saved'] ?? false );
+		if ( ! $airtable_saved && is_array( $payload ) ) {
+			$airtable = self::send_airtable_inquiry( $payload );
+			$airtable_saved = $airtable['ok'];
+			if ( $airtable_saved ) {
+				global $wpdb;
+				$wpdb->update( $wpdb->prefix . 'tbt_inquiries', array( 'airtable_saved' => 1 ), array( 'submission_token' => $submission_token ), array( '%d' ), array( '%s' ) );
+			}
+		}
+		$analytics_consent = (bool) ( $existing['analytics_consent'] ?? false );
+		$meta_accepted = $analytics_consent && is_array( $payload ) ? self::send_meta_lead( $submission_token, is_array( $payload['attribution'] ?? null ) ? $payload['attribution'] : array() ) : false;
+		return new WP_REST_Response(
+			array(
+				'ok'                      => true,
+				'recorded'                => true,
+				'stored'                  => $airtable_saved,
+				'leadReference'           => (string) $existing['lead_reference'],
+				'photosUrl'               => ! empty( $existing['photos_url'] ) ? $existing['photos_url'] : null,
+				'metaEventId'             => $analytics_consent ? $submission_token : null,
+				'metaServerEventAccepted' => $meta_accepted,
+				'idempotent'              => true,
+			),
+			200
+		);
 	}
 
 	private static function rate_limited(): bool {
@@ -154,8 +204,8 @@ final class TBT_Core_REST {
 		$photo_table = $wpdb->prefix . 'tbt_lead_photos';
 		$submission_token = self::clean( $data['submissionToken'] ?? '', 100 );
 		if ( ! $submission_token ) $submission_token = wp_generate_uuid4();
-		$existing = $wpdb->get_row( $wpdb->prepare( "SELECT lead_reference, photos_url, airtable_saved FROM {$table} WHERE submission_token = %s LIMIT 1", $submission_token ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		if ( $existing ) return new WP_REST_Response( array( 'ok' => true, 'recorded' => true, 'stored' => (bool) $existing['airtable_saved'], 'leadReference' => $existing['lead_reference'], 'photosUrl' => $existing['photos_url'] ?: null, 'idempotent' => true ), 200 );
+		$existing = $wpdb->get_row( $wpdb->prepare( "SELECT lead_reference, photos_url, airtable_saved, analytics_consent, payload FROM {$table} WHERE submission_token = %s LIMIT 1", $submission_token ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( $existing ) return self::existing_inquiry_response( $existing, $submission_token );
 
 		$reference = self::new_reference();
 		$photo_token = strtolower( wp_generate_password( 36, false, false ) );
@@ -177,7 +227,11 @@ final class TBT_Core_REST {
 			'priority' => self::priority( $intent, $readiness, $timeline ), 'submittedAtUtc' => gmdate( 'c' ), 'photosUrl' => $photos_url,
 		);
 		$saved = $wpdb->insert( $table, array( 'lead_reference' => $reference, 'submission_token' => $submission_token, 'intent' => $intent, 'name' => trim( $first . ' ' . $last ), 'email' => $email, 'phone' => $phone, 'preferred_contact' => $preferred, 'social' => $social, 'photos_url' => $photos_url, 'payload' => wp_json_encode( $payload ), 'contact_consent' => 1, 'marketing_consent' => $payload['marketingConsent'] ? 1 : 0, 'analytics_consent' => $payload['analyticsConsent'] ? 1 : 0, 'consent_version' => self::CONSENT_VERSION, 'airtable_saved' => 0, 'created_at' => $now ), array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%d', '%s', '%d', '%s' ) );
-		if ( ! $saved ) return new WP_Error( 'save_failed', 'Your enquiry was not saved. Please try again or contact the concierge team directly.', array( 'status' => 503 ) );
+		if ( ! $saved ) {
+			$raced = $wpdb->get_row( $wpdb->prepare( "SELECT lead_reference, photos_url, airtable_saved, analytics_consent, payload FROM {$table} WHERE submission_token = %s LIMIT 1", $submission_token ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			if ( $raced ) return self::existing_inquiry_response( $raced, $submission_token );
+			return new WP_Error( 'save_failed', 'Your enquiry was not saved. Please try again or contact the concierge team directly.', array( 'status' => 503 ) );
+		}
 		$written = 0;
 		foreach ( $photos as $photo ) {
 			$result = $wpdb->insert( $photo_table, array( 'lead_reference' => $reference, 'access_token' => $photo_token, 'photo_index' => $photo['index'], 'filename' => $photo['filename'], 'mime' => $photo['mime'], 'bytes' => strlen( $photo['data'] ), 'photo_data' => base64_encode( $photo['data'] ), 'created_at' => $now ), array( '%s', '%s', '%d', '%s', '%s', '%d', '%s', '%s' ) );
@@ -209,10 +263,10 @@ final class TBT_Core_REST {
 		);
 		$names = array( 'landingUrl' => 'Landing URL', 'referrer' => 'Referrer URL', 'utmSource' => 'UTM Source', 'utmMedium' => 'UTM Medium', 'utmCampaign' => 'UTM Campaign', 'utmContent' => 'UTM Content', 'utmTerm' => 'UTM Term', 'fbclid' => 'FBCLID', 'ttclid' => 'TTCLID', 'entryChannel' => 'Entry Channel', 'entryAccount' => 'Entry Account' );
 		foreach ( $names as $key => $label ) $fields[ $label ] = self::clean( $payload['attribution'][ $key ] ?? '', 2048 );
-		return self::airtable_create( $fields );
+		return self::airtable_create( $fields, '', array( 'Lead Reference', 'Submission Token', 'Caller Name', 'Email', 'Social', 'Photos' ), 'Submission Token' );
 	}
 
-	private static function airtable_create( array $fields, string $table_override = '' ): array {
+	private static function airtable_create( array $fields, string $table_override = '', array $required_fields = array(), string $merge_field = '' ): array {
 		$token = self::config( 'AIRTABLE_TOKEN' );
 		$base = self::config( 'AIRTABLE_BASE_ID' );
 		$table = $table_override ?: self::config( 'AIRTABLE_TABLE_NAME', 'Leads' );
@@ -220,12 +274,21 @@ final class TBT_Core_REST {
 		$working = array_filter( $fields, static fn( $value ) => '' !== $value && null !== $value );
 		$dropped = array();
 		for ( $attempt = 0; $attempt <= count( $fields ); ++$attempt ) {
-			$response = wp_remote_post( 'https://api.airtable.com/v0/' . rawurlencode( $base ) . '/' . rawurlencode( $table ), array( 'timeout' => 8, 'headers' => array( 'Authorization' => 'Bearer ' . $token, 'Content-Type' => 'application/json' ), 'body' => wp_json_encode( array( 'records' => array( array( 'fields' => $working ) ), 'typecast' => true ) ) ) );
+			$body = array( 'records' => array( array( 'fields' => $working ) ), 'typecast' => true );
+			if ( $merge_field ) $body['performUpsert'] = array( 'fieldsToMergeOn' => array( $merge_field ) );
+			$response = wp_remote_request( 'https://api.airtable.com/v0/' . rawurlencode( $base ) . '/' . rawurlencode( $table ), array( 'method' => $merge_field ? 'PATCH' : 'POST', 'timeout' => 8, 'headers' => array( 'Authorization' => 'Bearer ' . $token, 'Content-Type' => 'application/json' ), 'body' => wp_json_encode( $body ) ) );
 			if ( is_wp_error( $response ) ) return array( 'ok' => false, 'configured' => true, 'dropped' => $dropped );
 			$status = wp_remote_retrieve_response_code( $response );
 			$body = wp_remote_retrieve_body( $response );
 			if ( $status >= 200 && $status < 300 ) return array( 'ok' => true, 'configured' => true, 'dropped' => $dropped );
-			if ( 422 === $status && preg_match( '/Unknown field name:\s*"([^"]+)"/i', $body, $match ) && array_key_exists( $match[1], $working ) ) {
+			$decoded_error = json_decode( $body, true );
+			$error_message = is_array( $decoded_error ) ? (string) ( $decoded_error['error']['message'] ?? $decoded_error['error']['detail'] ?? '' ) : '';
+			if ( ! $error_message ) $error_message = $body;
+			if ( 422 === $status && preg_match( '/Unknown field name:\s*"([^"]+)"/i', $error_message, $match ) && array_key_exists( $match[1], $working ) ) {
+				if ( in_array( $match[1], $required_fields, true ) ) {
+					error_log( '[tbt-airtable] Required field is missing from Airtable: ' . $match[1] );
+					return array( 'ok' => false, 'configured' => true, 'dropped' => $dropped, 'required_missing' => $match[1] );
+				}
 				unset( $working[ $match[1] ] );
 				$dropped[] = $match[1];
 				continue;
@@ -233,6 +296,25 @@ final class TBT_Core_REST {
 			return array( 'ok' => false, 'configured' => true, 'dropped' => $dropped );
 		}
 		return array( 'ok' => false, 'configured' => true, 'dropped' => $dropped );
+	}
+
+	public static function sync_unsaved_airtable(): void {
+		if ( ! self::airtable_is_configured() ) return;
+		global $wpdb;
+		$table = $wpdb->prefix . 'tbt_inquiries';
+		$rows = $wpdb->get_results( "SELECT submission_token, payload FROM {$table} WHERE airtable_saved = 0 ORDER BY id ASC LIMIT 20", ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		foreach ( $rows as $row ) {
+			$payload = json_decode( (string) $row['payload'], true );
+			if ( ! is_array( $payload ) ) continue;
+			$result = self::send_airtable_inquiry( $payload );
+			if ( $result['ok'] ) $wpdb->update( $table, array( 'airtable_saved' => 1 ), array( 'submission_token' => $row['submission_token'] ), array( '%d' ), array( '%s' ) );
+		}
+		$deposit_table = $wpdb->prefix . 'tbt_deposits';
+		$deposits = $wpdb->get_results( "SELECT id, payment_id, lead_reference, name, email, phone, service, amount_cents FROM {$deposit_table} WHERE airtable_saved = 0 ORDER BY id ASC LIMIT 20", ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		foreach ( $deposits as $deposit ) {
+			$result = self::send_airtable_deposit( $deposit );
+			if ( $result['ok'] ) $wpdb->update( $deposit_table, array( 'airtable_saved' => 1 ), array( 'id' => (int) $deposit['id'] ), array( '%d' ), array( '%d' ) );
+		}
 	}
 
 	private static function send_meta_lead( string $event_id, array $attribution ): bool {
@@ -243,7 +325,11 @@ final class TBT_Core_REST {
 		if ( $ip ) $user_data['client_ip_address'] = trim( explode( ',', $ip )[0] );
 		if ( ! empty( $_SERVER['HTTP_USER_AGENT'] ) ) $user_data['client_user_agent'] = self::clean( $_SERVER['HTTP_USER_AGENT'], 512 );
 		if ( ! empty( $_COOKIE['_fbp'] ) ) $user_data['fbp'] = self::clean( $_COOKIE['_fbp'], 255 );
-		if ( ! empty( $_COOKIE['_fbc'] ) ) $user_data['fbc'] = self::clean( $_COOKIE['_fbc'], 255 );
+		if ( ! empty( $_COOKIE['_fbc'] ) ) {
+			$user_data['fbc'] = self::clean( $_COOKIE['_fbc'], 255 );
+		} elseif ( ! empty( $attribution['fbclid'] ) ) {
+			$user_data['fbc'] = 'fb.1.' . (string) round( microtime( true ) * 1000 ) . '.' . self::clean( $attribution['fbclid'], 255 );
+		}
 		if ( ! $user_data ) return false;
 		$version = preg_match( '/^v\d+\.\d+$/', self::config( 'META_GRAPH_API_VERSION' ) ) ? self::config( 'META_GRAPH_API_VERSION' ) : 'v24.0';
 		$body = array( 'data' => array( array( 'action_source' => 'website', 'event_id' => $event_id, 'event_name' => 'Lead', 'event_source_url' => home_url( '/' ), 'event_time' => time(), 'user_data' => $user_data ) ) );
@@ -282,6 +368,8 @@ final class TBT_Core_REST {
 		nocache_headers();
 		header( 'X-Robots-Tag: noindex, nofollow', true );
 		header( 'X-Content-Type-Options: nosniff', true );
+		header( 'Referrer-Policy: no-referrer', true );
+		header( 'X-Frame-Options: DENY', true );
 		if ( '' !== (string) $index ) {
 			$row = $wpdb->get_row( $wpdb->prepare( "SELECT mime, photo_data FROM {$table} WHERE access_token = %s AND photo_index = %d LIMIT 1", $token, (int) $index ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			if ( ! $row ) { status_header( 404 ); exit( 'Not found' ); }
@@ -295,6 +383,7 @@ final class TBT_Core_REST {
 		$rows = $wpdb->get_results( $wpdb->prepare( "SELECT photo_index FROM {$table} WHERE access_token = %s ORDER BY photo_index", $token ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		if ( ! $rows ) { status_header( 404 ); exit( 'Not found' ); }
 		header( 'Content-Type: text/html; charset=utf-8' );
+		header( "Content-Security-Policy: default-src 'none'; img-src 'self'; style-src 'unsafe-inline'; base-uri 'none'; frame-ancestors 'none'", true );
 		echo '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Teeth by Trev — Photos</title><style>body{margin:0;background:#111;color:#eee;font-family:system-ui;padding:24px}.g{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}img{width:100%;height:260px;object-fit:cover;border-radius:8px;display:block;background:#222}</style></head><body><div class="g">';
 		foreach ( $rows as $row ) {
 			$url = home_url( '/tbt-photos/' . rawurlencode( $token ) . '/' . (int) $row['photo_index'] . '/' );
@@ -315,6 +404,23 @@ final class TBT_Core_REST {
 	public static function square_config(): WP_REST_Response {
 		if ( ! self::square_is_configured() ) return new WP_REST_Response( array( 'configured' => false ), 200 );
 		return new WP_REST_Response( array( 'configured' => true, 'applicationId' => self::config( 'SQUARE_APPLICATION_ID' ), 'locationId' => self::config( 'SQUARE_LOCATION_ID' ), 'environment' => self::square_environment() ), 200 );
+	}
+
+	private static function send_airtable_deposit( array $deposit ): array {
+		return self::airtable_create(
+			array(
+				'Name'         => self::clean( $deposit['name'] ?? '', 190 ),
+				'Email'        => sanitize_email( self::clean( $deposit['email'] ?? '', 190 ) ),
+				'Phone'        => self::clean( $deposit['phone'] ?? '', 60 ),
+				'Service'      => self::clean( $deposit['service'] ?? '', 120 ),
+				'Amount'       => (int) ( $deposit['amount_cents'] ?? self::DEPOSIT_CENTS ) / 100,
+				'Payment ID'   => self::clean( $deposit['payment_id'] ?? '', 64 ),
+				'Matched Lead' => self::clean( $deposit['lead_reference'] ?? '', 32 ) ?: 'No match',
+			),
+			self::config( 'AIRTABLE_DEPOSITS_TABLE', 'Deposits' ),
+			array( 'Payment ID', 'Amount', 'Service' ),
+			'Payment ID'
+		);
 	}
 
 	public static function square_pay( WP_REST_Request $request ) {
@@ -350,18 +456,8 @@ final class TBT_Core_REST {
 		if ( ! $lead_reference && $phone ) $lead_reference = (string) $wpdb->get_var( $wpdb->prepare( "SELECT lead_reference FROM {$wpdb->prefix}tbt_inquiries WHERE phone = %s ORDER BY id DESC LIMIT 1", $phone ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$deposit_saved = $wpdb->insert( $table, array( 'payment_id' => $result['payment']['id'], 'idempotency_key' => $key, 'lead_reference' => $lead_reference, 'name' => $name, 'email' => $email, 'phone' => $phone, 'service' => $service, 'amount_cents' => self::DEPOSIT_CENTS, 'status' => self::clean( $result['payment']['status'] ?? 'COMPLETED', 30 ), 'created_at' => current_time( 'mysql', true ) ), array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%s' ) );
 		if ( ! $deposit_saved ) error_log( '[tbt-square] Payment succeeded but the local deposit log failed: ' . $result['payment']['id'] );
-		self::airtable_create(
-			array(
-				'Name' => $name,
-				'Email' => $email,
-				'Phone' => $phone,
-				'Service' => $service,
-				'Amount' => self::DEPOSIT_CENTS / 100,
-				'Payment ID' => $result['payment']['id'],
-				'Matched Lead' => $lead_reference ?: 'No match',
-			),
-			self::config( 'AIRTABLE_DEPOSITS_TABLE', 'Deposits' )
-		);
+		$deposit_airtable = self::send_airtable_deposit( array( 'name' => $name, 'email' => $email, 'phone' => $phone, 'service' => $service, 'amount_cents' => self::DEPOSIT_CENTS, 'payment_id' => $result['payment']['id'], 'lead_reference' => $lead_reference ) );
+		if ( $deposit_saved && $deposit_airtable['ok'] ) $wpdb->update( $table, array( 'airtable_saved' => 1 ), array( 'idempotency_key' => $key ), array( '%d' ), array( '%s' ) );
 		return new WP_REST_Response( array( 'ok' => true, 'paymentId' => $result['payment']['id'], 'status' => $result['payment']['status'] ?? 'COMPLETED' ), 200 );
 	}
 }

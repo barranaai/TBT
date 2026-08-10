@@ -22,6 +22,18 @@ staging hostname with its own database and uploads directory.
    pages, operational tables, front-page option, and rewrite rules.
 5. Set **Settings → Permalinks** to **Post name** and save once.
 6. Keep search indexing disabled and protect the staging hostname.
+7. Confirm WordPress cron is functional. If loopback cron is disabled, schedule
+   `wp cron event run --due-now` from the host at least every five minutes.
+
+Required Airtable schema before testing:
+
+- Leads: `Lead Reference`, `Submission Token`, `Caller Name`, `Email`, `Social`,
+  and `Photos`. `Submission Token` must be a writable single-line text field and
+  is the idempotent upsert key.
+- Deposits: `Payment ID`, `Amount`, and `Service`. `Payment ID` must be a
+  writable single-line text field and is the idempotent upsert key.
+- Optional fields may be absent; the plugin drops an unknown optional field and
+  retries once. Required fields are never silently dropped.
 
 ## 3. External integration verification
 
@@ -30,9 +42,14 @@ staging hostname with its own database and uploads directory.
 2. Confirm each Airtable record, including `Social = Instagram: <handle>` and a
    working `Photos` staff link.
 3. Verify a second POST with the same submission token creates no duplicate.
-4. Run Square sandbox success, decline, retry/idempotency, and ambiguous-network
+4. Temporarily block Airtable in staging, submit one labelled test enquiry,
+   restore access, run the due cron event, and confirm `airtablePending` returns
+   to zero at `/wp-json/tbt/v1/health` without a duplicate record.
+5. Run Square sandbox success, decline, retry/idempotency, and ambiguous-network
    cases. Confirm both the WordPress deposit table and Airtable Deposits record.
-5. In Meta test events, verify no event before consent and one deduplicated Lead
+6. Repeat the Airtable interruption test for a labelled sandbox deposit and
+   confirm `airtablePendingDeposits` returns to zero.
+7. In Meta test events, verify no event before consent and one deduplicated Lead
    pair after consent. Confirm no form answers or contact data are sent.
 
 ## 4. Parity and quality gate
@@ -42,6 +59,22 @@ current preview. Check keyboard navigation, reduced motion, empty/error/success
 states, links, metadata, redirects, 404s, image loading, cache behavior, and
 page performance. Resolve every critical or high-severity difference before
 cutover.
+
+Run the same committed verification against the protected staging hostname:
+
+```bash
+TBT_BASE_URL=https://staging.example.com \
+TBT_BASIC_AUTH='user:password' \
+TBT_EXPECT_NOINDEX=1 \
+npm run verify:local
+
+TBT_BASE_URL=https://staging.example.com \
+TBT_BASIC_AUTH='user:password' \
+npm run verify:responsive
+```
+
+Omit `TBT_BASIC_AUTH` only when protection is enforced outside HTTP Basic Auth.
+Keep the screenshots and command output with the release evidence.
 
 ## 5. Cutover
 
@@ -53,6 +86,10 @@ cutover.
    enquiry. Avoid a real charge unless explicitly approved for the cutover test.
 6. Monitor HTTP errors, enquiries, Airtable, Square, and Meta for the agreed
    observation window.
+
+Record the exact Git commit, both entries from `dist/SHA256SUMS`, database
+backup identifier, Node rollback release, DNS values, and integration evidence
+before changing the domain.
 
 ## 6. Rollback
 

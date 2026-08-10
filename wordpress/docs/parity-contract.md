@@ -42,6 +42,8 @@ as defined by the authoritative Next.js route.
 - Only the active branch's fields are submitted and stored.
 - Submission tokens are unique and idempotent; success returns a human lead
   reference.
+- Airtable writes are idempotent upserts on `Submission Token`; failed writes
+  remain locally queued and are retried without duplicating the lead.
 - Airtable `Social` stores `Instagram: <handle>` and `Photos` stores a working,
   access-controlled staff link.
 - Contact, marketing, and analytics consent stay distinct and timestamped.
@@ -52,6 +54,8 @@ as defined by the authoritative Next.js route.
 - Server-side Airtable, Square, and Meta credentials.
 - Square browser tokenization, server charge, stable idempotency, and payment
   reconciliation.
+- Deposit Airtable writes are idempotent upserts on `Payment ID`; locally logged
+  deposits remain queued until Airtable confirms the record.
 - Meta Pixel and CAPI run only after analytics consent and share a dedupe ID.
 - Existing inquiry, photo, and deposit history remains recoverable after
   cutover.
