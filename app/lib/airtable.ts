@@ -41,11 +41,22 @@ export async function createAirtableRecord(
 
     const body = await res.text();
     if (res.status === 422) {
-      const m = /Unknown field name:\s*"([^"]+)"/i.exec(body);
-      if (m && m[1] in working) {
-        delete working[m[1]];
-        dropped.push(m[1]);
-        console.warn(`[airtable] dropped unknown field "${m[1]}" on ${table}`);
+      // Read the field name from the PARSED message. Matching the raw body
+      // fails, because Airtable's JSON escapes the quotes around the name
+      // (\"SMS Consent\") — which silently defeated this fallback and rejected
+      // whole leads over one missing column.
+      let message = "";
+      try {
+        message = JSON.parse(body)?.error?.message ?? "";
+      } catch {
+        message = body;
+      }
+      const m = /Unknown field name:\s*"?([^"]+?)"?\s*$/i.exec(message);
+      const name = m?.[1]?.trim();
+      if (name && name in working) {
+        delete working[name];
+        dropped.push(name);
+        console.warn(`[airtable] dropped unknown field "${name}" on ${table}`);
         continue;
       }
     }
