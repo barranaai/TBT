@@ -75,16 +75,39 @@ export default function AtelierFooter() {
               An atelier of cosmetic &amp; implant dentistry by Dr. Trevor J.
               Thomas, DDS.
             </p>
+            <p className="mt-4 max-w-sm text-xs leading-relaxed text-ivory/40">
+              Teeth by Trev is operated by Trevor Jamal Thomas DDS, Inc., a
+              California professional corporation.
+            </p>
             <address className="mt-6 text-sm not-italic leading-relaxed text-ivory/45">
-              436 N Bedford Dr #300
+              Registered: 8605 Santa Monica Blvd #691841
+              <br />
+              West Hollywood, CA 90069
+              <br />
+              Practice: 436 N Bedford Dr #300
               <br />
               Beverly Hills, CA 90210
+              <br />
+              <a
+                href="mailto:dr.trev@teethbytrev.com"
+                className="transition-colors hover:text-gold"
+              >
+                dr.trev@teethbytrev.com
+              </a>
               <br />
               <a
                 href="tel:+14243946159"
                 className="transition-colors hover:text-gold"
               >
                 424-394-6159
+              </a>
+              <br />
+              SMS program: {" "}
+              <a
+                href="sms:+14246723910"
+                className="transition-colors hover:text-gold"
+              >
+                424-672-3910
               </a>
             </address>
 

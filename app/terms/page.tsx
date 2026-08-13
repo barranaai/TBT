@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Terms & Conditions — Teeth by Trev",
   description:
-    "Website and text messaging terms for Teeth by Trev, the practice of Dr. Trevor J. Thomas, DDS.",
+    "Website and text messaging terms for Teeth by Trev, operated by Trevor Jamal Thomas DDS, Inc.",
 };
 
 export default function TermsPage() {
@@ -17,12 +17,34 @@ export default function TermsPage() {
         <h1 className="mt-5 font-serif text-5xl font-light sm:text-6xl">
           The terms of working with us.
         </h1>
-        <p className="mt-6 text-sm text-ivory/45">
-          Teeth by Trev · Trevor J. Thomas, DDS · 436 N Bedford Dr #300, Beverly
-          Hills, CA 90210 · 424-394-6159 · TeethByTrev@gmail.com
-        </p>
+        <div className="mt-6 space-y-1 text-sm leading-relaxed text-ivory/45">
+          <p>
+            Teeth by Trev is operated by Trevor Jamal Thomas DDS, Inc., a
+            California professional corporation.
+          </p>
+          <p>
+            Registered business address: 8605 Santa Monica Blvd #691841, West
+            Hollywood, CA 90069
+          </p>
+          <p>
+            Practice location: 436 N Bedford Dr #300, Beverly Hills, CA 90210 ·
+            424-394-6159 · SMS program: 424-672-3910 ·
+            dr.trev@teethbytrev.com
+          </p>
+        </div>
 
         <div className="mt-10 space-y-8 text-base leading-relaxed text-ivory/70">
+          <section>
+            <h2 className="font-serif text-3xl font-light text-ivory">
+              Business identity
+            </h2>
+            <p className="mt-3">
+              Teeth by Trev is the public-facing brand of Trevor Jamal Thomas
+              DDS, Inc. References to “Teeth by Trev,” “we,” “us,” or “our” in
+              these terms mean Trevor Jamal Thomas DDS, Inc.
+            </p>
+          </section>
+
           <section>
             <h2 className="font-serif text-3xl font-light text-ivory">
               Text messaging program
@@ -128,8 +150,10 @@ export default function TermsPage() {
             <p className="mt-3">
               We may update these terms from time to time; the version published
               here is the one that applies. Questions about these terms are
-              welcome at TeethByTrev@gmail.com or 424-394-6159, or by post to
-              436 N Bedford Dr #300, Beverly Hills, CA 90210.
+              welcome at dr.trev@teethbytrev.com or 424-394-6159, or by post to
+              the registered business address at 8605 Santa Monica Blvd
+              #691841, West Hollywood, CA 90069. Practice correspondence may
+              also be sent to 436 N Bedford Dr #300, Beverly Hills, CA 90210.
             </p>
           </section>
         </div>

@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Privacy Policy — Teeth by Trev",
   description:
-    "How Teeth by Trev handles website enquiries, text messaging, and optional analytics.",
+    "How Teeth by Trev, operated by Trevor Jamal Thomas DDS, Inc., handles website enquiries, text messaging, and optional analytics.",
 };
 
 export default function PrivacyPage() {
@@ -17,11 +17,33 @@ export default function PrivacyPage() {
         <h1 className="mt-5 font-serif text-5xl font-light sm:text-6xl">
           Your information stays under your control.
         </h1>
-        <p className="mt-6 text-sm text-ivory/45">
-          Teeth by Trev · Trevor J. Thomas, DDS · 436 N Bedford Dr #300, Beverly
-          Hills, CA 90210 · 424-394-6159
-        </p>
+        <div className="mt-6 space-y-1 text-sm leading-relaxed text-ivory/45">
+          <p>
+            Teeth by Trev is operated by Trevor Jamal Thomas DDS, Inc., a
+            California professional corporation.
+          </p>
+          <p>
+            Registered business address: 8605 Santa Monica Blvd #691841, West
+            Hollywood, CA 90069
+          </p>
+          <p>
+            Practice location: 436 N Bedford Dr #300, Beverly Hills, CA 90210 ·
+            424-394-6159 · SMS program: 424-672-3910 ·
+            dr.trev@teethbytrev.com
+          </p>
+        </div>
         <div className="mt-10 space-y-8 text-base leading-relaxed text-ivory/70">
+          <section>
+            <h2 className="font-serif text-3xl font-light text-ivory">
+              Who operates this website
+            </h2>
+            <p className="mt-3">
+              Teeth by Trev is the public-facing brand of Trevor Jamal Thomas
+              DDS, Inc. References to “Teeth by Trev,” “we,” “us,” or “our” in
+              this policy mean Trevor Jamal Thomas DDS, Inc.
+            </p>
+          </section>
+
           <section>
             <h2 className="font-serif text-3xl font-light text-ivory">
               Enquiry information

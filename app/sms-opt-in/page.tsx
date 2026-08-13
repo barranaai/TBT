@@ -8,7 +8,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "SMS Opt-In Flow — Teeth by Trev",
   description:
-    "How Teeth by Trev collects consent to send service text messages, documented for mobile carrier review.",
+    "How Teeth by Trev, operated by Trevor Jamal Thomas DDS, Inc., collects consent to send service text messages.",
   robots: { index: false, follow: false },
 };
 
@@ -53,10 +53,21 @@ export default function SmsOptInPage() {
         <h1 className="mt-5 font-serif text-5xl font-light sm:text-6xl">
           How we collect consent to text you.
         </h1>
-        <p className="mt-6 text-sm text-ivory/45">
-          Teeth by Trev · Trevor J. Thomas, DDS · 436 N Bedford Dr #300, Beverly
-          Hills, CA 90210 · 424-394-6159 · TeethByTrev@gmail.com
-        </p>
+        <div className="mt-6 space-y-1 text-sm leading-relaxed text-ivory/45">
+          <p>
+            Teeth by Trev is operated by Trevor Jamal Thomas DDS, Inc., a
+            California professional corporation.
+          </p>
+          <p>
+            Registered business address: 8605 Santa Monica Blvd #691841, West
+            Hollywood, CA 90069
+          </p>
+          <p>
+            Practice location: 436 N Bedford Dr #300, Beverly Hills, CA 90210 ·
+            424-394-6159 · SMS program: 424-672-3910 ·
+            dr.trev@teethbytrev.com
+          </p>
+        </div>
 
         <div className="mt-10 space-y-6 text-base leading-relaxed text-ivory/70">
           <p>
