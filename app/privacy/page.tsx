@@ -92,7 +92,7 @@ export default function PrivacyPage() {
               UNSUBSCRIBE, REVOKE or OPT-OUT to any message; keywords are not
               case sensitive, and we will send one confirmation of your removal.
               You may also simply ask us to stop in your own words, call
-              424-394-6159, or email TeethByTrev@gmail.com — we honor every
+              424-394-6159, or email dr.trev@teethbytrev.com — we honor every
               request. Reply HELP for assistance. Full messaging terms are in our{" "}
               <Link href="/terms" className="text-gold underline-offset-4 hover:underline">
                 Terms &amp; Conditions
@@ -125,7 +125,7 @@ export default function PrivacyPage() {
               your browser. To stop text messages, reply STOP to any message. To
               stop marketing email, use the unsubscribe link in any message. To
               request removal of your enquiry record, contact us at
-              TeethByTrev@gmail.com or 424-394-6159.
+              dr.trev@teethbytrev.com or 424-394-6159.
             </p>
           </section>
         </div>

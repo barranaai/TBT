@@ -72,7 +72,7 @@ export default function TermsPage() {
               case sensitive. We will send a single message confirming that you
               have been removed, after which you will receive no further texts.
               You may also opt out by calling 424-394-6159, emailing
-              TeethByTrev@gmail.com, or simply asking us in your own words to
+              dr.trev@teethbytrev.com, or simply asking us in your own words to
               stop texting you; we honor every request. Reply HELP for
               assistance at any time.
             </p>
