@@ -2,14 +2,15 @@
 
 ## Release status
 
-**Status:** Deployed to protected GoDaddy staging; live integrations and production approval remain pending.
+**Status:** Deployed to protected GoDaddy staging; Airtable is live-tested, Square is safety-disabled, and production approval remains pending.
 
 The visitor-facing WordPress replica is deployed and passes the repository's
 hermetic integration, live staging route, responsive, security, packaging, and
 dependency checks. The existing production WordPress site has not been
-modified. Production approval remains conditional on real staging tests
-against configured Airtable, Square, Meta, SMTP, cron, backup, and rollback
-facilities.
+modified. A restricted Airtable token and the existing Square production
+credentials are stored encrypted on staging. Square payment creation remains
+explicitly disabled. Production approval remains conditional on the remaining
+Square, Meta, SMTP, cron, backup, and rollback gates below.
 
 ## Identifiers
 
@@ -17,7 +18,7 @@ facilities.
 | --- | --- |
 | Repository | `barranaai/TBT` |
 | WordPress branch | `codex/wordpress-migration` |
-| Package source commit | `a4237b329f3b6e8b900e60bd52bac46f1d5b17c9` |
+| Package source commit | `aea1612522f1ecde46f448f7318f9ca995958750` |
 | Source baseline | `origin/main` at `e19aa7c` |
 | GoDaddy project ID | `ukasxgp8ig` |
 | Current Airo preview host | `ukasxgp8ig.preview.c36.airoapp.ai` |
@@ -40,7 +41,7 @@ override the new theme. The production host and DNS were not changed.
 | Package | SHA-256 |
 | --- | --- |
 | `teeth-by-trev-theme.zip` | `28a869aa50aba152b3a2dd7e1ec415497194805092073d43ba2ded6380fadbba` |
-| `tbt-core-plugin.zip` | `30499434e25ec2428a2d656d98475d0b954aee56cf5ee7c4ff7e27ccf38018b2` |
+| `tbt-core-plugin.zip` | `ef232156ae4e8579a9c29f8896abf8d3ad089d3d6506ee40af97b615e5b02a99` |
 
 Both archives pass `unzip -tq`. Two consecutive clean package runs produced
 the same hashes. Rebuild them with `npm run package` and compare against
@@ -65,9 +66,20 @@ the same hashes. Rebuild them with `npm run package` and compare against
 - All ten routes pass at mobile, tablet, and desktop sizes on GoDaddy staging;
   menus, slider, counters, parallax, form controls, Meta consent, and the safe
   unconfigured-Square state pass in a real browser.
-- The staging health endpoint reports TBT Core `0.2.6`, private WordPress
-  database storage, and no pending records; Airtable and Square remain
-  deliberately unconfigured until credentials are transferred.
+- TBT Core `0.2.7` stores integration secrets encrypted with the staging
+  site's WordPress authentication salts and never renders the plaintext back
+  into the admin screen. Empty legacy constants no longer mask encrypted
+  staging values.
+- The staging health endpoint reports private WordPress database storage,
+  Airtable configured, Square disabled, and no pending records.
+- The authorized `Barrana WordPress Staging Test` submission was stored in
+  Airtable as record `recrcoQgS3wV6TJYX`, lead reference
+  `TBT-260821-DERCC`, with `Social = Instagram:
+  @barrana.wordpress.staging` and a private staging smile-photo URL. Meta
+  consent was off and no Meta server event was attempted.
+- Existing Square production credentials are encrypted on staging, but the
+  independent `SQUARE_ENABLED` guard is off. No card was tokenized and no
+  Square payment or charge was attempted.
 - Canonical TBT REST responses, including health and Square configuration, send
   `no-store` headers and bypass GoDaddy's full-page cache. The visitor-facing
   payment code uses the canonical endpoint. The legacy `/api/square/config`
@@ -84,8 +96,8 @@ Do not approve production until every item below is recorded with timestamp, ope
 | Gate | Result | Evidence |
 | --- | --- | --- |
 | HTTPS staging URL protected from public indexing | Pass | `https://1254861.us6.myftpupload.com`; `noindex, nofollow`, 2026-08-21 |
-| Theme and plugin checksums match this release | Pass | Archives verified immediately before SFTP deployment; deployed routes and all visitor assets pass |
-| Airtable test lead saved with exact Social and attachments | Pending | |
+| Theme and plugin checksums match this release | Pass | Plugin `ef232156…` installed through WordPress's staging-only replacement flow; deterministic archives and deployed routes/assets verified, 2026-08-21 |
+| Airtable test lead saved with exact Social and private photo handoff | Pass | Record `recrcoQgS3wV6TJYX`; lead `TBT-260821-DERCC`; verified in Airtable, 2026-08-21 |
 | Airtable forced-failure retry recovered without a duplicate | Pending | |
 | Square sandbox success, decline, and ambiguous retry verified | Pending | |
 | Meta consent off/on and shared event ID verified | Pending | |

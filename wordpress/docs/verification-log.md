@@ -69,12 +69,26 @@ Staging URL: `https://1254861.us6.myftpupload.com`
 Verified: 2026-08-21
 
 - GoDaddy one-click staging clone created without changing the production host.
-- TBT Core 0.2.6 and the Teeth by Trev theme installed from the verified release
+- TBT Core 0.2.7 and the Teeth by Trev theme installed from the verified release
   archives and activated on staging.
+- The final deterministic TBT Core archive (`ef232156ae4e8579a9c29f8896abf8d3ad089d3d6506ee40af97b615e5b02a99`)
+  replaced the staging plugin through WordPress's upload flow. The public
+  inquiry bundle reports 0.2.7, and encrypted site settings persisted.
 - Legacy Elementor page-builder plugins deactivated on staging after they were
   shown to override the active theme; no legacy plugin was deleted.
 - Health endpoint: WordPress 7.0.4, PHP 8.1.34.15, private WordPress database
-  storage, zero pending records, Airtable and Square not yet configured.
+  storage, zero pending records, Airtable configured, and Square disabled.
+- Integration secrets are stored encrypted in a staging-only admin screen;
+  password inputs are blank after save and report only that an encrypted value
+  exists. Empty legacy config constants fall back to these encrypted values.
+- The existing Square production token, application ID, and location ID are
+  stored on staging, but `SQUARE_ENABLED` is false. No Square tokenization,
+  payment request, or charge was attempted.
+- Authorized live Airtable verification passed with `Barrana WordPress Staging
+  Test` (`recrcoQgS3wV6TJYX`, lead `TBT-260821-DERCC`). The `Social` field is
+  exactly `Instagram: @barrana.wordpress.staging`; `Photos` contains the
+  private staging photo URL; Caller Type, consent, source, and attribution
+  fields are populated; Meta consent was off.
 - `verify:local` passes all ten routes, 21 same-origin image/video assets, 11
   internal links, protected-staging robots behavior, form requirements, image
   signature validation, health, the canonical Square configuration endpoint,
@@ -90,9 +104,10 @@ Verified: 2026-08-21
   suppressed until the site is made public.
 - Production `32741.us6.myftpupload.com` remained unchanged throughout.
 
-## Requires staging credentials or infrastructure
+## Remaining staging credentials or infrastructure
 
-- Airtable live record creation and column-by-column confirmation.
+- Airtable forced-failure recovery against the live service (the equivalent
+  retry and no-duplicate behavior already passes hermetically).
 - Square sandbox tokenization, success, decline, retry, deposit logging, and
   reconciliation.
 - Meta Pixel/CAPI test-event receipt and browser/server deduplication.
