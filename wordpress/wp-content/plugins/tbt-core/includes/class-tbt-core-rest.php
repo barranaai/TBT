@@ -19,6 +19,7 @@ final class TBT_Core_REST {
 		add_action( 'init', array( __CLASS__, 'photo_rewrites' ), 5 );
 		add_action( 'init', array( __CLASS__, 'maybe_flush_photo_rewrites' ), 99 );
 		add_filter( 'query_vars', array( __CLASS__, 'photo_query_vars' ) );
+		add_filter( 'rest_post_dispatch', array( __CLASS__, 'no_store_operational_responses' ), 10, 3 );
 		add_action( 'template_redirect', array( __CLASS__, 'serve_photo_request' ) );
 		add_action( 'tbt_core_sync_airtable', array( __CLASS__, 'sync_unsaved_airtable' ) );
 	}
@@ -39,6 +40,17 @@ final class TBT_Core_REST {
 
 	public static function airtable_is_configured(): bool {
 		return (bool) ( self::config( 'AIRTABLE_TOKEN' ) && self::config( 'AIRTABLE_BASE_ID' ) );
+	}
+
+	public static function no_store_operational_responses( $response, WP_REST_Server $server, WP_REST_Request $request ) {
+		if ( ! str_starts_with( $request->get_route(), '/tbt/v1/' ) ) {
+			return $response;
+		}
+		$response = rest_ensure_response( $response );
+		$response->header( 'Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0' );
+		$response->header( 'Pragma', 'no-cache' );
+		$response->header( 'Expires', 'Wed, 11 Jan 1984 05:00:00 GMT' );
+		return $response;
 	}
 
 	public static function allow_public_write( WP_REST_Request $request ): bool {

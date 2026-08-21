@@ -124,16 +124,27 @@ assert(count(missingHtml, /name=["']description["']/g) === 0, "unknown route: mu
 
 const sitemapResponse = await request("/wp-sitemap-posts-page-1.xml");
 const sitemap = await sitemapResponse.text();
-assert(sitemapResponse.status === 200, `page sitemap failed: ${sitemapResponse.status}`);
-assert(!sitemap.includes("/reserve/"), "reserve noindex URL leaked into the page sitemap");
+if (expectNoindex && sitemapResponse.status === 404) {
+  console.log("PASS public page sitemap suppressed on protected staging");
+} else {
+  assert(sitemapResponse.status === 200, `page sitemap failed: ${sitemapResponse.status}`);
+  assert(!sitemap.includes("/reserve/"), "reserve noindex URL leaked into the page sitemap");
+  console.log("PASS public page sitemap excludes reserve");
+}
 
 const healthResponse = await request("/wp-json/tbt/v1/health");
 const health = await healthResponse.json();
-assert(healthResponse.status === 200 && health.ok && health.plugin === "0.2.5", "health endpoint/version mismatch");
+assert(healthResponse.status === 200 && health.ok && health.plugin === "0.2.6", "health endpoint/version mismatch");
+assert(healthResponse.headers.get("cache-control")?.includes("no-store"), "health endpoint may be cached");
 
-const squareResponse = await request("/api/square/config");
+const squareResponse = await request("/wp-json/tbt/v1/square/config");
 const square = await squareResponse.json();
-assert(squareResponse.status === 200 && typeof square.configured === "boolean", "legacy Square config endpoint failed");
+assert(squareResponse.status === 200 && typeof square.configured === "boolean", "Square config endpoint failed");
+assert(squareResponse.headers.get("cache-control")?.includes("no-store"), "Square config endpoint may be cached");
+
+const legacySquareResponse = await request("/api/square/config");
+const legacySquare = await legacySquareResponse.json();
+assert(legacySquareResponse.status === 200 && typeof legacySquare.configured === "boolean", "legacy Square config endpoint failed");
 
 const commonInquiry = {
   firstName: "Parity",

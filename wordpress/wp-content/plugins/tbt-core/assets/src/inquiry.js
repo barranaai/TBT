@@ -328,4 +328,4 @@ if (root) {
   });
 }
 
-window.TBTInquiry = Object.freeze({ version: "0.2.5", ready: Boolean(root) });
+window.TBTInquiry = Object.freeze({ version: "0.2.6", ready: Boolean(root) });

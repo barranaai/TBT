@@ -180,12 +180,16 @@ function airtableFields(log) {
 await request("/", {}, true);
 await reset({}, true);
 
-const health = (await jsonRequest("/wp-json/tbt/v1/health")).body;
-assert(health.ok && health.plugin === "0.2.5" && health.airtable === true && health.square === true && health.airtablePending === 0 && health.airtablePendingDeposits === 0, `configured health mismatch: ${JSON.stringify(health)}`);
-const squareConfig = (await jsonRequest("/wp-json/tbt/v1/square/config")).body;
+const healthResult = await jsonRequest("/wp-json/tbt/v1/health");
+const health = healthResult.body;
+assert(health.ok && health.plugin === "0.2.6" && health.airtable === true && health.square === true && health.airtablePending === 0 && health.airtablePendingDeposits === 0, `configured health mismatch: ${JSON.stringify(health)}`);
+assert(healthResult.response.headers.get("cache-control")?.includes("no-store"), "Health response is cacheable");
+const squareConfigResult = await jsonRequest("/wp-json/tbt/v1/square/config");
+const squareConfig = squareConfigResult.body;
 assert(squareConfig.configured && squareConfig.environment === "sandbox", "Square public config is not sandbox-configured");
 assert(squareConfig.applicationId === "sandbox-sq0idb-integration" && squareConfig.locationId === "integration-location", "Square public identifiers mismatch");
 assert(!JSON.stringify(squareConfig).includes("integration-square-token") && !("accessToken" in squareConfig), "Square access token leaked to the browser");
+assert(squareConfigResult.response.headers.get("cache-control")?.includes("no-store"), "Square config response is cacheable");
 assert((await state()).nextSync > 0, "Configured Airtable background sync was not scheduled");
 console.log("PASS configured health and client-safe Square configuration");
 

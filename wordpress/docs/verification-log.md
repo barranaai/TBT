@@ -1,6 +1,6 @@
 # Verification Log
 
-Updated: 2026-08-10
+Updated: 2026-08-21
 
 ## Passed locally
 
@@ -62,12 +62,40 @@ Updated: 2026-08-10
   checks; two consecutive normalized builds produce identical SHA-256 hashes;
   the manifest verifies; generated archives remain untracked.
 
+## Passed on GoDaddy staging
+
+Staging URL: `https://1254861.us6.myftpupload.com`
+
+Verified: 2026-08-21
+
+- GoDaddy one-click staging clone created without changing the production host.
+- TBT Core 0.2.6 and the Teeth by Trev theme installed from the verified release
+  archives and activated on staging.
+- Legacy Elementor page-builder plugins deactivated on staging after they were
+  shown to override the active theme; no legacy plugin was deleted.
+- Health endpoint: WordPress 7.0.4, PHP 8.1.34.15, private WordPress database
+  storage, zero pending records, Airtable and Square not yet configured.
+- `verify:local` passes all ten routes, 21 same-origin image/video assets, 11
+  internal links, protected-staging robots behavior, form requirements, image
+  signature validation, health, the canonical Square configuration endpoint,
+  and the legacy Square compatibility alias.
+- Canonical `/wp-json/tbt/v1/*` operational responses send `no-store` headers;
+  GoDaddy reports them as dynamic. The visitor-facing payment code uses the
+  canonical Square endpoint. GoDaddy may apply its standard full-page cache
+  policy to the inactive legacy `/api/square/config` compatibility alias.
+- `verify:responsive` passes all ten routes at 375×844, 768×1024, and
+  1440×950, including menus, slider, counters, parallax, Classic handoff,
+  enquiry controls, consent/Meta behavior, and the unconfigured-Square fallback.
+- GoDaddy staging is `noindex, nofollow`; WordPress's public page sitemap is
+  suppressed until the site is made public.
+- Production `32741.us6.myftpupload.com` remained unchanged throughout.
+
 ## Requires staging credentials or infrastructure
 
 - Airtable live record creation and column-by-column confirmation.
 - Square sandbox tokenization, success, decline, retry, deposit logging, and
   reconciliation.
 - Meta Pixel/CAPI test-event receipt and browser/server deduplication.
-- Production-like cache, HTTPS, security-header, backup, and rollback rehearsal.
+- Production-like cache, security-header, backup, and rollback rehearsal.
 - Formal screenshot-diff thresholds across all pages and breakpoints.
 - Accessibility/performance scans in the target hosting environment.
