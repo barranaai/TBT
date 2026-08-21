@@ -64,11 +64,7 @@ final class TBT_Core_REST {
 	}
 
 	private static function config( string $name, string $default = '' ): string {
-		if ( defined( $name ) ) {
-			return trim( (string) constant( $name ) );
-		}
-		$value = getenv( $name );
-		return false === $value ? $default : trim( (string) $value );
+		return TBT_Core_Settings::get( $name, $default );
 	}
 
 	private static function clean( $value, int $max = 200 ): string {
@@ -410,6 +406,8 @@ final class TBT_Core_REST {
 	}
 
 	private static function square_is_configured(): bool {
+		$enabled = strtolower( self::config( 'SQUARE_ENABLED', '1' ) );
+		if ( ! in_array( $enabled, array( '1', 'true', 'yes', 'on' ), true ) ) return false;
 		return (bool) ( self::config( 'SQUARE_ACCESS_TOKEN' ) && self::config( 'SQUARE_APPLICATION_ID' ) && self::config( 'SQUARE_LOCATION_ID' ) );
 	}
 

@@ -83,9 +83,12 @@ source produces identical archives with the same build toolchain. Verify them wi
 ## Production configuration
 
 The committed code contains no credentials. Configure the constants shown in
-`config/wp-config.tbt.example.php` in the target site's `wp-config.php`, or
-provide matching server environment variables. The plugin reads constants
-first and environment variables second.
+`config/wp-config.tbt.example.php` in the target site's `wp-config.php`, provide
+matching server environment variables, or use **Settings → TBT Integrations**.
+The admin screen encrypts secrets with the site's WordPress authentication
+salts and never displays them again. Non-empty constants take precedence,
+followed by non-empty environment variables and then encrypted site settings.
+`SQUARE_ENABLED` is an independent fail-closed switch; leave it off on staging.
 
 Production does not need Node.js: commit the generated files in each
 `assets/dist` directory, then install and activate the theme and plugin. Plugin

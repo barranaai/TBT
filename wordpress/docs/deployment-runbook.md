@@ -16,8 +16,10 @@ staging hostname with its own database and uploads directory.
 1. Use WordPress 6.6+ and PHP 8.1+ with HTTPS.
 2. Install `wp-content/themes/teeth-by-trev` and
    `wp-content/plugins/tbt-core` from this branch.
-3. Add the server-only values from `config/wp-config.tbt.example.php`, starting
-   with Square sandbox and Meta test-event mode.
+3. Add server-only values from `config/wp-config.tbt.example.php`, or save them
+   in **Settings → TBT Integrations**. The WordPress screen encrypts secret
+   values and never renders them back. Keep `SQUARE_ENABLED` off until the
+   approved Square test environment is ready.
 4. Activate TBT Core, then the Teeth by Trev theme. Activation creates the
    pages, operational tables, front-page option, and rewrite rules.
 5. Set **Settings → Permalinks** to **Post name** and save once.

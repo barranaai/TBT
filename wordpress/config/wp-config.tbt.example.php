@@ -13,6 +13,7 @@ define( 'SQUARE_ACCESS_TOKEN', 'replace-on-server' );
 define( 'SQUARE_APPLICATION_ID', 'replace-on-server' );
 define( 'SQUARE_LOCATION_ID', 'replace-on-server' );
 define( 'SQUARE_ENVIRONMENT', 'sandbox' ); // Change to production only at approved cutover.
+define( 'SQUARE_ENABLED', false ); // Keep disabled until an approved environment is ready to accept real payments.
 define( 'SQUARE_VERSION', '2026-05-20' );
 
 define( 'META_CAPI_ACCESS_TOKEN', 'replace-on-server' );
