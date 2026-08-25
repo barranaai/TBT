@@ -2,11 +2,13 @@
 
 ## Release status
 
-**Status:** Deployed to protected GoDaddy staging; Airtable is live-tested, Square is safety-disabled, and production approval remains pending.
+**Status:** Theme 0.2.2 is locally verified and packaged; the protected GoDaddy staging site remains on the prior verified theme until the expired admin session is reauthenticated. Production approval remains pending.
 
-The visitor-facing WordPress replica is deployed and passes the repository's
-hermetic integration, live staging route, responsive, security, packaging, and
-dependency checks. The existing production WordPress site has not been
+The visitor-facing WordPress replica is deployed on staging, and its 0.2.2
+accessibility/performance update passes the repository's local route,
+responsive, quality, hermetic integration, packaging, and dependency checks.
+The 0.2.2 staging upload is pending only because the GoDaddy admin session
+expired on 2026-08-25. The existing production WordPress site has not been
 modified. A restricted Airtable token and the existing Square production
 credentials are stored encrypted on staging. Square payment creation remains
 explicitly disabled. Production approval remains conditional on the remaining
@@ -18,7 +20,7 @@ Square, Meta, SMTP, cron, backup, and rollback gates below.
 | --- | --- |
 | Repository | `barranaai/TBT` |
 | WordPress branch | `codex/wordpress-migration` |
-| Package source commit | `aea1612522f1ecde46f448f7318f9ca995958750` |
+| Package source commit | `b83a4db` |
 | Source baseline | `origin/main` at `e19aa7c` |
 | GoDaddy project ID | `ukasxgp8ig` |
 | Current Airo preview host | `ukasxgp8ig.preview.c36.airoapp.ai` |
@@ -40,7 +42,7 @@ override the new theme. The production host and DNS were not changed.
 
 | Package | SHA-256 |
 | --- | --- |
-| `teeth-by-trev-theme.zip` | `28a869aa50aba152b3a2dd7e1ec415497194805092073d43ba2ded6380fadbba` |
+| `teeth-by-trev-theme.zip` | `0f33d2949a26c1baf30903a4ab293b2e311a7d8feb63833b723eee92810c6b3c` |
 | `tbt-core-plugin.zip` | `ef232156ae4e8579a9c29f8896abf8d3ad089d3d6506ee40af97b615e5b02a99` |
 
 Both archives pass `unzip -tq`. Two consecutive clean package runs produced
@@ -51,6 +53,14 @@ the same hashes. Rebuild them with `npm run package` and compare against
 
 - Ten visitor routes verified locally, including Classic and 404 behavior.
 - Thirty responsive renders verified at mobile, tablet, and desktop sizes.
+- Twenty WCAG 2.0/2.1/2.2 A/AA route-and-viewport scans pass with no serious
+  or critical axe violations, no unnamed interactive controls, valid landmark
+  and heading structure, and keyboard-reachable controls.
+- Local performance budgets pass on all ten routes at 375×844 and 1440×950.
+  LCP measured approximately 1.6–2.7 seconds and CLS remained at or below
+  0.052. The 1080p hero video retains its 17.68-second visual source while its
+  web payload was reduced from 22 MB to 4.2 MB by removing unused audio and an
+  attached image stream and re-encoding with H.264 fast-start delivery.
 - Internal links and 21 same-origin media assets verified.
 - Enquiry requirements verified for new patient, existing patient, and general enquiry branches.
 - Instagram handle and smile photos verified as mandatory in every enquiry branch; phone remains mandatory for patient branches.
@@ -77,6 +87,13 @@ the same hashes. Rebuild them with `npm run package` and compare against
   `TBT-260821-DERCC`, with `Social = Instagram:
   @barrana.wordpress.staging` and a private staging smile-photo URL. Meta
   consent was off and no Meta server event was attempted.
+- Airtable revision history confirms that the staging API initially stored
+  `Phone Number = +14245550199` on that synthetic record. The current Airtable
+  view later displays the field blank, with no visible configured Airtable
+  automation explaining the change. WordPress's payload and field mapping are
+  therefore verified; the remaining discrepancy is recorded as an external
+  Airtable normalization/display investigation. General-enquiry phone remains
+  intentionally optional under the parity contract.
 - Existing Square production credentials are encrypted on staging, but the
   independent `SQUARE_ENABLED` guard is off. No card was tokenized and no
   Square payment or charge was attempted.
@@ -96,7 +113,7 @@ Do not approve production until every item below is recorded with timestamp, ope
 | Gate | Result | Evidence |
 | --- | --- | --- |
 | HTTPS staging URL protected from public indexing | Pass | `https://1254861.us6.myftpupload.com`; `noindex, nofollow`, 2026-08-21 |
-| Theme and plugin checksums match this release | Pass | Plugin `ef232156…` installed through WordPress's staging-only replacement flow; deterministic archives and deployed routes/assets verified, 2026-08-21 |
+| Theme and plugin checksums match this release | Theme 0.2.2 upload pending; plugin pass | Theme `0f33d294…` and plugin `ef232156…` are deterministic locally; plugin is installed on staging, 2026-08-25 |
 | Airtable test lead saved with exact Social and private photo handoff | Pass | Record `recrcoQgS3wV6TJYX`; lead `TBT-260821-DERCC`; verified in Airtable, 2026-08-21 |
 | Airtable forced-failure retry recovered without a duplicate | Pending | |
 | Square sandbox success, decline, and ambiguous retry verified | Pending | |
@@ -104,8 +121,8 @@ Do not approve production until every item below is recorded with timestamp, ope
 | SMTP delivery and reply-to verified | Pending | |
 | Real cron runner and pending-sync recovery verified | Pending | |
 | Mobile/tablet/desktop visual comparison approved | Automated pass; formal approval pending | 30 staging renders plus interaction suite, 2026-08-21 |
-| Accessibility keyboard and screen-reader smoke test approved | Pending | |
-| Performance and cache behavior approved | Pending | |
+| Accessibility keyboard and screen-reader smoke test approved | Automated local pass; formal screen-reader approval pending | 20 WCAG route/viewport scans, AX-tree naming, structure, and keyboard checks, 2026-08-25 |
+| Performance and cache behavior approved | Automated local pass; refreshed staging approval pending | 20 local performance scans; LCP 1.6–2.7 s, CLS ≤0.052, 2026-08-25 |
 | Database/files backup created and restore tested | Pending | |
 | Current Node release and environment configuration captured | Pending | |
 | Custom domain/DNS inventory captured | Pending | |

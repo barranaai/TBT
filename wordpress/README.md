@@ -37,6 +37,7 @@ terminal:
 ```bash
 npm run verify:local
 npm run verify:responsive
+npm run verify:quality
 ```
 
 The verifier covers every source route (including `/classic`), exact titles and
@@ -48,6 +49,13 @@ also exercises both menus, the comparison slider, counters, parallax, Classic
 form handoff, enquiry requirements, default-off analytics consent, and the safe
 Square fallback. Set `CHROME_PATH` only when the browser is not installed in a
 standard location.
+
+The quality verifier runs every route at mobile and desktop widths against axe
+WCAG A/AA rules, the Chrome accessibility tree, heading/landmark and duplicate
+ID checks, keyboard focus targets, and explicit CLS, LCP, load, TTFB, and
+transfer budgets. It writes its ignored diagnostic report to
+`artifacts/quality/quality-report.json`. Use `TBT_ROUTES` and `TBT_VIEWPORTS`
+for a focused diagnostic run without weakening the default full matrix.
 
 The credential-shaped Airtable, Square, and Meta paths have a separate
 hermetic environment. It uses fake server constants and a mounted test-only

@@ -1,6 +1,6 @@
 # Verification Log
 
-Updated: 2026-08-21
+Updated: 2026-08-25
 
 ## Passed locally
 
@@ -23,6 +23,17 @@ Updated: 2026-08-21
   and 1440×950 passed without browser errors, broken images, or horizontal
   overflow. Representative Atelier and Classic screenshots were inspected at
   each breakpoint.
+- Automated WCAG quality matrix: all 10 canonical routes at mobile and desktop
+  widths pass axe WCAG 2.0/2.1/2.2 A/AA checks with no serious or critical
+  violations, no unnamed interactive AX-tree controls, exactly one `h1` and
+  `main`, no duplicate IDs or skipped headings, and keyboard-reachable targets.
+- The same 20 quality runs pass the local performance budgets. LCP measured
+  approximately 1.6–2.7 seconds, CLS remained at or below 0.052, TTFB/load
+  remained within budget, and transfer stayed below 25 MiB.
+- The hero source remains 1920 by 1080 H.264 at 23.98 fps for 17.684 seconds.
+  Removing unused audio and an attached MJPEG stream and applying web-focused
+  H.264 fast-start compression reduced it from 22 MB to 4.2 MB; a side-by-side
+  source-frame inspection showed no material visual change.
 - Automated interaction checks: both mobile menus and Escape behavior, Classic
   comparison-slider keyboard control, animated counters, Atelier selected-work
   parallax, and the Classic consultation-to-contact prefill handoff.
@@ -89,6 +100,12 @@ Verified: 2026-08-21
   exactly `Instagram: @barrana.wordpress.staging`; `Photos` contains the
   private staging photo URL; Caller Type, consent, source, and attribution
   fields are populated; Meta consent was off.
+- Airtable revision history shows that the API initially stored `Phone Number
+  = +14245550199` on the synthetic record. The live view now shows the field
+  blank and no configured Airtable automation was visible. This confirms the
+  WordPress payload/mapping and leaves an Airtable-side normalization/display
+  anomaly to investigate; no WordPress contract change was made because
+  General phone is intentionally optional.
 - `verify:local` passes all ten routes, 21 same-origin image/video assets, 11
   internal links, protected-staging robots behavior, form requirements, image
   signature validation, health, the canonical Square configuration endpoint,
@@ -106,6 +123,9 @@ Verified: 2026-08-21
 
 ## Remaining staging credentials or infrastructure
 
+- Upload and activate the deterministic Teeth by Trev theme 0.2.2 archive
+  after reauthenticating the expired GoDaddy admin session, then repeat the
+  staging route, responsive, accessibility, performance, and health gates.
 - Airtable forced-failure recovery against the live service (the equivalent
   retry and no-duplicate behavior already passes hermetically).
 - Square sandbox tokenization, success, decline, retry, deposit logging, and
@@ -113,4 +133,4 @@ Verified: 2026-08-21
 - Meta Pixel/CAPI test-event receipt and browser/server deduplication.
 - Production-like cache, security-header, backup, and rollback rehearsal.
 - Formal screenshot-diff thresholds across all pages and breakpoints.
-- Accessibility/performance scans in the target hosting environment.
+- Accessibility/performance scans of the refreshed 0.2.2 target environment.
