@@ -103,6 +103,20 @@ p { text-wrap: pretty; }
 .tbt-photo-drop:hover { border-color: var(--color-gold); background: color-mix(in srgb, var(--color-gold) 4%, transparent); }
 .tbt-consent { display: flex; cursor: pointer; align-items: flex-start; gap: 1rem; border: 1px solid color-mix(in srgb, var(--color-gold) 30%, transparent); background: color-mix(in srgb, var(--color-gold) 5%, transparent); padding: 1.25rem; }
 
+/* Keep the restrained palette while meeting WCAG contrast on dark surfaces. */
+:is(.bg-ink, .bg-onyx, .bg-espresso) :is([class~="text-ivory/35"], [class~="text-ivory/40"], [class~="text-ivory/45"]) { color: color-mix(in srgb, var(--color-ivory) 55%, transparent); }
+:is(.bg-ink, .bg-onyx, .bg-espresso) :is([class~="text-gold/60"], [class~="text-gold/70"], [class~="text-gold/75"]) { color: color-mix(in srgb, var(--color-gold) 92%, transparent); }
+:is(.bg-ink, .bg-onyx, .bg-espresso) [class~="text-gold/40"] { color: color-mix(in srgb, var(--color-gold) 80%, transparent); }
+:is(.bg-ink, .bg-onyx, .bg-espresso) [class~="text-ivory/[0.05]"] { color: color-mix(in srgb, var(--color-ivory) 40%, transparent); }
+:is(.bg-ink, .bg-onyx, .bg-espresso) .eyebrow [class~="opacity-80"] { opacity: 1; }
+
+/* Classic light sections use a deeper neutral for small supporting copy. */
+:is(.bg-ivory:not(body), .bg-cream, .bg-sand) .eyebrow,
+:is(.bg-ivory:not(body), .bg-cream, .bg-sand) [class~="text-taupe"],
+.bg-ivory:not(body) [class~="text-gold/70"] { color: #5f5549; }
+:is(.bg-ivory:not(body), .bg-cream, .bg-sand) .eyebrow [class~="opacity-80"] { opacity: 1; }
+.bg-sand [class~="text-stone"] { color: #5f5549; }
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; filter: none; transition: none; }
