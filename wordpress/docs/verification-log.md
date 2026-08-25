@@ -162,3 +162,18 @@ Verified: 2026-08-21
 - Public DNS and HTTP evidence confirms `teethbytrev.com` and `www` still serve
   the live GoDaddy Airo Node/Next.js application. Neither live application nor
   either production hosting target was changed during this refresh.
+
+## 2026-08-26 staging pre-deployment baseline
+
+- GoDaddy SSO access was restored specifically for the protected staging host
+  `1254861.us6.myftpupload.com`; the separate production WordPress host
+  `32741.us6.myftpupload.com` was not changed.
+- The active staging release remains TBT Core 0.2.7 and Teeth by Trev theme
+  0.2.1. The verified 0.2.8 plugin and 0.2.3 theme archives have not yet been
+  installed.
+- The public health endpoint returned `ok: true`, WordPress 7.0.4, PHP
+  8.1.34.15, WordPress-database storage, Airtable configured, zero pending
+  enquiry or deposit records, and Square disabled.
+- The verified TBT Core 0.2.8 archive was selected in WordPress's staging-only
+  upload form, but the install/replace action remains paused for explicit
+  approval. No production, DNS, or live-payment state changed.
