@@ -21,7 +21,7 @@ backup, and rollback gates below.
 | --- | --- |
 | Repository | `barranaai/TBT` |
 | WordPress branch | `codex/wordpress-migration` |
-| Package source commit | **Pending final branch commit** |
+| Package source commit | `fd04143` |
 | Source baseline | `origin/main` at `e19aa7c` |
 | GoDaddy project ID | `ukasxgp8ig` |
 | Current Airo preview host | `ukasxgp8ig.preview.c36.airoapp.ai` |
