@@ -177,3 +177,15 @@ Verified: 2026-08-21
 - The verified TBT Core 0.2.8 archive was selected in WordPress's staging-only
   upload form, but the install/replace action remains paused for explicit
   approval. No production, DNS, or live-payment state changed.
+- The pre-update responsive suite passes all ten routes at 375x844, 768x1024,
+  and 1440x950, including menus, interactions, enquiry controls, default-off
+  consent, Meta deduplication, and the disabled-Square fallback.
+- The pre-update route suite passes all ten pages, 21 same-origin media assets,
+  11 internal links, and protected-staging sitemap behavior. Its final health
+  assertion fails only because the committed verifier expects TBT Core 0.2.8
+  while staging intentionally remains on 0.2.7 until installation approval.
+- The pre-update quality suite records serious color-contrast violations on
+  every tested route except Privacy and an additional text-link distinction
+  violation on Contact at both mobile and desktop widths. Performance remains
+  within budget. These findings reproduce the accessibility gap already fixed
+  by the locally verified 0.2.3 theme and must be cleared after deployment.
