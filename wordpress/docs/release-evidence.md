@@ -2,17 +2,18 @@
 
 ## Release status
 
-**Status:** Theme 0.2.2 is locally verified and packaged; the protected GoDaddy staging site remains on the prior verified theme until the expired admin session is reauthenticated. Production approval remains pending.
+**Status:** Theme 0.2.3 and TBT Core 0.2.8 are locally verified and packaged; the protected GoDaddy staging site remains on its prior verified release until the expired admin session is reauthenticated. Production approval remains pending.
 
-The visitor-facing WordPress replica is deployed on staging, and its 0.2.2
-accessibility/performance update passes the repository's local route,
-responsive, quality, hermetic integration, packaging, and dependency checks.
-The 0.2.2 staging upload is pending only because the GoDaddy admin session
-expired on 2026-08-25. The existing production WordPress site has not been
-modified. A restricted Airtable token and the existing Square production
-credentials are stored encrypted on staging. Square payment creation remains
-explicitly disabled. Production approval remains conditional on the remaining
-Square, Meta, SMTP, cron, backup, and rollback gates below.
+The visitor-facing WordPress replica is deployed on staging, while the 0.2.3
+theme and 0.2.8 plugin parity refresh pass the repository's local route,
+responsive, visual, quality, hermetic integration, packaging, and WordPress
+dependency checks. The refreshed staging upload is pending only because the
+GoDaddy admin session expired on 2026-08-25. Neither the live Airo/Next.js site
+nor the separate production WordPress host was modified. A restricted Airtable
+token and the existing Square production credentials remain encrypted on
+staging; Square payment creation remains explicitly disabled. Production
+approval remains conditional on the remaining Square, Meta, SMTP, cron,
+backup, and rollback gates below.
 
 ## Identifiers
 
@@ -20,7 +21,7 @@ Square, Meta, SMTP, cron, backup, and rollback gates below.
 | --- | --- |
 | Repository | `barranaai/TBT` |
 | WordPress branch | `codex/wordpress-migration` |
-| Package source commit | `b83a4db` |
+| Package source commit | **Pending final branch commit** |
 | Source baseline | `origin/main` at `e19aa7c` |
 | GoDaddy project ID | `ukasxgp8ig` |
 | Current Airo preview host | `ukasxgp8ig.preview.c36.airoapp.ai` |
@@ -28,7 +29,7 @@ Square, Meta, SMTP, cron, backup, and rollback gates below.
 | GoDaddy staging WordPress host | `1254861.us6.myftpupload.com` |
 | Staging environment created | 2026-08-21 |
 | WordPress / PHP | 7.0.4 / 8.1.34.15 |
-| Custom production domain | **Unverified — GoDaddy workspace reports no attached domains** |
+| Custom production domain | `teethbytrev.com` and `www` currently serve GoDaddy Airo Node/Next.js; control-plane binding ID/actor pending |
 | Current Node deployment/release ID | **Unverified** |
 | Current rollback point | **Unverified — capture before any staging or production action** |
 
@@ -42,8 +43,8 @@ override the new theme. The production host and DNS were not changed.
 
 | Package | SHA-256 |
 | --- | --- |
-| `teeth-by-trev-theme.zip` | `0f33d2949a26c1baf30903a4ab293b2e311a7d8feb63833b723eee92810c6b3c` |
-| `tbt-core-plugin.zip` | `ef232156ae4e8579a9c29f8896abf8d3ad089d3d6506ee40af97b615e5b02a99` |
+| `teeth-by-trev-theme.zip` | `71483592a0a7058183e9ce862070d5bbba2e8489fcd31bbf94bd160d55f3b325` |
+| `tbt-core-plugin.zip` | `67bcb4b699cd900d82e467060ffcb0b122b51fae2b237737c3006beb6898c54d` |
 
 Both archives pass `unzip -tq`. Two consecutive clean package runs produced
 the same hashes. Rebuild them with `npm run package` and compare against
@@ -53,12 +54,17 @@ the same hashes. Rebuild them with `npm run package` and compare against
 
 - Ten visitor routes verified locally, including Classic and 404 behavior.
 - Thirty responsive renders verified at mobile, tablet, and desktop sizes.
+- Thirty automated visual comparisons pass against the checked-in Next.js
+  source at mobile, tablet, and desktop sizes. Visible headings, copy, links,
+  and media order match exactly. Raster differences remain below the 6% budget;
+  the largest is 5.45% on the 15,000-pixel mobile Classic page, primarily from
+  the accessibility contrast uplift and cross-renderer font antialiasing.
 - Twenty WCAG 2.0/2.1/2.2 A/AA route-and-viewport scans pass with no serious
   or critical axe violations, no unnamed interactive controls, valid landmark
   and heading structure, and keyboard-reachable controls.
 - Local performance budgets pass on all ten routes at 375×844 and 1440×950.
-  LCP measured approximately 1.6–2.7 seconds and CLS remained at or below
-  0.052. The 1080p hero video retains its 17.68-second visual source while its
+  LCP measured 1.77–2.51 seconds and CLS remained at or below 0.0523. The
+  1080p hero video retains its 17.68-second visual source while its
   web payload was reduced from 22 MB to 4.2 MB by removing unused audio and an
   attached image stream and re-encoding with H.264 fast-start delivery.
 - Internal links and 21 same-origin media assets verified.
@@ -102,7 +108,13 @@ the same hashes. Rebuild them with `npm run package` and compare against
   payment code uses the canonical endpoint. The legacy `/api/square/config`
   alias remains available only for backward compatibility and may receive the
   host's standard-page cache policy.
-- `npm audit` reports zero known vulnerabilities.
+- `npm audit` reports zero known vulnerabilities for the WordPress toolchain.
+- The checked-in legacy Node rollback source is pinned to Next.js 16.2.7 and
+  currently reports six high-severity production dependency findings. The
+  public site identifies itself as Next.js, but its exact deployed release is
+  not yet captured. Do not redeploy the repository's Node rollback source until
+  it is updated and regression-tested separately; no live Node dependency was
+  changed during this WordPress work.
 
 Detailed evidence and commands are in [verification-log.md](verification-log.md). The exact production procedure is in [deployment-runbook.md](deployment-runbook.md).
 
@@ -113,19 +125,19 @@ Do not approve production until every item below is recorded with timestamp, ope
 | Gate | Result | Evidence |
 | --- | --- | --- |
 | HTTPS staging URL protected from public indexing | Pass | `https://1254861.us6.myftpupload.com`; `noindex, nofollow`, 2026-08-21 |
-| Theme and plugin checksums match this release | Theme 0.2.2 upload pending; plugin pass | Theme `0f33d294…` and plugin `ef232156…` are deterministic locally; plugin is installed on staging, 2026-08-25 |
+| Theme and plugin checksums match this release | Refreshed staging upload pending | Theme 0.2.3 `71483592…` and TBT Core 0.2.8 `67bcb4b6…` are deterministic locally; staging remains on its prior verified release, 2026-08-25 |
 | Airtable test lead saved with exact Social and private photo handoff | Pass | Record `recrcoQgS3wV6TJYX`; lead `TBT-260821-DERCC`; verified in Airtable, 2026-08-21 |
 | Airtable forced-failure retry recovered without a duplicate | Pending | |
 | Square sandbox success, decline, and ambiguous retry verified | Pending | |
 | Meta consent off/on and shared event ID verified | Pending | |
 | SMTP delivery and reply-to verified | Pending | |
 | Real cron runner and pending-sync recovery verified | Pending | |
-| Mobile/tablet/desktop visual comparison approved | Automated pass; formal approval pending | 30 staging renders plus interaction suite, 2026-08-21 |
+| Mobile/tablet/desktop visual comparison approved | Automated local pass; refreshed staging/formal approval pending | 30 strict local reference comparisons plus 30 responsive renders and interaction suite, 2026-08-25 |
 | Accessibility keyboard and screen-reader smoke test approved | Automated local pass; formal screen-reader approval pending | 20 WCAG route/viewport scans, AX-tree naming, structure, and keyboard checks, 2026-08-25 |
-| Performance and cache behavior approved | Automated local pass; refreshed staging approval pending | 20 local performance scans; LCP 1.6–2.7 s, CLS ≤0.052, 2026-08-25 |
+| Performance and cache behavior approved | Automated local pass; refreshed staging approval pending | 20 local performance scans; LCP 1.77–2.51 s, CLS ≤0.0523, 2026-08-25 |
 | Database/files backup created and restore tested | Pending | |
 | Current Node release and environment configuration captured | Pending | |
-| Custom domain/DNS inventory captured | Pending | |
+| Custom domain/DNS inventory captured | Public inventory pass; GoDaddy control-plane evidence pending | `docs/dns-inventory.md`, public DNS and HTTP headers, 2026-08-25 |
 | Rollback rehearsal completed | Pending | |
 | GitHub branch pushed and draft PR reviewed | Pending | |
 

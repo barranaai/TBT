@@ -97,6 +97,7 @@ p { text-wrap: pretty; }
 .tbt-choice:hover { border-color: color-mix(in srgb, var(--color-ivory) 35%, transparent); }
 .tbt-choice.is-active { border-color: color-mix(in srgb, var(--color-gold) 70%, transparent); background: color-mix(in srgb, var(--color-gold) 10%, transparent); color: var(--color-ivory); }
 .tbt-intent { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 1.25rem; border: 1px solid color-mix(in srgb, var(--color-ivory) 15%, transparent); padding: 1.25rem; text-align: left; transition: border-color .25s, background-color .25s; }
+@media (min-width: 640px) { .tbt-intent { padding: 1.5rem; } }
 .tbt-intent:hover { border-color: color-mix(in srgb, var(--color-gold) 60%, transparent); background: color-mix(in srgb, var(--color-gold) 4%, transparent); }
 .tbt-intent-mark { display: flex; width: 3rem; height: 3rem; align-items: center; justify-content: center; border: 1px solid color-mix(in srgb, var(--color-gold) 35%, transparent); border-radius: 999px; color: var(--color-gold); font-size: 1.25rem; }
 .tbt-photo-drop { display: flex; min-height: 11rem; cursor: pointer; flex-direction: column; align-items: center; justify-content: center; border: 1px dashed color-mix(in srgb, var(--color-ivory) 25%, transparent); padding: 1.5rem; text-align: center; transition: border-color .2s, background-color .2s; }

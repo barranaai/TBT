@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TBT_THEME_VERSION', '0.2.2' );
+define( 'TBT_THEME_VERSION', '0.2.3' );
 
 function tbt_theme_setup(): void {
 	add_theme_support( 'title-tag' );
@@ -59,9 +59,9 @@ function tbt_page_hero( string $eyebrow, string $title, string $intro, string $i
 	<?php
 }
 
-function tbt_page_cta( string $title, string $label = 'Book Your Consultation' ): void {
+function tbt_page_cta( string $title, string $label = 'Book Your Consultation', string $eyebrow = '' ): void {
 	?>
-	<section class="border-t border-ivory/10 bg-onyx py-24 lg:py-32"><div class="mx-auto flex max-w-7xl flex-col items-start justify-between gap-10 px-6 lg:flex-row lg:items-center lg:px-10"><h2 class="reveal max-w-2xl font-serif text-4xl font-light leading-[1.08] text-ivory sm:text-5xl"><?php echo esc_html( $title ); ?></h2><div class="reveal"><span class="inline-block transition-transform duration-300 ease-out will-change-transform" data-tbt-magnetic><a href="<?php echo esc_url( home_url( '/consultation/' ) ); ?>" class="inline-flex items-center justify-center border border-gold px-8 py-4 text-[0.72rem] font-medium uppercase tracking-[0.2em] text-gold transition-colors duration-300 hover:bg-gold hover:text-onyx"><?php echo esc_html( $label ); ?></a></span></div></div></section>
+	<section class="border-t border-ivory/10 bg-onyx py-24 lg:py-32"><div class="mx-auto flex max-w-7xl flex-col items-start justify-between gap-10 px-6 lg:flex-row lg:items-center lg:px-10"><div class="reveal"><?php if ( $eyebrow ) : ?><p class="mb-6 text-[0.6rem] uppercase tracking-[0.34em] text-gold/70"><?php echo esc_html( $eyebrow ); ?></p><?php endif; ?><h2 class="max-w-2xl font-serif text-4xl font-light leading-[1.08] text-ivory sm:text-5xl"><?php echo esc_html( $title ); ?></h2></div><div class="reveal"><span class="inline-block transition-transform duration-300 ease-out will-change-transform" data-tbt-magnetic><a href="<?php echo esc_url( home_url( '/consultation/' ) ); ?>" class="inline-flex items-center justify-center border border-gold px-8 py-4 text-[0.72rem] font-medium uppercase tracking-[0.2em] text-gold transition-colors duration-300 hover:bg-gold hover:text-onyx"><?php echo esc_html( $label ); ?></a></span></div></div></section>
 	<?php
 }
 
@@ -72,7 +72,7 @@ function tbt_experience_process(): void {
 		array( 'no' => 'III', 'title' => 'The Reveal', 'body' => 'Precision execution, hand-finished detail, and the moment you see yourself fully — often for the very first time.' ),
 	);
 	?>
-	<section class="relative isolate overflow-hidden bg-espresso py-28 text-ivory lg:py-40"><?php tbt_section_motifs( 3 ); ?><div class="mx-auto grid max-w-7xl gap-16 px-6 lg:grid-cols-[0.85fr_1fr] lg:items-center lg:gap-20 lg:px-10"><div class="reveal"><div class="relative aspect-[3/2] overflow-hidden"><img src="<?php echo tbt_asset( 'stock/process.jpg' ); ?>" alt="Dr. Trevor J. Thomas holding a mirror and explorer in the Teeth by Trev operatory" class="h-full w-full object-cover" loading="lazy"><div class="absolute inset-0 ring-1 ring-inset ring-ivory/10"></div></div></div><div><div class="reveal max-w-xl"><p class="mb-6 text-[0.6rem] uppercase tracking-[0.34em] text-champagne">04 <span class="mx-2">—</span> The Experience</p><h2 class="font-serif text-4xl font-light leading-[1.1] text-ivory sm:text-5xl">Three steps to the smile that’s always been yours.</h2></div><div class="mt-14 space-y-12"><?php foreach ( $steps as $step ) : ?><div class="reveal"><div class="flex gap-6 border-t border-ivory/15 pt-8"><span class="font-serif text-4xl font-light leading-none text-champagne"><?php echo esc_html( $step['no'] ); ?></span><div><h3 class="font-serif text-2xl font-light text-ivory"><?php echo esc_html( $step['title'] ); ?></h3><p class="mt-3 max-w-md text-base leading-relaxed text-ivory/70"><?php echo esc_html( $step['body'] ); ?></p></div></div></div><?php endforeach; ?></div></div></div></section>
+	<section class="relative isolate overflow-hidden bg-espresso py-28 text-ivory lg:py-40"><?php tbt_section_motifs( 3 ); ?><div class="mx-auto grid max-w-7xl gap-16 px-6 lg:grid-cols-[0.85fr_1fr] lg:items-center lg:gap-20 lg:px-10"><div class="reveal"><div class="relative aspect-[3/2] overflow-hidden"><img src="<?php echo tbt_asset( 'stock/process.jpg' ); ?>" alt="Dr. Trevor J. Thomas holding a mirror and explorer in the Teeth by Trev operatory" class="h-full w-full object-cover" loading="lazy"><div class="absolute inset-0 ring-1 ring-inset ring-ivory/10"></div></div></div><div><div class="reveal max-w-xl"><p class="eyebrow mb-6 flex items-center gap-3 text-champagne"><span class="tabular-nums opacity-80">04</span><span class="h-px w-8 bg-current opacity-50" aria-hidden="true"></span><span>The Experience</span></p><h2 class="font-serif text-4xl font-light leading-[1.1] text-ivory sm:text-5xl">Three steps to the smile that's always been yours.</h2></div><div class="mt-14 space-y-12"><?php foreach ( $steps as $step ) : ?><div class="reveal"><div class="flex gap-6 border-t border-ivory/15 pt-8"><span class="font-serif text-4xl font-light leading-none text-champagne"><?php echo esc_html( $step['no'] ); ?></span><div><h3 class="font-serif text-2xl font-light text-ivory"><?php echo esc_html( $step['title'] ); ?></h3><p class="mt-3 max-w-md text-base leading-relaxed text-ivory/70"><?php echo esc_html( $step['body'] ); ?></p></div></div></div><?php endforeach; ?></div></div></div></section>
 	<?php
 }
 

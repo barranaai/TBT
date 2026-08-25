@@ -69,7 +69,8 @@ async function createContext(browser, viewport, { consent = "denied", reducedMot
 
 async function openChecked(page, route, errors) {
   errors.length = 0;
-  const response = await page.goto(new URL(route, base).href, { waitUntil: "networkidle" });
+  const response = await page.goto(new URL(route, base).href, { waitUntil: "domcontentloaded", timeout: 30000 });
+  await page.waitForLoadState("networkidle", { timeout: 15000 }).catch(() => {});
   assert(response?.status() === 200, `${route}: expected 200, received ${response?.status()}`);
   await page.waitForFunction(() => !document.querySelector(".tbt-intro-veil"));
   assert(await page.locator('link[rel="canonical"]').count() === 1, `${route}: expected one canonical link`);
@@ -136,7 +137,8 @@ try {
   const counterValues = await stats.locator("[data-tbt-count]").allTextContents();
   assert(JSON.stringify(counterValues) === JSON.stringify(["10", "8", "5,000", "100"]), `Classic counters failed: ${counterValues.join(", ")}`);
 
-  await mobilePage.goto(new URL("/classic/#consultation", base).href, { waitUntil: "networkidle" });
+  await mobilePage.goto(new URL("/classic/#consultation", base).href, { waitUntil: "domcontentloaded", timeout: 30000 });
+  await mobilePage.waitForLoadState("networkidle", { timeout: 15000 }).catch(() => {});
   await mobilePage.locator("#classic-first-name").fill("Barrana");
   await mobilePage.locator("#classic-last-name").fill("Parity Test");
   await mobilePage.locator("#classic-email").fill("parity@example.com");
@@ -192,7 +194,8 @@ try {
 
   const consentContext = await createContext(browser, viewports[0], { consent: null });
   const consentPage = await consentContext.newPage();
-  await consentPage.goto(base.href, { waitUntil: "networkidle" });
+  await consentPage.goto(base.href, { waitUntil: "domcontentloaded", timeout: 30000 });
+  await consentPage.waitForLoadState("networkidle", { timeout: 15000 }).catch(() => {});
   assert(await consentPage.locator("[data-tbt-privacy-panel]").isVisible(), "Consent panel is not visible before a choice");
   assert(await consentPage.locator("#tbt-meta-pixel-script").count() === 0, "Meta Pixel loaded before consent");
   await consentPage.locator('[data-tbt-privacy-choice="denied"]').click();
@@ -205,7 +208,8 @@ try {
   const analyticsContext = await createContext(browser, viewports[0], { consent: null });
   const analyticsPage = await analyticsContext.newPage();
   await analyticsPage.route("https://connect.facebook.net/**", (route) => route.abort());
-  await analyticsPage.goto(base.href, { waitUntil: "networkidle" });
+  await analyticsPage.goto(base.href, { waitUntil: "domcontentloaded", timeout: 30000 });
+  await analyticsPage.waitForLoadState("networkidle", { timeout: 15000 }).catch(() => {});
   await analyticsPage.locator('[data-tbt-privacy-choice="granted"]').click();
   await analyticsPage.waitForFunction(() => Boolean(window.fbq?.queue?.length));
   await analyticsPage.evaluate(() => window.TBTAnalytics.trackLead("integration-dedupe-id"));
@@ -222,7 +226,8 @@ try {
 
   const reserveContext = await createContext(browser, viewports[0]);
   const reservePage = await reserveContext.newPage();
-  await reservePage.goto(new URL("/reserve/?type=video", base).href, { waitUntil: "networkidle" });
+  await reservePage.goto(new URL("/reserve/?type=video", base).href, { waitUntil: "domcontentloaded", timeout: 30000 });
+  await reservePage.waitForLoadState("networkidle", { timeout: 15000 }).catch(() => {});
   assert(await reservePage.locator("[data-square-unconfigured]").isVisible(), "Unconfigured Square fallback is not visible");
   assert(!(await reservePage.locator("[data-square-loading]").isVisible()), "Square loading state did not finish");
   await reserveContext.close();

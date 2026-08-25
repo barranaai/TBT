@@ -134,7 +134,7 @@ if (expectNoindex && sitemapResponse.status === 404) {
 
 const healthResponse = await request("/wp-json/tbt/v1/health");
 const health = await healthResponse.json();
-assert(healthResponse.status === 200 && health.ok && health.plugin === "0.2.7", "health endpoint/version mismatch");
+assert(healthResponse.status === 200 && health.ok && health.plugin === "0.2.8", "health endpoint/version mismatch");
 assert(healthResponse.headers.get("cache-control")?.includes("no-store"), "health endpoint may be cached");
 
 const squareResponse = await request("/wp-json/tbt/v1/square/config");

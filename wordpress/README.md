@@ -12,6 +12,7 @@ on `main` while parity work happens on `codex/wordpress-migration`.
 - `blueprint.json` — reproducible local WordPress setup for WordPress Playground.
 - `docs/parity-contract.md` — the implementation and acceptance contract.
 - `docs/release-evidence.md` — immutable package evidence and staging gates.
+- `docs/dns-inventory.md` — read-only public routing evidence and cutover safeguards.
 
 WordPress core, uploads, secrets, database files, and generated caches are not
 committed.
@@ -38,6 +39,7 @@ terminal:
 npm run verify:local
 npm run verify:responsive
 npm run verify:quality
+npm run verify:visual-parity
 ```
 
 The verifier covers every source route (including `/classic`), exact titles and
@@ -56,6 +58,21 @@ ID checks, keyboard focus targets, and explicit CLS, LCP, load, TTFB, and
 transfer budgets. It writes its ignored diagnostic report to
 `artifacts/quality/quality-report.json`. Use `TBT_ROUTES` and `TBT_VIEWPORTS`
 for a focused diagnostic run without weakening the default full matrix.
+
+The visual verifier compares the WordPress build with the checked-in Next.js
+source running locally. It requires exact visible headings, copy, internal and
+external links, and media order, plus a 6% raster budget for cross-renderer
+antialiasing, Next Image encoding, and the documented accessibility-contrast
+uplift. Start the Next.js source on port 9300, then run:
+
+```bash
+npm run verify:visual-parity
+```
+
+Reference, target, diff images, and the machine-readable report are written to
+the ignored `artifacts/visual-parity` directory. `TBT_ROUTES`,
+`TBT_VIEWPORTS`, `TBT_REFERENCE_URL`, `TBT_BASE_URL`,
+`TBT_MAX_PIXEL_DIFF`, and `TBT_MAX_HEIGHT_DIFF` support focused diagnostics.
 
 The credential-shaped Airtable, Square, and Meta paths have a separate
 hermetic environment. It uses fake server constants and a mounted test-only

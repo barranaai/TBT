@@ -123,7 +123,8 @@ Verified: 2026-08-21
 
 ## Remaining staging credentials or infrastructure
 
-- Upload and activate the deterministic Teeth by Trev theme 0.2.2 archive
+- Upload and activate the deterministic Teeth by Trev theme 0.2.3 and TBT Core
+  0.2.8 archives
   after reauthenticating the expired GoDaddy admin session, then repeat the
   staging route, responsive, accessibility, performance, and health gates.
 - Airtable forced-failure recovery against the live service (the equivalent
@@ -132,5 +133,32 @@ Verified: 2026-08-21
   reconciliation.
 - Meta Pixel/CAPI test-event receipt and browser/server deduplication.
 - Production-like cache, security-header, backup, and rollback rehearsal.
-- Formal screenshot-diff thresholds across all pages and breakpoints.
-- Accessibility/performance scans of the refreshed 0.2.2 target environment.
+- Refreshed staging screenshot comparisons using the locally proven strict
+  semantic/media gate and 6% raster threshold.
+- Accessibility/performance scans of the refreshed 0.2.3/0.2.8 target environment.
+
+## 2026-08-25 local parity refresh
+
+- Theme 0.2.3 and TBT Core 0.2.8 pass the full local route, responsive,
+  accessibility/performance, and hermetic integration suites.
+- Thirty local visual comparisons against the checked-in Next.js source pass
+  at 375×844, 768×1024, and 1440×950. Visible headings, main copy, links, and
+  media sequences are exact; the maximum raster difference is 5.45% under the
+  documented 6% cross-renderer budget.
+- Contact intent cards now retain the source's responsive padding, and Reserve
+  no longer forces its `main` element to a full viewport height. Contact and
+  Reserve therefore match the source at tablet and desktop sizes.
+- The exact enquiry SVG marks replace fallback text glyphs without changing
+  enquiry behavior. Instagram remains visible and mandatory for every branch;
+  smile photos remain mandatory for New, Existing, and General enquiries.
+- Two consecutive package builds are byte-for-byte deterministic. Theme hash:
+  `71483592a0a7058183e9ce862070d5bbba2e8489fcd31bbf94bd160d55f3b325`.
+  Plugin hash:
+  `67bcb4b699cd900d82e467060ffcb0b122b51fae2b237737c3006beb6898c54d`.
+- WordPress `npm audit` reports zero findings. The legacy checked-in Node
+  rollback source (Next.js 16.2.7) reports six high-severity production
+  dependency findings and is not approved for redeployment until separately
+  updated and regression-tested.
+- Public DNS and HTTP evidence confirms `teethbytrev.com` and `www` still serve
+  the live GoDaddy Airo Node/Next.js application. Neither live application nor
+  either production hosting target was changed during this refresh.

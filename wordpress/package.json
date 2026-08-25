@@ -12,6 +12,7 @@
     "verify:local": "node ./scripts/verify-local.mjs",
     "verify:responsive": "node ./scripts/verify-responsive.mjs",
     "verify:quality": "node ./scripts/verify-quality.mjs",
+    "verify:visual-parity": "node ./scripts/verify-visual-parity.mjs",
     "verify:integrations": "node ./scripts/verify-integrations.mjs",
     "package": "npm run build && node ./scripts/package-release.mjs && node ./scripts/write-package-manifest.mjs",
     "dev:css": "tailwindcss -i ./wp-content/themes/teeth-by-trev/assets/src/theme.css -o ./wp-content/themes/teeth-by-trev/assets/dist/theme.css --watch",
@@ -24,6 +25,8 @@
     "@wp-playground/cli": "3.1.48",
     "axe-core": "4.13.0",
     "esbuild": "0.28.2",
-    "playwright-core": "1.62.1"
+    "pixelmatch": "7.2.0",
+    "playwright-core": "1.62.1",
+    "pngjs": "7.0.0"
   }
 }

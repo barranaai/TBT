@@ -182,7 +182,7 @@ await reset({}, true);
 
 const healthResult = await jsonRequest("/wp-json/tbt/v1/health");
 const health = healthResult.body;
-assert(health.ok && health.plugin === "0.2.7" && health.airtable === true && health.square === true && health.airtablePending === 0 && health.airtablePendingDeposits === 0, `configured health mismatch: ${JSON.stringify(health)}`);
+assert(health.ok && health.plugin === "0.2.8" && health.airtable === true && health.square === true && health.airtablePending === 0 && health.airtablePendingDeposits === 0, `configured health mismatch: ${JSON.stringify(health)}`);
 assert(healthResult.response.headers.get("cache-control")?.includes("no-store"), "Health response is cacheable");
 const squareConfigResult = await jsonRequest("/wp-json/tbt/v1/square/config");
 const squareConfig = squareConfigResult.body;
