@@ -80,11 +80,7 @@ export default function AtelierFooter() {
               California professional corporation.
             </p>
             <address className="mt-6 text-sm not-italic leading-relaxed text-ivory/45">
-              Registered: 8605 Santa Monica Blvd #691841
-              <br />
-              West Hollywood, CA 90069
-              <br />
-              Practice: 436 N Bedford Dr #300
+              436 N Bedford Dr #300
               <br />
               Beverly Hills, CA 90210
               <br />

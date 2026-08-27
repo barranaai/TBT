@@ -23,11 +23,7 @@ export default function TermsPage() {
             California professional corporation.
           </p>
           <p>
-            Registered business address: 8605 Santa Monica Blvd #691841, West
-            Hollywood, CA 90069
-          </p>
-          <p>
-            Practice location: 436 N Bedford Dr #300, Beverly Hills, CA 90210 ·
+            436 N Bedford Dr #300, Beverly Hills, CA 90210 ·
             424-672-3910 ·
             dr.trev@teethbytrev.com
           </p>
@@ -151,9 +147,7 @@ export default function TermsPage() {
               We may update these terms from time to time; the version published
               here is the one that applies. Questions about these terms are
               welcome at dr.trev@teethbytrev.com or 424-672-3910, or by post to
-              the registered business address at 8605 Santa Monica Blvd
-              #691841, West Hollywood, CA 90069. Practice correspondence may
-              also be sent to 436 N Bedford Dr #300, Beverly Hills, CA 90210.
+              436 N Bedford Dr #300, Beverly Hills, CA 90210.
             </p>
           </section>
         </div>
