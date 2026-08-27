@@ -35,10 +35,10 @@ export default function ContactPage() {
             <p className="mx-auto mt-16 max-w-2xl border-t border-ivory/10 pt-8 text-center text-[0.72rem] uppercase tracking-[0.2em] text-ivory/45">
               Questions? Text{" "}
               <a
-                href="tel:+14243946159"
+                href="tel:+14246723910"
                 className="text-ivory/70 transition-colors hover:text-gold"
               >
-                424-394-6159
+                424-672-3910
               </a>{" "}
               · Continue on Instagram with{" "}
               <a

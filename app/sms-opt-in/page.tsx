@@ -64,7 +64,7 @@ export default function SmsOptInPage() {
           </p>
           <p>
             Practice location: 436 N Bedford Dr #300, Beverly Hills, CA 90210 ·
-            424-394-6159 · SMS program: 424-672-3910 ·
+            424-672-3910 ·
             dr.trev@teethbytrev.com
           </p>
         </div>

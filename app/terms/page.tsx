@@ -28,7 +28,7 @@ export default function TermsPage() {
           </p>
           <p>
             Practice location: 436 N Bedford Dr #300, Beverly Hills, CA 90210 ·
-            424-394-6159 · SMS program: 424-672-3910 ·
+            424-672-3910 ·
             dr.trev@teethbytrev.com
           </p>
         </div>
@@ -71,7 +71,7 @@ export default function TermsPage() {
               UNSUBSCRIBE, REVOKE or OPT-OUT to any message. Keywords are not
               case sensitive. We will send a single message confirming that you
               have been removed, after which you will receive no further texts.
-              You may also opt out by calling 424-394-6159, emailing
+              You may also opt out by calling 424-672-3910, emailing
               dr.trev@teethbytrev.com, or simply asking us in your own words to
               stop texting you; we honor every request. Reply HELP for
               assistance at any time.
@@ -112,7 +112,7 @@ export default function TermsPage() {
               which is credited in full toward your treatment. Payments are
               processed securely by Square; we never receive or store your card
               details. Consultations are by appointment and limited each month.
-              To reschedule or ask about a deposit, contact us at 424-394-6159.
+              To reschedule or ask about a deposit, contact us at 424-672-3910.
             </p>
           </section>
 
@@ -150,7 +150,7 @@ export default function TermsPage() {
             <p className="mt-3">
               We may update these terms from time to time; the version published
               here is the one that applies. Questions about these terms are
-              welcome at dr.trev@teethbytrev.com or 424-394-6159, or by post to
+              welcome at dr.trev@teethbytrev.com or 424-672-3910, or by post to
               the registered business address at 8605 Santa Monica Blvd
               #691841, West Hollywood, CA 90069. Practice correspondence may
               also be sent to 436 N Bedford Dr #300, Beverly Hills, CA 90210.

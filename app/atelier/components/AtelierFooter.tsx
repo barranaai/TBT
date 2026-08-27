@@ -96,15 +96,7 @@ export default function AtelierFooter() {
               </a>
               <br />
               <a
-                href="tel:+14243946159"
-                className="transition-colors hover:text-gold"
-              >
-                424-394-6159
-              </a>
-              <br />
-              SMS program: {" "}
-              <a
-                href="sms:+14246723910"
+                href="tel:+14246723910"
                 className="transition-colors hover:text-gold"
               >
                 424-672-3910
