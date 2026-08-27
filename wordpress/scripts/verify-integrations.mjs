@@ -45,6 +45,60 @@ async function squareBrowserContext(browser, tokenizeResult = { status: "OK", to
   return context;
 }
 
+async function inquiryBrowserContext(browser) {
+  const context = await browser.newContext({ viewport: { width: 375, height: 844 } });
+  await context.addInitScript(() => {
+    sessionStorage.setItem("tbt-intro-seen", "1");
+    localStorage.setItem("tbt.analytics-consent.v1", "denied");
+  });
+  return context;
+}
+
+async function submitBrowserInquiry(page, intent, index) {
+  await page.goto(new URL(`/contact/?intent=${intent}`, base).href, { waitUntil: "networkidle" });
+  await page.locator("#firstName").fill("Barrana");
+  await page.locator("#lastName").fill(`Browser ${index}`);
+  await page.locator("#phone").fill(`+1424555020${index}`);
+  await page.locator("#email").fill(`browser-${intent}@example.com`);
+  await page.locator("#preferredContact").selectOption("Email");
+  await page.locator("#socialHandle").fill("@barrana.browser");
+  await page.locator("[data-tbt-next]").click();
+
+  const panel = page.locator(`[data-intent-panel="${intent}"]:not(.hidden)`);
+  if (intent === "new") {
+    await panel.locator("#city").selectOption({ index: 1 });
+    await panel.locator('[data-choice-field="services"] [data-choice-value]').first().click();
+    await panel.locator("#goals").fill("A natural smile transformation");
+    await panel.locator("#timeline").selectOption({ index: 1 });
+  } else if (intent === "existing") {
+    await panel.locator("#supportCity").selectOption({ index: 1 });
+    await panel.locator("#supportCategory").selectOption({ index: 1 });
+    await panel.locator("#supportMessage").fill("Please help with an appointment question.");
+  } else {
+    await panel.locator("#enquiryType").selectOption({ index: 1 });
+    await panel.locator("#message").fill("Please share the appropriate contact details.");
+  }
+  await panel.locator("[data-tbt-photos]").setInputFiles({
+    name: `smile-${intent}.png`,
+    mimeType: "image/png",
+    buffer: Buffer.from(photoDataUrl.split(",")[1], "base64"),
+  });
+  await page.locator("[data-tbt-next]").click();
+
+  if (intent === "new") {
+    for (const field of ["budget", "financing", "readiness"]) {
+      await page.locator(`[data-choice-field="${field}"] [data-choice-value]`).first().click();
+    }
+    await page.locator('[data-choice-field="videoConsult"] [data-choice-value="Yes"]').click();
+    await page.locator("[data-tbt-next]").click();
+  }
+
+  await page.locator("#contactConsent").check();
+  if (intent === "new") await page.locator("#smsConsent").check();
+  await page.locator("[data-tbt-submit]").click();
+  await page.locator("[data-tbt-success]").waitFor({ state: "visible" });
+}
+
 function rememberCookies(response) {
   const values = response.headers.getSetCookie?.() || (response.headers.get("set-cookie") ? [response.headers.get("set-cookie")] : []);
   values.forEach((value) => {
@@ -161,7 +215,6 @@ function generalInquiry(token = "integration-general", email = "integration-gene
   return {
     ...common(token, email),
     intent: "general",
-    phone: "",
     organization: "Barrana AI",
     enquiryType: "General enquiry",
     message: "Integration verification enquiry.",
@@ -182,7 +235,7 @@ await reset({}, true);
 
 const healthResult = await jsonRequest("/wp-json/tbt/v1/health");
 const health = healthResult.body;
-assert(health.ok && health.plugin === "0.2.8" && health.airtable === true && health.square === true && health.airtablePending === 0 && health.airtablePendingDeposits === 0, `configured health mismatch: ${JSON.stringify(health)}`);
+assert(health.ok && health.plugin === "0.2.9" && health.airtable === true && health.square === true && health.airtablePending === 0 && health.airtablePendingDeposits === 0, `configured health mismatch: ${JSON.stringify(health)}`);
 assert(healthResult.response.headers.get("cache-control")?.includes("no-store"), "Health response is cacheable");
 const squareConfigResult = await jsonRequest("/wp-json/tbt/v1/square/config");
 const squareConfig = squareConfigResult.body;
@@ -199,6 +252,7 @@ assert(newResult.ok && newResult.recorded && newResult.stored && newResult.photo
 let snapshot = await state();
 let fields = airtableFields(serviceLogs(snapshot, "airtable")[0]);
 assert(fields.Social === "Instagram: @barrana.integration", "New enquiry Social mapping is incorrect");
+assert(fields["SMS Consent"] === "No" && fields["Video Consult"] === "No", "Consent or video-consult Airtable fields are incorrect");
 assert(fields.Photos === newResult.photosUrl && fields["Caller Type"] === "New consultation", "New enquiry Airtable routing fields are incorrect");
 assert(!("Message" in fields) && fields.Services === "Veneers", "New enquiry leaked a stale branch answer");
 assert(serviceLogs(snapshot, "meta").length === 0, "Meta was called without analytics consent");
@@ -367,9 +421,26 @@ const crossOriginSquare = await postSquare({ sourceId: "cnon:test", idempotencyK
 assert(crossOriginSquare.body.code === "rest_forbidden", "Cross-origin Square write was not rejected");
 console.log("PASS public write origin boundary");
 
-await reset({ square: [{ status: 200, body: { payment: { id: "sq-browser-success", status: "COMPLETED" } } }] });
 const browser = await chromium.launch({ executablePath: await findChrome(), headless: true });
 try {
+  await reset({}, true);
+  const inquiryContext = await inquiryBrowserContext(browser);
+  const inquiryPage = await inquiryContext.newPage();
+  for (const [index, intent] of ["new", "existing", "general"].entries()) {
+    await submitBrowserInquiry(inquiryPage, intent, index + 1);
+  }
+  await inquiryContext.close();
+  snapshot = await state();
+  assert(snapshot.inquiries.length === 3 && snapshot.photos.length === 3, "Browser inquiry flow did not save all three enquiry types with one smile photo each");
+  for (const intent of ["new", "existing", "general"]) {
+    const row = snapshot.inquiries.find((item) => item.intent === intent);
+    assert(row?.phone && row.social === "@barrana.browser", `${intent}: browser inquiry lost the mandatory phone or Instagram handle`);
+  }
+  const browserNew = snapshot.inquiries.find((item) => item.intent === "new");
+  assert(Number(browserNew?.sms_consent) === 1, "Browser inquiry did not persist the optional SMS consent separately");
+  console.log("PASS complete browser submissions for all enquiry types, mandatory photos/phone/Instagram, and separate SMS consent");
+
+  await reset({ square: [{ status: 200, body: { payment: { id: "sq-browser-success", status: "COMPLETED" } } }] });
   const successContext = await squareBrowserContext(browser);
   const successPage = await successContext.newPage();
   await successPage.goto(new URL("/reserve/?type=video", base).href, { waitUntil: "networkidle" });

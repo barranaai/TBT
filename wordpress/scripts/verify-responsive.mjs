@@ -24,7 +24,7 @@ const routes = [
   "/consultation/",
   "/reserve/?type=video",
   "/privacy/",
-  "/classic/",
+  "/terms/",
 ];
 const viewports = [
   { name: "mobile", width: 375, height: 844 },
@@ -101,7 +101,7 @@ try {
 
     for (const route of routes) {
       await openChecked(page, route, errors);
-      if (route === "/" || route === "/classic/") {
+      if (route === "/") {
         await page.screenshot({ path: path.join(artifactDir, `${viewport.name}-${routeName(route)}.png`), animations: "disabled" });
       }
     }
@@ -113,50 +113,6 @@ try {
   const mobilePage = await mobileContext.newPage();
   const mobileErrors = [];
   mobilePage.on("pageerror", (error) => mobileErrors.push(error.message));
-
-  await openChecked(mobilePage, "/classic/", mobileErrors);
-  const classicToggle = mobilePage.locator("[data-tbt-classic-toggle]");
-  const classicMenu = mobilePage.locator("[data-tbt-classic-menu]");
-  assert(await classicToggle.isVisible(), "Classic mobile menu toggle is not visible");
-  await classicToggle.click();
-  assert(await classicToggle.getAttribute("aria-expanded") === "true", "Classic menu did not open");
-  assert(await classicMenu.getAttribute("aria-hidden") === "false" && !(await classicMenu.getAttribute("inert")), "Classic menu accessibility state is incorrect when open");
-  assert(await mobilePage.locator("html").evaluate((node) => node.classList.contains("tbt-classic-menu-open")), "Classic menu did not lock the document");
-  await mobilePage.keyboard.press("Escape");
-  assert(await classicToggle.getAttribute("aria-expanded") === "false", "Classic menu did not close with Escape");
-
-  const slider = mobilePage.locator('[data-tbt-before-after] [role="slider"]').first();
-  await slider.scrollIntoViewIfNeeded();
-  await slider.focus();
-  await mobilePage.keyboard.press("ArrowRight");
-  assert(await slider.getAttribute("aria-valuenow") === "54", "Classic comparison slider keyboard control failed");
-
-  const stats = mobilePage.locator("[data-tbt-stats]");
-  await stats.scrollIntoViewIfNeeded();
-  await mobilePage.waitForTimeout(1800);
-  const counterValues = await stats.locator("[data-tbt-count]").allTextContents();
-  assert(JSON.stringify(counterValues) === JSON.stringify(["10", "8", "5,000", "100"]), `Classic counters failed: ${counterValues.join(", ")}`);
-
-  await mobilePage.goto(new URL("/classic/#consultation", base).href, { waitUntil: "domcontentloaded", timeout: 30000 });
-  await mobilePage.waitForLoadState("networkidle", { timeout: 15000 }).catch(() => {});
-  await mobilePage.locator("#classic-first-name").fill("Barrana");
-  await mobilePage.locator("#classic-last-name").fill("Parity Test");
-  await mobilePage.locator("#classic-email").fill("parity@example.com");
-  await mobilePage.locator("#classic-phone").fill("+14245550199");
-  await mobilePage.locator("#classic-message").fill("A natural smile transformation");
-  await Promise.all([
-    mobilePage.waitForURL((url) => url.pathname.endsWith("/contact/")),
-    mobilePage.locator('form[aria-label="Consultation request"] button[type="submit"]').click(),
-  ]);
-  assert(await mobilePage.locator('[data-tbt-wizard]:not(.hidden)').count() === 1, "Classic handoff did not open the New smile wizard");
-  const prefill = await mobilePage.locator("[data-tbt-wizard]").evaluate((form) => ({
-    firstName: form.elements.firstName.value,
-    lastName: form.elements.lastName.value,
-    email: form.elements.email.value,
-    phone: form.elements.phone.value,
-    goals: form.elements.goals.value,
-  }));
-  assert(JSON.stringify(prefill) === JSON.stringify({ firstName: "Barrana", lastName: "Parity Test", email: "parity@example.com", phone: "+14245550199", goals: "A natural smile transformation" }), `Classic form handoff prefill failed: ${JSON.stringify(prefill)}`);
 
   await openChecked(mobilePage, "/", mobileErrors);
   const atelierToggle = mobilePage.locator("[data-tbt-menu-toggle]");
@@ -173,24 +129,27 @@ try {
   await mobilePage.waitForTimeout(100);
   assert((await parallax.locator("[data-tbt-parallax-inner]").getAttribute("style"))?.includes("translate3d"), "Atelier selected-work parallax did not update");
 
-  for (const [intent, phoneRequired] of [["new", true], ["existing", true], ["general", false]]) {
+  for (const intent of ["new", "existing", "general"]) {
     await openChecked(mobilePage, "/contact/", mobileErrors);
     await mobilePage.locator(`[data-intent="${intent}"]`).click();
     assert(await mobilePage.locator("#socialHandle").isVisible(), `${intent}: Instagram handle is not available`);
     assert(await mobilePage.locator("#socialHandle").getAttribute("data-required") === "true", `${intent}: Instagram handle is not mandatory`);
-    const phoneStarVisible = await mobilePage.locator("[data-phone-star]").isVisible();
-    assert(phoneStarVisible === phoneRequired, `${intent}: phone requirement indicator is incorrect`);
+    assert(await mobilePage.locator("#phone").getAttribute("required") !== null, `${intent}: phone is not natively required`);
+    assert(await mobilePage.locator("#phone").getAttribute("aria-required") === "true", `${intent}: phone is not announced as required`);
     await mobilePage.locator("#firstName").fill("Barrana");
     await mobilePage.locator("#lastName").fill("Verifier");
-    if (phoneRequired) await mobilePage.locator("#phone").fill("+14245550199");
+    await mobilePage.locator("#phone").fill("+14245550199");
     await mobilePage.locator("#email").fill("parity@example.com");
     await mobilePage.locator("#preferredContact").selectOption("Email");
     await mobilePage.locator("#socialHandle").fill("@barranaverifier");
     await mobilePage.locator("[data-tbt-next]").click();
     assert(await mobilePage.locator(`[data-intent-panel="${intent}"]:not(.hidden) [data-tbt-photo-field]`).count() === 1, `${intent}: mandatory smile photo control is missing`);
+    const photoInput = mobilePage.locator(`[data-intent-panel="${intent}"]:not(.hidden) [data-tbt-photos]`);
+    assert(await photoInput.getAttribute("required") !== null && await photoInput.getAttribute("aria-required") === "true", `${intent}: smile photo is not semantically mandatory`);
   }
+  assert(await mobilePage.locator("#smsConsent").count() === 1, "separate optional SMS consent is missing");
   await mobileContext.close();
-  console.log("PASS mobile menus, slider, counters, parallax, Classic handoff, and enquiry controls");
+  console.log("PASS mobile menu, parallax, and accessible enquiry controls");
 
   const consentContext = await createContext(browser, viewports[0], { consent: null });
   const consentPage = await consentContext.newPage();

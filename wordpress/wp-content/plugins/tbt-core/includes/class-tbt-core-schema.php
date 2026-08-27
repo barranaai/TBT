@@ -29,6 +29,7 @@ final class TBT_Core_Schema {
 			photos_url varchar(255) NULL,
 			payload longtext NOT NULL,
 			contact_consent tinyint(1) NOT NULL DEFAULT 0,
+			sms_consent tinyint(1) NOT NULL DEFAULT 0,
 			marketing_consent tinyint(1) NOT NULL DEFAULT 0,
 			analytics_consent tinyint(1) NOT NULL DEFAULT 0,
 			consent_version varchar(60) NULL,

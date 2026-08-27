@@ -87,16 +87,17 @@ p { text-wrap: pretty; }
 .tbt-service-preview.is-active { opacity: 1; }
 .tbt-service-preview [data-tbt-service-image].is-active { opacity: 1; transform: scale(1); }
 .tbt-before-after { touch-action: none; user-select: none; }
-.tbt-label { margin-bottom: .75rem; display: block; font-size: .62rem; letter-spacing: .22em; text-transform: uppercase; color: color-mix(in srgb, var(--color-ivory) 55%, transparent); }
+.tbt-label { margin-bottom: .75rem; display: block; font-size: .7rem; line-height: 1.5; letter-spacing: .18em; text-transform: uppercase; color: color-mix(in srgb, var(--color-ivory) 72%, transparent); }
 .tbt-input { width: 100%; border: 1px solid color-mix(in srgb, var(--color-ivory) 15%, transparent); background: color-mix(in srgb, var(--color-ivory) 3%, transparent); padding: .875rem 1rem; color: var(--color-ivory); transition: border-color .3s, background-color .3s; }
 .tbt-input::placeholder { color: color-mix(in srgb, var(--color-ivory) 30%, transparent); }
 .tbt-input:focus { outline: none; border-color: var(--color-champagne); background: color-mix(in srgb, var(--color-ivory) 6%, transparent); box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-gold) 50%, transparent); }
 .tbt-field.has-error .tbt-input, .tbt-choice-field.has-error, .tbt-photo-field.has-error .tbt-photo-drop, .tbt-consent.has-error { border-color: rgb(251 113 133 / .7); }
-.tbt-error { margin-top: .5rem; font-size: .75rem; color: rgb(253 164 175 / .9); }
+.tbt-error { margin-top: .5rem; font-size: .8rem; line-height: 1.45; color: rgb(254 205 211); }
 .tbt-choice { border: 1px solid color-mix(in srgb, var(--color-ivory) 15%, transparent); padding: .75rem 1rem; text-align: left; font-size: .875rem; line-height: 1.35; color: color-mix(in srgb, var(--color-ivory) 70%, transparent); transition: color .2s, border-color .2s, background-color .2s; }
 .tbt-choice:hover { border-color: color-mix(in srgb, var(--color-ivory) 35%, transparent); }
 .tbt-choice.is-active { border-color: color-mix(in srgb, var(--color-gold) 70%, transparent); background: color-mix(in srgb, var(--color-gold) 10%, transparent); color: var(--color-ivory); }
 .tbt-intent { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 1.25rem; border: 1px solid color-mix(in srgb, var(--color-ivory) 15%, transparent); padding: 1.25rem; text-align: left; transition: border-color .25s, background-color .25s; }
+@media (max-width: 639px) { .tbt-intent { grid-template-columns: 2.75rem minmax(0, 1fr) auto; gap: .875rem; } .tbt-intent-mark { width: 2.75rem; height: 2.75rem; } }
 @media (min-width: 640px) { .tbt-intent { padding: 1.5rem; } }
 .tbt-intent:hover { border-color: color-mix(in srgb, var(--color-gold) 60%, transparent); background: color-mix(in srgb, var(--color-gold) 4%, transparent); }
 .tbt-intent-mark { display: flex; width: 3rem; height: 3rem; align-items: center; justify-content: center; border: 1px solid color-mix(in srgb, var(--color-gold) 35%, transparent); border-radius: 999px; color: var(--color-gold); font-size: 1.25rem; }

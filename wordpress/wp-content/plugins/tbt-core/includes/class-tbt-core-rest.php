@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 final class TBT_Core_REST {
-	private const CONSENT_VERSION = '2026-07-23-v1';
+	private const CONSENT_VERSION = '2026-08-10-v3';
 	private const MAX_PHOTOS = 12;
 	private const MAX_PHOTO_BYTES = 8388608;
 	private const DEPOSIT_CENTS = 25000;
@@ -183,10 +183,11 @@ final class TBT_Core_REST {
 		$preferred = self::clean( $data['preferredContact'] ?? '', 60 );
 		$social = self::clean( $data['socialHandle'] ?? '', 190 );
 		$contact_consent = self::bool_value( $data['contactConsent'] ?? false );
+		$sms_consent = self::bool_value( $data['smsConsent'] ?? false );
 		if ( ! $first || ! $last || ! is_email( $email ) ) return new WP_Error( 'contact_fields', 'Complete the required contact fields.', array( 'status' => 422 ) );
 		if ( ! $preferred || ! $contact_consent ) return new WP_Error( 'permission', 'Choose a contact method and provide permission to respond.', array( 'status' => 422 ) );
 		if ( ! $social ) return new WP_Error( 'instagram_required', 'Enter your Instagram username.', array( 'status' => 422 ) );
-		if ( 'general' !== $intent && ! $phone ) return new WP_Error( 'phone_required', 'Enter a mobile number.', array( 'status' => 422 ) );
+		if ( ! $phone ) return new WP_Error( 'phone_required', 'Enter a mobile number.', array( 'status' => 422 ) );
 
 		$city = 'general' === $intent ? '' : self::clean( $data['city'] ?? '', 120 );
 		$services = 'new' === $intent && is_array( $data['services'] ?? null ) ? array_values( array_filter( array_map( fn( $item ) => self::clean( $item, 60 ), $data['services'] ) ) ) : array();
@@ -195,6 +196,7 @@ final class TBT_Core_REST {
 		$budget = 'new' === $intent ? self::clean( $data['budget'] ?? '', 60 ) : '';
 		$financing = 'new' === $intent ? self::clean( $data['financing'] ?? '', 100 ) : '';
 		$readiness = 'new' === $intent ? self::clean( $data['readiness'] ?? '', 140 ) : '';
+		$video_consult = 'new' === $intent && self::bool_value( $data['videoConsult'] ?? false );
 		$support_category = 'existing' === $intent ? self::clean( $data['supportCategory'] ?? '', 120 ) : '';
 		$appointment_date = 'existing' === $intent ? self::clean( $data['appointmentDate'] ?? '', 20 ) : '';
 		$support_message = 'existing' === $intent ? self::clean( $data['supportMessage'] ?? '', 5000 ) : '';
@@ -225,16 +227,17 @@ final class TBT_Core_REST {
 			'preferredContact' => $preferred, 'socialPlatform' => 'Instagram', 'socialHandle' => $social,
 			'city' => $city, 'services' => $services, 'goals' => $goals, 'timeline' => $timeline,
 			'budget' => $budget, 'financing' => $financing, 'readiness' => $readiness,
+			'videoConsult' => $video_consult,
 			'hear' => self::clean( $data['hear'] ?? '', 160 ), 'supportCategory' => $support_category,
 			'appointmentDate' => $appointment_date, 'supportMessage' => $support_message,
 			'organization' => $organization, 'enquiryType' => $enquiry_type, 'message' => $message,
-			'contactConsent' => true, 'consentVersion' => self::CONSENT_VERSION,
+			'contactConsent' => true, 'smsConsent' => $sms_consent, 'consentVersion' => self::CONSENT_VERSION,
 			'marketingConsent' => self::bool_value( $data['marketingConsent'] ?? false ),
 			'analyticsConsent' => self::bool_value( $data['analyticsConsent'] ?? false ),
 			'attribution' => is_array( $data['attribution'] ?? null ) ? array_map( fn( $item ) => self::clean( $item, 2048 ), $data['attribution'] ) : array(),
 			'priority' => self::priority( $intent, $readiness, $timeline ), 'submittedAtUtc' => gmdate( 'c' ), 'photosUrl' => $photos_url,
 		);
-		$saved = $wpdb->insert( $table, array( 'lead_reference' => $reference, 'submission_token' => $submission_token, 'intent' => $intent, 'name' => trim( $first . ' ' . $last ), 'email' => $email, 'phone' => $phone, 'preferred_contact' => $preferred, 'social' => $social, 'photos_url' => $photos_url, 'payload' => wp_json_encode( $payload ), 'contact_consent' => 1, 'marketing_consent' => $payload['marketingConsent'] ? 1 : 0, 'analytics_consent' => $payload['analyticsConsent'] ? 1 : 0, 'consent_version' => self::CONSENT_VERSION, 'airtable_saved' => 0, 'created_at' => $now ), array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%d', '%s', '%d', '%s' ) );
+		$saved = $wpdb->insert( $table, array( 'lead_reference' => $reference, 'submission_token' => $submission_token, 'intent' => $intent, 'name' => trim( $first . ' ' . $last ), 'email' => $email, 'phone' => $phone, 'preferred_contact' => $preferred, 'social' => $social, 'photos_url' => $photos_url, 'payload' => wp_json_encode( $payload ), 'contact_consent' => 1, 'sms_consent' => $payload['smsConsent'] ? 1 : 0, 'marketing_consent' => $payload['marketingConsent'] ? 1 : 0, 'analytics_consent' => $payload['analyticsConsent'] ? 1 : 0, 'consent_version' => self::CONSENT_VERSION, 'airtable_saved' => 0, 'created_at' => $now ), array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%d', '%d', '%s', '%d', '%s' ) );
 		if ( ! $saved ) {
 			$raced = $wpdb->get_row( $wpdb->prepare( "SELECT lead_reference, photos_url, airtable_saved, analytics_consent, payload FROM {$table} WHERE submission_token = %s LIMIT 1", $submission_token ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			if ( $raced ) return self::existing_inquiry_response( $raced, $submission_token );
@@ -263,10 +266,11 @@ final class TBT_Core_REST {
 			'Preferred Contact' => $payload['preferredContact'], 'Social Platform' => 'Instagram', 'Social' => 'Instagram: ' . $payload['socialHandle'],
 			'City' => $payload['city'], 'Services' => implode( ', ', $payload['services'] ), 'Treatment Interest' => $payload['goals'],
 			'Timeline' => $payload['timeline'], 'Budget' => $payload['budget'], 'Financing' => $payload['financing'], 'Readiness' => $payload['readiness'],
+			'Video Consult' => ! empty( $payload['videoConsult'] ) ? 'Yes' : 'No',
 			'How did you hear' => $payload['hear'], 'Caller Type' => self::caller_type( $payload['intent'] ), 'Support Category' => $payload['supportCategory'],
 			'Appointment Date' => $payload['appointmentDate'], 'Existing Patient Issue' => $payload['supportMessage'], 'Organization' => $payload['organization'],
 			'Enquiry Type' => $payload['enquiryType'], 'Message' => $payload['message'], 'Priority' => $payload['priority'], 'Follow Up Status' => 'New',
-			'Contact Consent' => 'Yes', 'Consent Timestamp' => $payload['submittedAtUtc'], 'Consent Version' => self::CONSENT_VERSION,
+			'Contact Consent' => 'Yes', 'SMS Consent' => ! empty( $payload['smsConsent'] ) ? 'Yes' : 'No', 'SMS Consent Timestamp' => ! empty( $payload['smsConsent'] ) ? $payload['submittedAtUtc'] : '', 'Consent Timestamp' => $payload['submittedAtUtc'], 'Consent Version' => self::CONSENT_VERSION,
 			'Marketing Consent' => $payload['marketingConsent'] ? 'Yes' : 'No', 'Submitted At UTC' => $payload['submittedAtUtc'], 'Source' => 'Website', 'Photos' => $payload['photosUrl'],
 		);
 		$names = array( 'landingUrl' => 'Landing URL', 'referrer' => 'Referrer URL', 'utmSource' => 'UTM Source', 'utmMedium' => 'UTM Medium', 'utmCampaign' => 'UTM Campaign', 'utmContent' => 'UTM Content', 'utmTerm' => 'UTM Term', 'fbclid' => 'FBCLID', 'ttclid' => 'TTCLID', 'entryChannel' => 'Entry Channel', 'entryAccount' => 'Entry Account' );

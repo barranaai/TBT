@@ -55,8 +55,8 @@ const routes = [
   ["/contact/", "Contact the Teeth by Trev Concierge Team", "Start a smile consultation, request existing-patient support, or send a general enquiry to the Teeth by Trev concierge team.", "Begin with the right team."],
   ["/consultation/", "Book a Consultation — Teeth by Trev", "Reserve a private consultation with Dr. Trevor J. Thomas — in person or by video. A considered $250 conversation about the smile you imagine.", "Begin with a conversation."],
   ["/reserve/?type=video", "Reserve Your Consultation — Teeth by Trev", "Secure your private consultation with Dr. Trevor J. Thomas with a $250 deposit, credited 100% toward your treatment.", "Reserve · Video consultation"],
-  ["/privacy/", "Privacy & Analytics — Teeth by Trev", "How Teeth by Trev handles website enquiries and optional analytics.", "Your information stays under your control."],
-  ["/classic/", "Teeth by Trev — Classic", "The classic Teeth by Trev experience. Cosmetic & implant dentistry by Dr. Trevor J. Thomas.", "It’s not about the teeth."],
+  ["/privacy/", "Privacy Policy — Teeth by Trev", "How Teeth by Trev, operated by Trevor Jamal Thomas DDS, Inc., handles website enquiries, text messaging, and optional analytics.", "Your information stays under your control."],
+  ["/terms/", "Terms & Conditions — Teeth by Trev", "Website and text messaging terms for Teeth by Trev, operated by Trevor Jamal Thomas DDS, Inc.", "The terms of working with us."],
 ];
 
 const htmlByRoute = new Map();
@@ -64,7 +64,7 @@ for (const [path, title, description, marker] of routes) {
   const response = await request(path);
   const html = await response.text();
   assert(response.status === 200, `${path}: expected 200, received ${response.status}`);
-  assert(html.includes(`<title>${title}</title>`), `${path}: title mismatch`);
+  assert(html.includes(`<title>${title}</title>`), `${path}: title mismatch (${html.match(/<title>([^<]*)<\/title>/i)?.[1] || "missing"})`);
   assert(html.includes(`name="description" content="${escapeAttribute(description)}"`), `${path}: description mismatch`);
   assert(html.includes(marker), `${path}: missing source marker ${marker}`);
   assert(count(html, /rel=["']canonical["']/g) === 1, `${path}: expected exactly one canonical`);
@@ -134,7 +134,7 @@ if (expectNoindex && sitemapResponse.status === 404) {
 
 const healthResponse = await request("/wp-json/tbt/v1/health");
 const health = await healthResponse.json();
-assert(healthResponse.status === 200 && health.ok && health.plugin === "0.2.8", "health endpoint/version mismatch");
+assert(healthResponse.status === 200 && health.ok && health.plugin === "0.2.9", "health endpoint/version mismatch");
 assert(healthResponse.headers.get("cache-control")?.includes("no-store"), "health endpoint may be cached");
 
 const squareResponse = await request("/wp-json/tbt/v1/square/config");
@@ -180,4 +180,13 @@ const spoofedPhotoResponse = await request("/wp-json/tbt/v1/inquiry", {
 const spoofedPhotoResult = await spoofedPhotoResponse.json();
 assert(spoofedPhotoResponse.status === 422 && spoofedPhotoResult.code === "photos_required", "declared image MIME with invalid bytes was accepted");
 console.log("PASS image signature validation and private-photo MIME hardening");
+const phoneRequiredPayload = { ...commonInquiry, intent: "general", phone: "", enquiryType: "General enquiry", message: "Verification", photos: [{ name: "smile.png", dataUrl: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=" }] };
+const phoneRequiredResponse = await request("/wp-json/tbt/v1/inquiry", {
+  method: "POST",
+  headers: { "Content-Type": "application/json", Origin: base.origin, "X-Forwarded-For": "198.51.100.45" },
+  body: JSON.stringify(phoneRequiredPayload),
+});
+const phoneRequiredResult = await phoneRequiredResponse.json();
+assert(phoneRequiredResponse.status === 422 && phoneRequiredResult.code === "phone_required", "general enquiry accepted a missing phone number");
+console.log("PASS phone enforcement for every enquiry type");
 console.log(`PASS WordPress parity verification at ${base.href}`);

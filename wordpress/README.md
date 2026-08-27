@@ -42,13 +42,13 @@ npm run verify:quality
 npm run verify:visual-parity
 ```
 
-The verifier covers every source route (including `/classic`), exact titles and
+The verifier covers every canonical visitor route (including `/terms`), exact titles and
 descriptions, canonicals, redirects, internal links, visitor assets, health and
 legacy Square endpoints, 404 behavior, and server-side mandatory-photo rules
 for all three enquiry types. The responsive verifier uses an installed Chrome
 or Chromium browser to check all routes at 375×844, 768×1024, and 1440×950. It
-also exercises both menus, the comparison slider, counters, parallax, Classic
-form handoff, enquiry requirements, default-off analytics consent, and the safe
+also exercises the mobile menu, comparison slider, counters, parallax,
+enquiry requirements, default-off analytics consent, and the safe
 Square fallback. Set `CHROME_PATH` only when the browser is not installed in a
 standard location.
 
@@ -86,11 +86,13 @@ npm run playground:integration
 npm run verify:integrations
 ```
 
-This suite submits all three enquiry types, inspects exact Airtable fields,
-retrieves private photos, proves failure/retry and scheduled recovery, verifies
-Meta consent/deduplication without form-data leakage, and exercises Square
-success, decline, idempotent retry, ambiguous-network handling, deposit
-reconciliation, and browser SDK states.
+This suite completes all three enquiry types through the browser, verifies the
+mandatory phone, Instagram handle and smile photo controls, inspects exact
+Airtable and separate SMS-consent fields, retrieves private photos, proves
+failure/retry and scheduled recovery, verifies Meta consent/deduplication
+without form-data leakage, and exercises Square success, decline, idempotent
+retry, ambiguous-network handling, deposit reconciliation, and browser SDK
+states.
 
 To create production-ready install archives after a successful build:
 

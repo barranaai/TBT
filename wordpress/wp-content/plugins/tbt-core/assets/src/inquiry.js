@@ -44,6 +44,12 @@ if (root) {
 
   const clearErrors = (scope = form) => {
     scope.querySelectorAll(".has-error").forEach((element) => element.classList.remove("has-error"));
+    scope.querySelectorAll('[aria-invalid="true"]').forEach((element) => element.setAttribute("aria-invalid", "false"));
+    scope.querySelectorAll('[aria-describedby*="tbt-error-"]').forEach((element) => {
+      const remaining = (element.getAttribute("aria-describedby") || "").split(/\s+/).filter((id) => id && !id.startsWith("tbt-error-"));
+      if (remaining.length) element.setAttribute("aria-describedby", remaining.join(" "));
+      else element.removeAttribute("aria-describedby");
+    });
     scope.querySelectorAll(".tbt-error").forEach((element) => element.remove());
     formError.classList.add("hidden");
     formError.textContent = "";
@@ -52,11 +58,18 @@ if (root) {
   const showError = (element, message) => {
     const holder = element.closest(".tbt-field, .tbt-choice-field, .tbt-photo-field, .tbt-consent") || element.parentElement;
     holder.classList.add("has-error");
+    const target = element.matches("input, select, textarea, button") ? element : element.querySelector("input, select, textarea, button") || element;
+    const errorId = `tbt-error-${target.id || target.name || element.dataset.choiceField || Math.random().toString(36).slice(2)}`;
     const error = document.createElement("p");
     error.className = "tbt-error";
+    error.id = errorId;
     error.setAttribute("role", "alert");
     error.textContent = message;
     holder.appendChild(error);
+    target.setAttribute("aria-invalid", "true");
+    const describedBy = new Set((target.getAttribute("aria-describedby") || "").split(/\s+/).filter(Boolean));
+    describedBy.add(errorId);
+    target.setAttribute("aria-describedby", [...describedBy].join(" "));
   };
 
   const currentSteps = () => branches[intent] || [];
@@ -84,7 +97,6 @@ if (root) {
     nextButton.classList.toggle("hidden", last);
     submitButton.classList.toggle("hidden", !last);
     submitButton.classList.toggle("inline-flex", last);
-    root.querySelector("[data-phone-star]")?.classList.toggle("hidden", intent === "general");
     renderProgress();
     clearErrors();
   };
@@ -173,6 +185,7 @@ if (root) {
       }
     });
     panel.querySelectorAll("[data-choice-field]").forEach((field) => {
+      if (field.dataset.required !== "true") return;
       const value = choices[field.dataset.choiceField];
       if (!value || (Array.isArray(value) && !value.length)) {
         showError(field, field.dataset.choiceField === "services" ? "Choose at least one service" : "Choose one option");
@@ -288,11 +301,12 @@ if (root) {
         contactConsent: form.elements.contactConsent.checked,
         consentVersion: config.consentVersion,
         marketingConsent: form.elements.marketingConsent.checked,
+        smsConsent: form.elements.smsConsent.checked,
         analyticsConsent: localStorage.getItem("tbt.analytics-consent.v1") === "granted",
         attribution: attribution(),
         photos: photoPayload,
       };
-      if (intent === "new") Object.assign(payload, { city: value("city"), services: choices.services, goals: value("goals"), timeline: value("timeline"), budget: choices.budget, financing: choices.financing, readiness: choices.readiness });
+      if (intent === "new") Object.assign(payload, { city: value("city"), services: choices.services, goals: value("goals"), timeline: value("timeline"), budget: choices.budget, financing: choices.financing, readiness: choices.readiness, videoConsult: choices.videoConsult === "Yes" });
       if (intent === "existing") Object.assign(payload, { city: value("supportCity"), supportCategory: value("supportCategory"), appointmentDate: value("appointmentDate"), supportMessage: value("supportMessage") });
       if (intent === "general") Object.assign(payload, { organization: value("organization"), enquiryType: value("enquiryType"), message: value("message") });
       const response = await fetch(config.endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
@@ -328,4 +342,4 @@ if (root) {
   });
 }
 
-window.TBTInquiry = Object.freeze({ version: "0.2.8", ready: Boolean(root) });
+window.TBTInquiry = Object.freeze({ version: "0.2.9", ready: Boolean(root) });

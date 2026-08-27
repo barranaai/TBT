@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TBT_THEME_VERSION', '0.2.3' );
+define( 'TBT_THEME_VERSION', '0.2.4' );
 
 function tbt_theme_setup(): void {
 	add_theme_support( 'title-tag' );
@@ -133,8 +133,9 @@ function tbt_page_description(): string {
 		'contact'      => 'Start a smile consultation, request existing-patient support, or send a general enquiry to the Teeth by Trev concierge team.',
 		'consultation' => 'Reserve a private consultation with Dr. Trevor J. Thomas — in person or by video. A considered $250 conversation about the smile you imagine.',
 		'reserve'      => 'Secure your private consultation with Dr. Trevor J. Thomas with a $250 deposit, credited 100% toward your treatment.',
-		'privacy'      => 'How Teeth by Trev handles website enquiries and optional analytics.',
-		'classic'      => 'The classic Teeth by Trev experience. Cosmetic & implant dentistry by Dr. Trevor J. Thomas.',
+		'privacy'      => 'How Teeth by Trev, operated by Trevor Jamal Thomas DDS, Inc., handles website enquiries, text messaging, and optional analytics.',
+		'terms'        => 'Website and text messaging terms for Teeth by Trev, operated by Trevor Jamal Thomas DDS, Inc.',
+		'sms-opt-in'   => 'How Teeth by Trev asks visitors for optional text-message consent.',
 	);
 	$slug = is_front_page() ? 'home' : get_post_field( 'post_name', get_queried_object_id() );
 	return $descriptions[ $slug ] ?? 'A couture atelier of cosmetic and implant dentistry by Dr. Trevor J. Thomas.';
@@ -170,8 +171,9 @@ function tbt_document_title( string $title ): string {
 		'contact' => 'Contact the Teeth by Trev Concierge Team',
 		'consultation' => 'Book a Consultation — Teeth by Trev',
 		'reserve' => 'Reserve Your Consultation — Teeth by Trev',
-		'privacy' => 'Privacy & Analytics — Teeth by Trev',
-		'classic' => 'Teeth by Trev — Classic',
+		'privacy' => 'Privacy Policy — Teeth by Trev',
+		'terms' => 'Terms & Conditions — Teeth by Trev',
+		'sms-opt-in' => 'SMS Opt-In — Teeth by Trev',
 	);
 	return $titles[ $slug ] ?? $title;
 }
@@ -195,7 +197,9 @@ add_action( 'wp_head', 'tbt_social_meta', 3 );
 function tbt_sitemap_pages( array $args, string $post_type ): array {
 	if ( 'page' !== $post_type ) return $args;
 	$reserve = get_page_by_path( 'reserve' );
-	if ( $reserve ) $args['post__not_in'] = array_values( array_unique( array_merge( $args['post__not_in'] ?? array(), array( (int) $reserve->ID ) ) ) );
+	$classic = get_page_by_path( 'classic' );
+	$excluded = array_filter( array( $reserve ? (int) $reserve->ID : 0, $classic ? (int) $classic->ID : 0 ) );
+	if ( $excluded ) $args['post__not_in'] = array_values( array_unique( array_merge( $args['post__not_in'] ?? array(), $excluded ) ) );
 	return $args;
 }
 add_filter( 'wp_sitemaps_posts_query_args', 'tbt_sitemap_pages', 10, 2 );
@@ -204,6 +208,14 @@ function tbt_legacy_redirects(): void {
 	$path = trim( (string) wp_parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ), '/' );
 	if ( 'atelier' === $path ) {
 		wp_safe_redirect( home_url( '/' ), 301, 'Teeth by Trev' );
+		exit;
+	}
+	if ( 'classic' === $path ) {
+		global $wp_query;
+		$wp_query->set_404();
+		status_header( 404 );
+		nocache_headers();
+		include get_query_template( '404' );
 		exit;
 	}
 }

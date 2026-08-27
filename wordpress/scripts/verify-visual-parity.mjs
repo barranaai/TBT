@@ -9,7 +9,7 @@ const referenceBase = new URL(process.env.TBT_REFERENCE_URL || "http://127.0.0.1
 const targetBase = new URL(process.env.TBT_BASE_URL || "http://127.0.0.1:9400/");
 const basicAuth = process.env.TBT_BASIC_AUTH || "";
 const artifactDir = path.resolve("artifacts/visual-parity");
-const defaultRoutes = ["/", "/about/", "/services/", "/gallery/", "/financing/", "/contact/", "/consultation/", "/reserve/?type=video", "/privacy/", "/classic/"];
+const defaultRoutes = ["/", "/about/", "/services/", "/gallery/", "/financing/", "/contact/", "/consultation/", "/reserve/?type=video", "/privacy/", "/terms/"];
 const routes = process.env.TBT_ROUTES ? process.env.TBT_ROUTES.split(",").map((route) => route.trim()).filter(Boolean) : defaultRoutes;
 const defaultViewports = [
   { name: "mobile", width: 375, height: 844 },

@@ -15,12 +15,12 @@ every item in this contract is verified against the current live website.
 | `/contact` | `page-contact.php` | Three-path enquiry wizard |
 | `/consultation` | `page-consultation.php` | In-person/video consultation options |
 | `/reserve` | `page-reserve.php` | Square $250 deposit; `noindex` |
-| `/privacy` | `page-privacy.php` | Enquiry and optional analytics disclosures |
-| `/classic` | `page-classic.php` | Complete preserved Classic homepage experience |
+| `/privacy` | `page-privacy.php` | Enquiry, SMS, and optional analytics disclosures |
+| `/terms` | `page-terms.php` | Business, messaging, consultation and site terms |
 
 `/atelier` permanently redirects to `/`, matching the current canonical
-homepage decision. `/classic` remains a complete alternate visitor experience,
-as defined by the authoritative Next.js route.
+homepage decision. The retired `/classic` path returns a normal 404 and is not
+published or included in the sitemap.
 
 ## Global visual contract
 
@@ -37,8 +37,7 @@ as defined by the authoritative Next.js route.
 - Branches: new consultation, existing-patient support, general/business.
 - Instagram handle is visible and mandatory for every branch/contact method.
 - At least one smile image is mandatory for every branch.
-- Phone remains required for new/existing and optional for general until the
-  product owner explicitly changes the production rule.
+- Phone is mandatory for every branch.
 - Only the active branch's fields are submitted and stored.
 - Submission tokens are unique and idempotent; success returns a human lead
   reference.
@@ -46,7 +45,9 @@ as defined by the authoritative Next.js route.
   remain locally queued and are retried without duplicating the lead.
 - Airtable `Social` stores `Instagram: <handle>` and `Photos` stores a working,
   access-controlled staff link.
-- Contact, marketing, and analytics consent stay distinct and timestamped.
+- Required contact permission, optional SMS consent, optional email-marketing
+  consent, and analytics consent stay distinct. SMS opt-in is stored separately
+  with its timestamp and disclosure version.
 
 ## Operational contract
 

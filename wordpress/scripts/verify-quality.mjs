@@ -14,7 +14,7 @@ const chromeCandidates = [
   "/usr/bin/google-chrome",
   "/usr/bin/chromium",
 ].filter(Boolean);
-const defaultRoutes = ["/", "/about/", "/services/", "/gallery/", "/financing/", "/contact/", "/consultation/", "/reserve/?type=video", "/privacy/", "/classic/"];
+const defaultRoutes = ["/", "/about/", "/services/", "/gallery/", "/financing/", "/contact/", "/consultation/", "/reserve/?type=video", "/privacy/", "/terms/"];
 const routes = process.env.TBT_ROUTES ? process.env.TBT_ROUTES.split(",").map((route) => route.trim()).filter(Boolean) : defaultRoutes;
 const defaultViewports = [
   { name: "mobile", width: 375, height: 844, lcpBudget: 6000 },

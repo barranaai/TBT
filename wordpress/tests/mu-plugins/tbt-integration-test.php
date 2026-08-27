@@ -84,10 +84,11 @@ function tbt_test_reset( WP_REST_Request $request ): WP_REST_Response {
 
 function tbt_test_state(): WP_REST_Response {
 	global $wpdb;
-	$inquiries = $wpdb->get_results( "SELECT lead_reference, submission_token, intent, email, phone, social, photos_url, payload, airtable_saved, analytics_consent FROM {$wpdb->prefix}tbt_inquiries ORDER BY id", ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+	$inquiries = $wpdb->get_results( "SELECT lead_reference, submission_token, intent, email, phone, social, photos_url, payload, airtable_saved, sms_consent, analytics_consent FROM {$wpdb->prefix}tbt_inquiries ORDER BY id", ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	foreach ( $inquiries as &$inquiry ) {
 		$inquiry['payload'] = json_decode( (string) $inquiry['payload'], true );
 		$inquiry['airtable_saved'] = (bool) $inquiry['airtable_saved'];
+		$inquiry['sms_consent'] = (bool) $inquiry['sms_consent'];
 		$inquiry['analytics_consent'] = (bool) $inquiry['analytics_consent'];
 	}
 	unset( $inquiry );
