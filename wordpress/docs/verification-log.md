@@ -189,3 +189,45 @@ Verified: 2026-08-21
   violation on Contact at both mobile and desktop widths. Performance remains
   within budget. These findings reproduce the accessibility gap already fixed
   by the locally verified 0.2.3 theme and must be cleared after deployment.
+
+## 2026-08-28 form, legal, accessibility, and parity refresh
+
+- Theme 0.2.4 and TBT Core 0.2.9 are committed and pushed to
+  `codex/wordpress-migration` at `5cb8e23`. Production and DNS were not changed.
+- Instagram, phone, and at least one smile photo are enforced by both the
+  browser flow and REST endpoint for New, Existing, and General enquiries.
+  Native/ARIA required state and linked inline validation errors were added.
+- The optional SMS checkbox is separate from required contact permission and
+  email marketing. Its value, timestamp, and disclosure version are stored in
+  WordPress and mapped to optional Airtable columns. Airtable's required
+  `Social` field remains exactly `Instagram: <handle>`.
+- Complete headless-browser submissions pass for all three enquiry branches,
+  including one private photo each. The same hermetic suite passes Airtable
+  recovery/upsert behavior, private-photo delivery, Meta consent/deduplication,
+  and Square sandbox success, decline, idempotent retry, ambiguous recovery,
+  deposit reconciliation, and browser SDK states.
+- The local route suite passes ten routes, 16 same-origin media assets, 11
+  internal links, Terms, sitemap exclusions, private-image signature checks,
+  and all server-side form requirements.
+- The responsive suite passes 30 route renders at 375×844, 768×1024, and
+  1440×950, plus menu, parallax, form-control, consent/Meta, and safe Square
+  fallback checks.
+- Twenty mobile/desktop accessibility and performance scans pass with zero axe
+  violations. LCP is 1.69–2.66 seconds and CLS is at or below 0.052.
+- Twenty-seven strict visual/content comparisons pass directly against
+  `https://teethbytrev.com/`; the largest raster difference is 3.85%. Local
+  Reserve is excluded only because Square is fail-closed there and is queued
+  for a staging-sandbox comparison.
+- The new Privacy and Terms pages, legal operator information, footer links,
+  current contact number, contrast, form alignment, and responsive sizing match
+  the current public site or intentionally improve accessibility without
+  exceeding the visual budget. The retired `/classic` route now returns 404.
+- Two consecutive release builds produced identical archives. Theme SHA-256:
+  `ad5ef213e856cee36b1f1301ae7547bb70a8228ae3481033f148f1a97b8c3291`.
+  Plugin SHA-256:
+  `b265a5309a7496e811be89ec5c68cd4e6e5db187fa47ff9ebb20ffb16b84d022`.
+- GoDaddy staging SSO was restored and the verified plugin archive was selected
+  on the staging-only Add Plugins screen. The admin session then expired before
+  install/replace was submitted, so reauthentication and the required browser
+  action-time confirmation remain pending. The staging and production releases
+  are otherwise unchanged at this checkpoint.
