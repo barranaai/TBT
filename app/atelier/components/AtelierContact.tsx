@@ -1,6 +1,7 @@
 import Reveal from "../../components/Reveal";
 import Magnetic from "../../components/Magnetic";
 import LineReveal from "./LineReveal";
+import CityLocations from "../../components/CityLocations";
 
 export default function AtelierContact() {
   return (
@@ -50,9 +51,7 @@ export default function AtelierContact() {
         </Reveal>
 
         <Reveal delay={280}>
-          <address className="mx-auto mt-10 text-[0.66rem] not-italic uppercase tracking-[0.26em] text-ivory/40">
-            436 N Bedford Dr #300 · Beverly Hills, CA 90210
-          </address>
+          <CityLocations className="mx-auto mt-10 max-w-2xl justify-center" />
         </Reveal>
       </div>
     </section>

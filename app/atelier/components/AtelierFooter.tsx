@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import CityLocations from "../../components/CityLocations";
 
 // Mirror the header navigation (AtelierNav) so the footer links stay in sync.
 const navLinks = [
@@ -80,10 +81,6 @@ export default function AtelierFooter() {
               California professional corporation.
             </p>
             <address className="mt-6 text-sm not-italic leading-relaxed text-ivory/45">
-              436 N Bedford Dr #300
-              <br />
-              Beverly Hills, CA 90210
-              <br />
               <a
                 href="mailto:dr.trev@teethbytrev.com"
                 className="transition-colors hover:text-gold"
@@ -143,10 +140,7 @@ export default function AtelierFooter() {
           <span>
             &copy; {new Date().getFullYear()} Teeth by Trev. All rights reserved.
           </span>
-          <span>
-            Beverly Hills · New York · Atlanta · Houston · Miami · Washington
-            D.C. · Tampa · Memphis
-          </span>
+          <CityLocations className="sm:justify-end" />
         </div>
 
         {/* Policy links must stay discoverable from every page — carrier review
