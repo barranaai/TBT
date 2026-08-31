@@ -76,10 +76,6 @@ export default function AtelierFooter() {
               An atelier of cosmetic &amp; implant dentistry by Dr. Trevor J.
               Thomas, DDS.
             </p>
-            <p className="mt-4 max-w-sm text-xs leading-relaxed text-ivory/40">
-              Teeth by Trev is operated by Trevor Jamal Thomas DDS, Inc., a
-              California professional corporation.
-            </p>
             <address className="mt-6 text-sm not-italic leading-relaxed text-ivory/45">
               <a
                 href="mailto:dr.trev@teethbytrev.com"
