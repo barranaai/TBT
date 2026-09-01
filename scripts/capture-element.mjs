@@ -73,6 +73,14 @@ await evaluate("window.scrollTo(0,0); true");
 await evaluate(`(() => { document.querySelectorAll(".reveal").forEach(el => el.classList.add("is-visible")); return true; })()`);
 await sleep(900);
 
+if (process.env.CLICK_TEXT) {
+  await evaluate(`(() => {
+    const b = [...document.querySelectorAll("footer button")].find(x => x.textContent.trim() === ${JSON.stringify(process.env.CLICK_TEXT)});
+    if (b) b.click(); return true;
+  })()`);
+  await sleep(700);
+}
+
 const box = await evaluate(`(() => {
   const el = document.querySelector(${JSON.stringify(SELECTOR)});
   if (!el) return null;
