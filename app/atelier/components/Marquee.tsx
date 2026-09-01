@@ -2,7 +2,6 @@
 const items = [
   "Beverly Hills",
   "New York",
-  "Brooklyn",
   "Atlanta",
   "Houston",
   "Miami",

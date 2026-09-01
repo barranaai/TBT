@@ -5,11 +5,16 @@ import { useEffect, useRef, useState } from "react";
 // The cities Teeth by Trev serves, as refined chips. Clicking a chip reveals
 // the location card — partner venue, address and a directions link. Cities
 // without a confirmed address invite the visitor to text the concierge number.
+type LocationSite = {
+  label?: string;
+  venue?: string;
+  lines: string[];
+  maps?: string;
+};
+
 type CityLocation = {
   city: string;
-  venue?: string;
-  lines?: string[];
-  maps?: string;
+  sites?: LocationSite[];
 };
 
 const PHONE_DISPLAY = "424-672-3910";
@@ -21,44 +26,71 @@ const gmaps = (query: string) =>
 const locations: CityLocation[] = [
   {
     city: "Beverly Hills",
-    venue: "Bedford Dental Group",
-    lines: ["436 N Bedford Dr, Suite 300", "Beverly Hills, CA 90210"],
-    maps: gmaps("Bedford Dental Group, 436 N Bedford Dr Suite 300, Beverly Hills, CA 90210"),
+    sites: [
+      {
+        venue: "Bedford Dental Group",
+        lines: ["436 N Bedford Dr, Suite 300", "Beverly Hills, CA 90210"],
+        maps: gmaps("Bedford Dental Group, 436 N Bedford Dr Suite 300, Beverly Hills, CA 90210"),
+      },
+    ],
   },
   {
+    // One chip for New York City — Brooklyn is a borough, so both locations
+    // live on this card rather than Brooklyn standing as its own city.
     city: "New York",
-    venue: "Nylo",
-    lines: ["10 W 37th St, 3rd Floor", "New York, NY 10018"],
-    maps: gmaps("10 W 37th St 3rd Floor, New York, NY 10018"),
-  },
-  {
-    city: "Brooklyn",
-    venue: "Pure Dentistry Arts",
-    lines: ["761 Washington Ave", "Brooklyn, NY 11238"],
-    maps: gmaps("Pure Dentistry Arts, 761 Washington Ave, Brooklyn, NY 11238"),
+    sites: [
+      {
+        label: "Manhattan",
+        venue: "Nylo",
+        lines: ["10 W 37th St, 3rd Floor", "New York, NY 10018"],
+        maps: gmaps("10 W 37th St 3rd Floor, New York, NY 10018"),
+      },
+      {
+        label: "Brooklyn",
+        venue: "Pure Dentistry Arts",
+        lines: ["761 Washington Ave", "Brooklyn, NY 11238"],
+        maps: gmaps("Pure Dentistry Arts, 761 Washington Ave, Brooklyn, NY 11238"),
+      },
+    ],
   },
   {
     city: "Atlanta",
-    venue: "Dentistry in Motion Suites",
-    lines: ["572 Hank Aaron Drive SE, Suite 1110", "Atlanta, GA 30312"],
-    maps: gmaps("Dentistry in Motion Suites, 572 Hank Aaron Drive SE Suite 1110, Atlanta, GA 30312"),
+    sites: [
+      {
+        venue: "Dentistry in Motion Suites",
+        lines: ["572 Hank Aaron Drive SE, Suite 1110", "Atlanta, GA 30312"],
+        maps: gmaps("Dentistry in Motion Suites, 572 Hank Aaron Drive SE Suite 1110, Atlanta, GA 30312"),
+      },
+    ],
   },
   {
     city: "Houston",
-    venue: "FLOSS Midtown",
-    lines: ["2707 Milam St, Suite C", "Houston, TX 77006"],
-    maps: gmaps("FLOSS Midtown, 2707 Milam St Suite C, Houston, TX 77006"),
+    sites: [
+      {
+        venue: "FLOSS Midtown",
+        lines: ["2707 Milam St, Suite C", "Houston, TX 77006"],
+        maps: gmaps("FLOSS Midtown, 2707 Milam St Suite C, Houston, TX 77006"),
+      },
+    ],
   },
   {
     city: "Miami",
-    venue: "All Smiles at Sunset",
-    lines: ["8585 SW 72nd Street, Suite 101", "Miami, FL 33143"],
-    maps: gmaps("All Smiles at Sunset, 8585 SW 72nd Street Suite 101, Miami, FL 33143"),
+    sites: [
+      {
+        venue: "All Smiles at Sunset",
+        lines: ["8585 SW 72nd Street, Suite 101", "Miami, FL 33143"],
+        maps: gmaps("All Smiles at Sunset, 8585 SW 72nd Street Suite 101, Miami, FL 33143"),
+      },
+    ],
   },
   {
     city: "Washington D.C.",
-    lines: ["1010 Quincy St NE", "Washington, DC 20017"],
-    maps: gmaps("1010 Quincy St NE, Washington, DC 20017"),
+    sites: [
+      {
+        lines: ["1010 Quincy St NE", "Washington, DC 20017"],
+        maps: gmaps("1010 Quincy St NE, Washington, DC 20017"),
+      },
+    ],
   },
   { city: "Tampa" },
   { city: "Memphis" },
@@ -139,31 +171,40 @@ export default function CityLocations({
                 <p className="text-[0.6rem] uppercase tracking-[0.24em] text-gold">
                   {location.city}
                 </p>
-                {location.lines ? (
-                  <>
-                    {location.venue && (
-                      <p className="mt-2 text-sm normal-case leading-snug tracking-normal text-ivory">
-                        {location.venue}
-                      </p>
-                    )}
-                    <p className={`${location.venue ? "mt-1" : "mt-2"} text-sm normal-case leading-relaxed tracking-normal text-ivory/70`}>
-                      {location.lines.map((line) => (
-                        <span key={line} className="block">
-                          {line}
-                        </span>
-                      ))}
-                    </p>
-                    {location.maps && (
-                      <a
-                        href={location.maps}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-3 inline-block text-[0.62rem] uppercase tracking-[0.2em] text-gold underline-offset-4 hover:underline"
-                      >
-                        Get directions ↗
-                      </a>
-                    )}
-                  </>
+                {location.sites ? (
+                  <div className="mt-1 divide-y divide-ivory/10">
+                    {location.sites.map((site) => (
+                      <div key={site.lines[0]} className="py-3 first:pt-1 last:pb-0">
+                        {site.label && (
+                          <p className="text-[0.56rem] uppercase tracking-[0.22em] text-ivory/40">
+                            {site.label}
+                          </p>
+                        )}
+                        {site.venue && (
+                          <p className="mt-1 text-sm normal-case leading-snug tracking-normal text-ivory">
+                            {site.venue}
+                          </p>
+                        )}
+                        <p className="mt-1 text-sm normal-case leading-relaxed tracking-normal text-ivory/70">
+                          {site.lines.map((line) => (
+                            <span key={line} className="block">
+                              {line}
+                            </span>
+                          ))}
+                        </p>
+                        {site.maps && (
+                          <a
+                            href={site.maps}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mt-2 inline-block text-[0.62rem] uppercase tracking-[0.2em] text-gold underline-offset-4 hover:underline"
+                          >
+                            Get directions ↗
+                          </a>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 ) : (
                   <p className="mt-2 text-sm normal-case leading-relaxed tracking-normal text-ivory/70">
                     By appointment.{" "}
