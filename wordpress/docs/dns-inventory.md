@@ -11,7 +11,7 @@ this evidence.
 | `teethbytrev.com` | `A 160.153.0.235`, TTL approximately 3600 seconds | HTTP 200; GoDaddy `paas-nodejs-v1`; Next.js cache and prerender headers |
 | `www.teethbytrev.com` | `CNAME teethbytrev.com`, TTL 3600 seconds | HTTP 200; same GoDaddy Node/Next.js application |
 | `32741.us6.myftpupload.com` | `A 160.153.0.148` | HTTP 200; separate GoDaddy Managed WordPress production host |
-| `1254861.us6.myftpupload.com` | `A 160.153.0.148` | HTTP 200; protected GoDaddy Managed WordPress staging clone |
+| `1254861.us6.myftpupload.com` | `A 160.153.0.148` | HTTP 200; publicly reachable GoDaddy Managed WordPress staging clone with indexing disabled |
 | `ukasxgp8ig.preview.c36.airoapp.ai` | `A 160.153.0.189`, TTL 60 seconds | GoDaddy Airo preview; anonymous request currently returns HTTP 401 |
 
 The custom production domain is therefore attached to and serving the live
@@ -48,3 +48,16 @@ inventory, and establish the exact rollback record values and TTL window.
 This inventory proves the current public routing state only. It does not
 authorize or schedule a cutover, and it is not a substitute for a GoDaddy DNS
 export, hosting backup, or rollback rehearsal.
+
+## 2026-09-08 read-only revalidation
+
+- `teethbytrev.com` still resolves to `160.153.0.235` and returns HTTP 200.
+- Response headers still identify GoDaddy `paas-nodejs-v1`, Next.js prerendering,
+  and the Next.js cache; the live domain was not moved to WordPress.
+- The production WordPress host returns HTTP 200 and its TBT health endpoint
+  returns 404.
+- Staging health reports TBT Core `0.2.10`, WordPress `7.0.4`, PHP
+  `8.1.34.15`, Airtable configured, zero pending enquiry/deposit records, and
+  Square disabled.
+- The staging URL is anonymous/public. `noindex, nofollow` and sitemap
+  suppression are indexing controls, not access control.

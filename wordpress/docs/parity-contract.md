@@ -1,7 +1,9 @@
 # WordPress Parity Contract
 
-The WordPress implementation is not eligible for staging or production until
-every item in this contract is verified against the current live website.
+The WordPress implementation is eligible for an isolated staging deployment
+after the local code, route, accessibility, and security gates pass. It is not
+eligible for production until every remaining staging and external-integration
+item in this contract is verified against the current live website.
 
 ## Canonical routes
 
@@ -30,7 +32,11 @@ published or included in the sitemap.
 - Video hero, marquee, reveal, line-reveal, image curtain, and parallax behavior.
 - Keyboard focus, inert closed menu, reduced-motion support, and responsive
   desktop/tablet/mobile layouts.
-- Exact copy, link destinations, alt text, metadata, icons, and social previews.
+- Exact copy, link destinations, alt text, metadata, icons, and social previews,
+  except for a release-specific exception recorded with its reason, affected
+  routes/viewports, reviewer, and measured visual impact. Legal, verified
+  contact-data, accessibility, and deliberately disabled-integration changes
+  may be accepted only through that evidence trail.
 
 ## Enquiry contract
 
@@ -64,11 +70,22 @@ published or included in the sitemap.
 
 ## Verification gates
 
+Before staging:
+
 1. Source/route inventory approved.
 2. Theme/plugin boot on supported WordPress and PHP versions with no warnings.
-3. Screenshot parity at desktop, tablet, and mobile breakpoints.
-4. Accessibility and reduced-motion checks pass.
-5. Three enquiry types pass client, server, Airtable, and photo checks.
-6. Square sandbox success/decline/idempotency/reconciliation checks pass.
-7. Consent, Meta deduplication, SEO, redirects, security, and performance pass.
-8. Staging user acceptance and rollback rehearsal pass before domain cutover.
+3. Local screenshot parity at desktop, tablet, and mobile breakpoints.
+4. Automated accessibility, reduced-motion, security, and performance checks pass.
+5. Hermetic enquiry, Airtable, photo, Meta, and Square integration checks pass.
+
+Before production:
+
+1. The exact packaged release is installed on an isolated staging environment.
+2. Staging route, responsive, accessibility, performance, and visual gates pass,
+   with every controlled exception documented.
+3. Three labelled enquiry types pass client, server, live Airtable, and private
+   photo checks without duplicates.
+4. Square sandbox success, decline, non-completed, idempotency, ambiguous retry,
+   and reconciliation checks pass.
+5. Live Meta test events, SMTP, cron/retry, SEO, redirects, and cache behavior pass.
+6. Backup/restore, user acceptance, and rollback rehearsal pass before cutover.

@@ -2,17 +2,17 @@
 
 ## Release status
 
-**Status:** Theme 0.2.4 and TBT Core 0.2.9 are locally verified, packaged, and pushed to the migration branch. The verified plugin archive is selected on protected GoDaddy staging, but the admin session expired before installation was submitted; staging reauthentication and the browser's action-time install confirmation remain pending. Production approval remains pending.
+**Status:** TBT Core `0.2.10` and Teeth by Trev theme `0.2.5` are deployed to
+the isolated GoDaddy staging site. Automated functional QA passes; visual QA is
+conditional pending named exception approval. Production cutover remains on
+hold for the external and manual gates listed below.
 
-The visitor-facing WordPress replica is deployed on staging, while the 0.2.4
-theme and 0.2.9 plugin parity refresh pass the repository's local route,
-responsive, visual, quality, hermetic integration, packaging, and WordPress
-dependency checks. The refreshed staging upload is selected in the staging
-admin and will be resumed after reauthentication. Neither the live Airo/Next.js site nor the separate production
-WordPress host was modified. A restricted Airtable token remains encrypted on
-staging and Square payment creation remains explicitly disabled. Production
-approval remains conditional on the remaining Square, Meta, SMTP, cron,
-backup, and rollback gates below.
+The live Airo/Next.js site, production WordPress host, and production DNS were
+not modified. Airtable is configured on staging with zero pending records.
+Square is explicitly disabled and no card or payment was attempted.
+
+The detailed professional QA disposition is in
+[qa-report-2026-09-08.md](qa-report-2026-09-08.md).
 
 ## Identifiers
 
@@ -20,129 +20,91 @@ backup, and rollback gates below.
 | --- | --- |
 | Repository | `barranaai/TBT` |
 | WordPress branch | `codex/wordpress-migration` |
-| Package source commit | `5cb8e23` |
-| Source baseline checked during refresh | `origin/main` at `a225d2d`; visitor parity was checked directly against `https://teethbytrev.com/` |
+| Deployed source commit | `9a917c723dffb83523dd6493f0c9752602ff188e` |
+| QA tooling commit | `81b2137b15a7cb2d7c6c50738194bdefe7ca6447` |
+| Source baseline | Visitor parity checked directly against `https://teethbytrev.com/` |
 | GoDaddy project ID | `ukasxgp8ig` |
-| Current Airo preview host | `ukasxgp8ig.preview.c36.airoapp.ai` |
 | GoDaddy production WordPress host | `32741.us6.myftpupload.com` — unchanged |
 | GoDaddy staging WordPress host | `1254861.us6.myftpupload.com` |
-| Staging environment created | 2026-08-21 |
-| WordPress / PHP | 7.0.4 / 8.1.34.15 |
-| Custom production domain | `teethbytrev.com` and `www` currently serve GoDaddy Airo Node/Next.js; control-plane binding ID/actor pending |
-| Current Node deployment/release ID | **Unverified** |
-| Current rollback point | **Unverified — capture before any staging or production action** |
-
-GoDaddy's one-click staging facility cloned the pre-existing WordPress site to
-the staging host. The verified TBT Core plugin and Teeth by Trev theme were
-installed and activated only on that clone. Legacy Elementor page-builder
-plugins were deactivated on staging, not deleted, after they were proven to
-override the new theme. The production host and DNS were not changed.
+| Staging WordPress / PHP | `7.0.4` / `8.1.34.15` |
+| Live custom domain | `teethbytrev.com` and `www` continue to serve GoDaddy Airo Node/Next.js |
+| Production DNS address | `160.153.0.235`, unchanged from inventory |
+| Current rollback point | Pending capture before any production action |
 
 ## Immutable package evidence
 
-| Package | SHA-256 |
-| --- | --- |
-| `teeth-by-trev-theme.zip` | `ad5ef213e856cee36b1f1301ae7547bb70a8228ae3481033f148f1a97b8c3291` |
-| `tbt-core-plugin.zip` | `b265a5309a7496e811be89ec5c68cd4e6e5db187fa47ff9ebb20ffb16b84d022` |
+| Uploaded package | Version | SHA-256 |
+| --- | --- | --- |
+| `teeth-by-trev-theme.zip` | `0.2.5` | `fc4086e2bb1f9204cb613fe640cc044c2ae6763dc63ac1590fe5d958a675d229` |
+| `tbt-core-plugin.zip` | `0.2.10` | `1a361b1b838edebb20bb74995a892e8a0c33258099bb5829a1cb2521b09f29f8` |
 
-Both archives pass `unzip -tq`. Two consecutive clean package runs produced
-the same hashes. Rebuild them with `npm run package` and compare against
-`wordpress/dist/SHA256SUMS` before deployment.
+Both uploaded archives pass ZIP integrity and manifest verification. Two
+consecutive normalized package runs produced the same hashes. Active asset
+markers confirm the installed versions; GoDaddy does not expose server-side
+file hashes, so installed-byte hashes are not claimed.
 
 ## Verification completed
 
-- Ten visitor routes verified locally, including Terms and retired-Classic 404 behavior.
-- Thirty responsive renders verified at mobile, tablet, and desktop sizes.
-- Twenty-seven automated visual comparisons pass directly against the current
-  public site at mobile, tablet, and desktop sizes. Visible headings, copy,
-  links, and media order match exactly on every locally comparable route.
-  Raster differences remain below the 6% budget; the largest is 3.85% on the
-  mobile Contact page. Reserve is intentionally unconfigured locally and is
-  covered by the hermetic Square suite until the staging sandbox is enabled.
-- Twenty WCAG 2.0/2.1/2.2 A/AA route-and-viewport scans pass with no serious
-  or critical axe violations, no unnamed interactive controls, valid landmark
-  and heading structure, and keyboard-reachable controls.
-- Local performance budgets pass on all ten routes at 375×844 and 1440×950.
-  LCP measured 1.69–2.66 seconds and CLS remained at or below 0.052. The
-  1080p hero video retains its 17.68-second visual source while its
-  web payload was reduced from 22 MB to 4.2 MB by removing unused audio and an
-  attached image stream and re-encoding with H.264 fast-start delivery.
-- Internal links and 16 same-origin media assets verified.
-- Enquiry requirements verified for new patient, existing patient, and general enquiry branches.
-- Instagram handle, phone, and smile photos verified as mandatory in every enquiry branch.
-- Complete browser submissions pass for all three enquiry types, including
-  separate storage of optional SMS consent and one private smile photo per enquiry.
-- Airtable lead and deposit upserts, retry recovery, pending-sync cron, exact `Social`/photo mapping, and idempotency verified with deterministic upstream doubles.
-- Private photo signature checks and response security headers verified.
-- Square fixed $250 amount, browser tokenization, success, decline, ambiguous recovery, and idempotency verified.
-- Meta consent gating, browser/server shared event ID, and visitor-data minimization verified.
-- SEO metadata, canonical behavior, reserve noindex, sitemap exclusion, and staging robots behavior verified.
-- GoDaddy staging emits `noindex, nofollow`; its public page sitemap is
-  intentionally suppressed while protected.
-- All ten routes, 21 same-origin media assets, and 11 internal links pass on
-  the deployed staging host.
-- All ten routes pass at mobile, tablet, and desktop sizes on GoDaddy staging;
-  menus, slider, counters, parallax, form controls, Meta consent, and the safe
-  unconfigured-Square state pass in a real browser.
-- TBT Core `0.2.7` stores integration secrets encrypted with the staging
-  site's WordPress authentication salts and never renders the plaintext back
-  into the admin screen. Empty legacy constants no longer mask encrypted
-  staging values.
-- The staging health endpoint reports private WordPress database storage,
-  Airtable configured, Square disabled, and no pending records.
-- The authorized `Barrana WordPress Staging Test` submission was stored in
-  Airtable as record `recrcoQgS3wV6TJYX`, lead reference
-  `TBT-260821-DERCC`, with `Social = Instagram:
-  @barrana.wordpress.staging` and a private staging smile-photo URL. Meta
-  consent was off and no Meta server event was attempted.
-- Airtable revision history confirms that the staging API initially stored
-  `Phone Number = +14245550199` on that synthetic record. The current Airtable
-  view later displays the field blank, with no visible configured Airtable
-  automation explaining the change. WordPress's payload and field mapping are
-  therefore verified; the remaining discrepancy is recorded as an external
-  Airtable normalization/display investigation. General-enquiry phone remains
-  intentionally optional under the parity contract.
-- Existing Square production credentials are encrypted on staging, but the
-  independent `SQUARE_ENABLED` guard is off. No card was tokenized and no
-  Square payment or charge was attempted.
-- Canonical TBT REST responses, including health and Square configuration, send
-  `no-store` headers and bypass GoDaddy's full-page cache. The visitor-facing
-  payment code uses the canonical endpoint. The legacy `/api/square/config`
-  alias remains available only for backward compatibility and may receive the
-  host's standard-page cache policy.
-- `npm audit` reports zero known vulnerabilities for the WordPress toolchain.
-- The checked-in legacy Node rollback source is pinned to Next.js 16.2.7 and
-  currently reports six high-severity production dependency findings. The
-  public site identifies itself as Next.js, but its exact deployed release is
-  not yet captured. Do not redeploy the repository's Node rollback source until
-  it is updated and regression-tested separately; no live Node dependency was
-  changed during this WordPress work.
+- The staging release reports TBT Core `0.2.10` and theme `0.2.5`.
+- Ten routes, 16 same-origin assets, and 11 internal links pass on staging.
+- All ten routes pass at mobile, tablet, and desktop viewports.
+- Twenty accessibility/performance scans pass with zero axe violations, LCP of
+  approximately 580–1196 ms, and maximum CLS of 0.0829.
+- New, Existing, and General enquiry branches require phone, Instagram handle,
+  and at least one smile photo in the browser and REST endpoint.
+- Hermetic Airtable mapping is exactly `Instagram: <handle>` for every intent.
+- Hermetic Airtable, private-photo, Meta, and Square integration suites pass,
+  including recovery, idempotency, and privacy checks.
+- Square defaults to disabled, makes no outbound request while disabled, and
+  accepts only exact `COMPLETED` payments as confirmed.
+- Thirty staging-versus-live visual comparisons were reviewed: 20 direct
+  passes and 10 documented controlled differences. Gallery passes at all three
+  sizes; the remaining Reserve difference is the expected disabled-Square
+  fallback. Named approval for the exceptions is pending.
+- The staging health endpoint reports WordPress database storage, Airtable
+  configured, no pending enquiries/deposits, and Square disabled.
+- Staging remains `noindex, nofollow` with its page sitemap suppressed. The URL
+  is publicly reachable; indexing controls are not access control.
+- Production-only npm audit reports zero vulnerabilities. The full local QA
+  toolchain has three moderate transitive findings in WordPress Playground's
+  Express/`qs` dependency; no forced breaking downgrade was applied.
+- Public DNS and HTTP headers confirm that production still serves the existing
+  GoDaddy Airo Node/Next.js application.
 
-Detailed evidence and commands are in [verification-log.md](verification-log.md). The exact production procedure is in [deployment-runbook.md](deployment-runbook.md).
+Detailed commands and chronology are in
+[verification-log.md](verification-log.md). The production procedure is in
+[deployment-runbook.md](deployment-runbook.md).
 
 ## Required staging evidence
 
-Do not approve production until every item below is recorded with timestamp, operator, result, and supporting screenshot/log reference.
+Do not approve production until every pending item has timestamped evidence.
 
 | Gate | Result | Evidence |
 | --- | --- | --- |
-| HTTPS staging URL protected from public indexing | Pass | `https://1254861.us6.myftpupload.com`; `noindex, nofollow`, 2026-08-21 |
-| Theme and plugin checksums match this release | Refreshed staging install pending reauthentication and action-time confirmation | Theme 0.2.4 `ad5ef213…` and TBT Core 0.2.9 `b265a530…` are deterministic locally; staging remains on its prior verified release, 2026-08-28 |
-| Airtable test lead saved with exact Social and private photo handoff | Pass | Record `recrcoQgS3wV6TJYX`; lead `TBT-260821-DERCC`; verified in Airtable, 2026-08-21 |
-| Airtable forced-failure retry recovered without a duplicate | Pending | |
-| Square sandbox success, decline, and ambiguous retry verified | Pending | |
-| Meta consent off/on and shared event ID verified | Pending | |
-| SMTP delivery and reply-to verified | Pending | |
-| Real cron runner and pending-sync recovery verified | Pending | |
-| Mobile/tablet/desktop visual comparison approved | Automated local pass; refreshed staging/formal approval pending | 27 strict live-reference comparisons, 30 responsive renders, and interaction suite, 2026-08-28 |
-| Accessibility keyboard and screen-reader smoke test approved | Automated local pass; formal screen-reader approval pending | 20 WCAG route/viewport scans, AX-tree naming, structure, and keyboard checks, 2026-08-28 |
-| Performance and cache behavior approved | Automated local pass; refreshed staging approval pending | 20 local performance scans; LCP 1.69–2.66 s, CLS ≤0.052, 2026-08-28 |
-| Database/files backup created and restore tested | Pending | |
-| Current Node release and environment configuration captured | Pending | |
-| Custom domain/DNS inventory captured | Public inventory pass; GoDaddy control-plane evidence pending | `docs/dns-inventory.md`, public DNS and HTTP headers, 2026-08-25 |
-| Rollback rehearsal completed | Pending | |
-| GitHub branch pushed and draft PR reviewed | Branch pushed; review pending | `codex/wordpress-migration` at `5cb8e23`, 2026-08-28 |
+| HTTPS staging excluded from indexing | Pass | `noindex, nofollow`; sitemap suppressed, 2026-09-08 |
+| Staging access control | Pending | Publicly reachable; use only synthetic data and remove production credentials until access control exists |
+| Theme and plugin versions/checksums | Pass | Theme `0.2.5` `fc4086e2…d229`; Core `0.2.10` `1a361b1b…29f8`, 2026-09-08 |
+| Automated route/responsive/accessibility/performance QA | Pass | 10 routes; 30 responsive renders; 20 axe/performance scans, 2026-09-08 |
+| Automated visual/content comparison | Conditional | 30 comparisons reviewed; documented copy/footer and disabled-Square differences require named approval, 2026-09-08 |
+| Hermetic Airtable/Meta/Square integrations | Pass | Complete integration suite, including all three enquiry types and payment safety states, 2026-09-08 |
+| Three real staging leads with exact Social/private photos | Pending explicit submission approval | |
+| Live Airtable forced-failure retry without duplicate | Pending | |
+| Square sandbox credential isolation | Pending | Remove production credentials; validate sandbox app/location/token and environment before enabling |
+| Square sandbox success/decline/ambiguous retry | Pending | Square intentionally disabled |
+| Meta test-event receipt and deduplication | Pending | Hermetic coverage passes |
+| SMTP delivery and reply-to | Pending | WordPress admin reports recent failures |
+| Real cron pending-sync recovery | Pending | |
+| Manual screen-reader smoke test | Pending | Automated axe/keyboard gates pass |
+| Visual exception approval | Pending | Named reviewer; rerun Reserve after sandbox configuration |
+| Database/files backup and isolated restore | Pending | |
+| Current Node release/environment captured | Pending | DNS and runtime fingerprint captured |
+| Rollback rehearsal | Pending | |
+| Git branch and evidence | Pass at handoff | `origin/codex/wordpress-migration`; deployed commit `9a917c7`, tooling commit `81b2137`, and this report commit |
 
 ## Cutover rule
 
-The WordPress release must first use a separate, protected staging hostname. The current live deployment and DNS remain unchanged until all staging gates pass. At cutover, retain the previous Node release, database backup, DNS snapshot, environment-variable inventory, and these package checksums so rollback is immediate and auditable.
+Production and DNS remain unchanged until every external gate passes and a
+named production approval is recorded. Before cutover, capture the live Node
+release, environment-variable inventory, database/files backup, DNS snapshot,
+and rollback point. Retain the previous release and these exact package hashes
+until the post-cutover observation window closes.

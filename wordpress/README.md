@@ -12,6 +12,7 @@ on `main` while parity work happens on `codex/wordpress-migration`.
 - `blueprint.json` — reproducible local WordPress setup for WordPress Playground.
 - `docs/parity-contract.md` — the implementation and acceptance contract.
 - `docs/release-evidence.md` — immutable package evidence and staging gates.
+- `docs/qa-report-2026-09-08.md` — latest deployed-staging QA disposition.
 - `docs/dns-inventory.md` — read-only public routing evidence and cutover safeguards.
 
 WordPress core, uploads, secrets, database files, and generated caches are not
@@ -47,8 +48,8 @@ descriptions, canonicals, redirects, internal links, visitor assets, health and
 legacy Square endpoints, 404 behavior, and server-side mandatory-photo rules
 for all three enquiry types. The responsive verifier uses an installed Chrome
 or Chromium browser to check all routes at 375×844, 768×1024, and 1440×950. It
-also exercises the mobile menu, comparison slider, counters, parallax,
-enquiry requirements, default-off analytics consent, and the safe
+also exercises the mobile menu, parallax, enquiry requirements, default-off
+analytics consent, and the safe
 Square fallback. Set `CHROME_PATH` only when the browser is not installed in a
 standard location.
 
@@ -62,8 +63,10 @@ for a focused diagnostic run without weakening the default full matrix.
 The visual verifier compares the WordPress build with the checked-in Next.js
 source running locally. It requires exact visible headings, copy, internal and
 external links, and media order, plus a 6% raster budget for cross-renderer
-antialiasing, Next Image encoding, and the documented accessibility-contrast
-uplift. Start the Next.js source on port 9300, then run:
+antialiasing and Next Image encoding. Any intentional legal, verified-contact,
+accessibility, or disabled-integration difference must be recorded and receive
+named approval under the parity contract. Start the Next.js source on port
+9300, then run:
 
 ```bash
 npm run verify:visual-parity
@@ -94,7 +97,7 @@ without form-data leakage, and exercises Square success, decline, idempotent
 retry, ambiguous-network handling, deposit reconciliation, and browser SDK
 states.
 
-To create production-ready install archives after a successful build:
+To create deterministic install archives after a successful build:
 
 ```bash
 npm run package
@@ -107,6 +110,9 @@ timestamps, entry order, locale, and timezone are normalized, so identical
 source produces identical archives with the same build toolchain. Verify them with
 `cd dist && shasum -a 256 -c SHA256SUMS` and `unzip -t`.
 
+Packaging alone does not make a release production-ready. Every gate in the
+parity contract and deployment runbook must still pass.
+
 ## Production configuration
 
 The committed code contains no credentials. Configure the constants shown in
@@ -115,7 +121,9 @@ matching server environment variables, or use **Settings → TBT Integrations**.
 The admin screen encrypts secrets with the site's WordPress authentication
 salts and never displays them again. Non-empty constants take precedence,
 followed by non-empty environment variables and then encrypted site settings.
-`SQUARE_ENABLED` is an independent fail-closed switch; leave it off on staging.
+`SQUARE_ENABLED` is an independent fail-closed switch. Leave it off until
+staging contains verified sandbox—not production—credentials, and turn it off
+again after the approved payment test.
 
 Production does not need Node.js: commit the generated files in each
 `assets/dist` directory, then install and activate the theme and plugin. Plugin
@@ -129,8 +137,8 @@ gates.
 
 ## Non-negotiable rules
 
-1. The current live site remains untouched until staging passes the parity
-   contract.
+1. The current live site remains untouched until every pre-production gate in
+   the parity contract passes and cutover is explicitly approved.
 2. Airtable, Square, Meta, and storage credentials remain server-side and are
    never committed.
 3. Visitor smile images never enter the public WordPress Media Library.

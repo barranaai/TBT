@@ -1,4 +1,14 @@
-# Teeth by Trev — WordPress + Elementor Build Kit
+# ARCHIVED — Do Not Use for the Current WordPress Site
+
+This Elementor kit is superseded by the custom Teeth by Trev theme and TBT Core
+plugin under [`../wordpress/`](../wordpress/). Its form plugins, optional-photo
+rules, raw Social mapping, public Media Library, and WooCommerce payment advice
+conflict with the deployed architecture. Retain this file only as historical
+planning material. Follow the
+[current parity contract](../wordpress/docs/parity-contract.md) and
+[deployment runbook](../wordpress/docs/deployment-runbook.md) instead.
+
+# Teeth by Trev — WordPress + Elementor Build Kit (Historical)
 
 This is a build guide to recreate the live Next.js design (reference: https://tbt-2zh4.onrender.com) as a **WordPress site using the FREE Elementor** page builder, hosted on the client's GoDaddy Managed WordPress.
 

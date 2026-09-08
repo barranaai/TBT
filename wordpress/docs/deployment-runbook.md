@@ -23,7 +23,10 @@ staging hostname with its own database and uploads directory.
 4. Activate TBT Core, then the Teeth by Trev theme. Activation creates the
    pages, operational tables, front-page option, and rewrite rules.
 5. Set **Settings → Permalinks** to **Post name** and save once.
-6. Keep search indexing disabled and protect the staging hostname.
+6. Keep search indexing disabled and add host-level access control. `noindex`
+   and sitemap suppression are not access control. If the host cannot protect
+   staging, record that exception, use synthetic data only, and do not retain
+   production credentials there.
 7. Confirm WordPress cron is functional. If loopback cron is disabled, schedule
    `wp cron event run --due-now` from the host at least every five minutes.
 
@@ -47,11 +50,18 @@ Required Airtable schema before testing:
 4. Temporarily block Airtable in staging, submit one labelled test enquiry,
    restore access, run the due cron event, and confirm `airtablePending` returns
    to zero at `/wp-json/tbt/v1/health` without a duplicate record.
-5. Run Square sandbox success, decline, retry/idempotency, and ambiguous-network
-   cases. Confirm both the WordPress deposit table and Airtable Deposits record.
-6. Repeat the Airtable interruption test for a labelled sandbox deposit and
+5. Before enabling payments, remove any production Square credentials from
+   staging. Save a sandbox access token, sandbox application ID, sandbox
+   location ID, and `SQUARE_ENVIRONMENT=sandbox`; confirm the public Square
+   configuration still reports disabled until the independent enable switch is
+   deliberately turned on.
+6. Run Square sandbox success, decline, `PENDING`/`APPROVED`/missing-status,
+   retry/idempotency, and ambiguous-network cases. Only `COMPLETED` may produce
+   a confirmed deposit. Confirm the WordPress deposit table and Airtable
+   Deposits record, then turn the staging enable switch off again.
+7. Repeat the Airtable interruption test for a labelled sandbox deposit and
    confirm `airtablePendingDeposits` returns to zero.
-7. In Meta test events, verify no event before consent and one deduplicated Lead
+8. In Meta test events, verify no event before consent and one deduplicated Lead
    pair after consent. Confirm no form answers or contact data are sent.
 
 ## 4. Parity and quality gate
@@ -62,7 +72,8 @@ states, links, metadata, redirects, 404s, image loading, cache behavior, and
 page performance. Resolve every critical or high-severity difference before
 cutover.
 
-Run the same committed verification against the protected staging hostname:
+From the `wordpress/` directory, run the same committed verification against
+the staging hostname:
 
 ```bash
 TBT_BASE_URL=https://staging.example.com \
@@ -73,25 +84,43 @@ npm run verify:local
 TBT_BASE_URL=https://staging.example.com \
 TBT_BASIC_AUTH='user:password' \
 npm run verify:responsive
+
+TBT_BASE_URL=https://staging.example.com \
+TBT_BASIC_AUTH='user:password' \
+npm run verify:quality
+
+TBT_REFERENCE_URL=https://teethbytrev.com \
+TBT_BASE_URL=https://staging.example.com \
+TBT_BASIC_AUTH='user:password' \
+npm run verify:visual-parity
 ```
 
-Omit `TBT_BASIC_AUTH` only when protection is enforced outside HTTP Basic Auth.
-Keep the screenshots and command output with the release evidence.
+Omit `TBT_BASIC_AUTH` when the host uses another access-control mechanism or
+when a documented public-staging exception has been approved. Keep the reports,
+screenshots, exception dispositions, and command output with the release
+evidence. Separately run the hermetic upstream suite locally with
+`npm run playground:integration` and `npm run verify:integrations`; it is not a
+substitute for the labelled staging integration tests.
 
 ## 5. Cutover
 
 1. Take fresh WordPress and Node backups.
 2. Put the domain behind the shortest safe DNS/proxy TTL available.
 3. Bind the production domain to WordPress without deleting the Node project.
-4. Switch Square to production values and remove Meta test-event mode.
+4. Save the production Square environment, application ID, location ID, and
+   access token; verify the identifiers belong to the approved production
+   Square application; then explicitly enable `SQUARE_ENABLED`. Remove Meta
+   test-event mode only after its live configuration is verified.
 5. Purge caches, then run home/contact/reserve smoke tests and one labelled live
    enquiry. Avoid a real charge unless explicitly approved for the cutover test.
 6. Monitor HTTP errors, enquiries, Airtable, Square, and Meta for the agreed
    observation window.
 
-Record the exact Git commit, both entries from `dist/SHA256SUMS`, database
-backup identifier, Node rollback release, DNS values, and integration evidence
-before changing the domain.
+Record the exact Git commit, the package hashes in tracked release evidence and
+the freshly generated `dist/SHA256SUMS`, database backup identifier, Node
+rollback release, DNS values, and integration evidence before changing the
+domain. Generated `dist/` files are intentionally untracked, so the committed
+release report is the durable checksum record.
 
 ## 6. Rollback
 

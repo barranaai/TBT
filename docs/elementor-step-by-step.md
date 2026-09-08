@@ -1,4 +1,13 @@
-# Teeth by Trev — Step-by-Step Elementor Build (free Elementor, GoDaddy Managed WP)
+# ARCHIVED — Do Not Use for the Current WordPress Site
+
+This Elementor procedure is superseded by the custom Teeth by Trev theme and
+TBT Core plugin under [`../wordpress/`](../wordpress/). Its public Media
+Library, optional form, WPForms/Contact Form 7, Elementor, and WooCommerce
+instructions conflict with the current privacy, enquiry, Airtable, and payment
+contracts. Retain this file only as historical planning material. Follow the
+[current deployment runbook](../wordpress/docs/deployment-runbook.md) instead.
+
+# Teeth by Trev — Step-by-Step Elementor Build (Historical)
 
 Follow these phases **in order**. The detailed per-section content (copy, widgets, images, colors) lives in [`elementor-build-kit.md`](elementor-build-kit.md) — this doc is the *procedure*; the kit is the *reference*. Reference design: https://tbt-2zh4.onrender.com
 

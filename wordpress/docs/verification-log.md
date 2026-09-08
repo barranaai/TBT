@@ -1,8 +1,15 @@
 # Verification Log
 
-Updated: 2026-08-25
+Updated: 2026-09-08
 
-## Passed locally
+Entries below are chronological. Earlier environment/version statements record
+the state at that date and are superseded by the 2026-09-08 final staging entry.
+
+## Historical local baseline (pre-2026-08-28)
+
+This undated block records an earlier migration checkpoint. Its route,
+performance, Classic-page, and dependency statements are historical; the
+2026-09-08 entry is authoritative for the deployed staging release.
 
 - WordPress Playground boot: WordPress 7.0.3, PHP 8.3.32.
 - Theme/plugin activation, page seeding, schema migration, and health endpoint.
@@ -41,8 +48,7 @@ Updated: 2026-08-25
   homepage sections, no horizontal overflow, and no Meta script before consent.
 - `/reserve/?type=video` renders the correct consultation label and the safe
   concierge fallback when Square credentials are absent.
-- Contact wizard: General phone optional; New/Existing phone required;
-  Instagram always visible and required; photos required in every branch.
+- Contact wizard: phone, Instagram, and photos required in every branch.
 - Automated mobile checks confirm that the Instagram control remains required,
   the correct phone indicator is shown, and every branch includes its smile
   photo control.
@@ -68,7 +74,8 @@ Updated: 2026-08-25
   Airtable deposit logs, browser tokenization errors, and unsafe-retry lockout.
 - Private gallery and image URLs return 200, `noindex`, and the original image
   MIME type.
-- Dependency audit reports zero known vulnerabilities.
+- Production-dependency audit reports zero known vulnerabilities. The full
+  development-toolchain status is recorded in the latest entry below.
 - Production theme and plugin ZIP archives build and pass `unzip -t` integrity
   checks; two consecutive normalized builds produce identical SHA-256 hashes;
   the manifest verifies; generated archives remain untracked.
@@ -104,8 +111,8 @@ Verified: 2026-08-21
   = +14245550199` on the synthetic record. The live view now shows the field
   blank and no configured Airtable automation was visible. This confirms the
   WordPress payload/mapping and leaves an Airtable-side normalization/display
-  anomaly to investigate; no WordPress contract change was made because
-  General phone is intentionally optional.
+  anomaly to investigate. General phone was optional in this historical
+  release; the current `0.2.10` release requires it for every enquiry type.
 - `verify:local` passes all ten routes, 21 same-origin image/video assets, 11
   internal links, protected-staging robots behavior, form requirements, image
   signature validation, health, the canonical Square configuration endpoint,
@@ -121,7 +128,7 @@ Verified: 2026-08-21
   suppressed until the site is made public.
 - Production `32741.us6.myftpupload.com` remained unchanged throughout.
 
-## Remaining staging credentials or infrastructure
+## Remaining staging credentials or infrastructure at 2026-08-21
 
 - Upload and activate the deterministic Teeth by Trev theme 0.2.3 and TBT Core
   0.2.8 archives
@@ -155,7 +162,7 @@ Verified: 2026-08-21
   `71483592a0a7058183e9ce862070d5bbba2e8489fcd31bbf94bd160d55f3b325`.
   Plugin hash:
   `67bcb4b699cd900d82e467060ffcb0b122b51fae2b237737c3006beb6898c54d`.
-- WordPress `npm audit` reports zero findings. The legacy checked-in Node
+- At this checkpoint, WordPress `npm audit` reported zero findings. The legacy checked-in Node
   rollback source (Next.js 16.2.7) reports six high-severity production
   dependency findings and is not approved for redeployment until separately
   updated and regression-tested.
@@ -165,7 +172,7 @@ Verified: 2026-08-21
 
 ## 2026-08-26 staging pre-deployment baseline
 
-- GoDaddy SSO access was restored specifically for the protected staging host
+- GoDaddy SSO access was restored specifically for the non-production staging host
   `1254861.us6.myftpupload.com`; the separate production WordPress host
   `32741.us6.myftpupload.com` was not changed.
 - The active staging release remains TBT Core 0.2.7 and Teeth by Trev theme
@@ -231,3 +238,57 @@ Verified: 2026-08-21
   install/replace was submitted, so reauthentication and the required browser
   action-time confirmation remain pending. The staging and production releases
   are otherwise unchanged at this checkpoint.
+
+## 2026-09-08 staging deployment and final automated QA
+
+- TBT Core `0.2.10` and Teeth by Trev theme `0.2.5` were installed successfully
+  on non-production staging only. Public asset versions and the health endpoint
+  confirm the installed release. Production and DNS were not changed.
+- The deployed source is commit `9a917c723dffb83523dd6493f0c9752602ff188e`.
+  Deterministic release hashes are:
+  - theme: `fc4086e2bb1f9204cb613fe640cc044c2ae6763dc63ac1590fe5d958a675d229`;
+  - plugin: `1a361b1b838edebb20bb74995a892e8a0c33258099bb5829a1cb2521b09f29f8`.
+- The route suite passes ten staging routes, 16 same-origin assets, 11 internal
+  links, staging robots/sitemap rules, image validation, form requirements,
+  health, and Square fallback behavior.
+- The responsive suite passes all ten routes at 375x844, 768x1024, and
+  1440x950, including menus, parallax, controls, consent/Meta behavior, and the
+  disabled-Square fallback.
+- Twenty accessibility/performance scans pass with zero axe violations. LCP is
+  approximately 580–1196 ms and maximum CLS is 0.0829.
+- The complete hermetic integration suite passes New, Existing, and General
+  browser submissions; mandatory phone, Instagram, and smile photos; exact
+  Airtable `Social` mapping; private photos; retry recovery; Meta privacy and
+  deduplication; and Square payment/deposit states.
+- Square now defaults to disabled and makes no outbound request without an
+  explicit enable flag. Only an exact `COMPLETED` status is accepted; `PENDING`,
+  `APPROVED`, and missing statuses create no confirmed deposit and never show a
+  success message.
+- Thirty strict staging-versus-live comparisons were reviewed: 20 direct passes;
+  three documented address/city-copy differences; four documented legal-footer height
+  differences; and three expected Reserve differences while Square is disabled.
+  Gallery passes all breakpoints after removal of the WordPress figure margin.
+- The health endpoint reports WordPress `7.0.4`, PHP `8.1.34.15`, private
+  WordPress database storage, Airtable configured, zero pending enquiries,
+  zero pending deposits, and Square disabled.
+- The staging URL is publicly reachable. `noindex, nofollow` and sitemap
+  suppression reduce indexing but do not provide access control; synthetic-only
+  data and removal of production credentials are required until authentication
+  is added.
+- Live DNS remains `160.153.0.235`; the public domain still presents the existing
+  GoDaddy Airo Node/Next.js runtime. The production WordPress host remains
+  separate and unchanged.
+- QA tooling was updated separately in commit
+  `81b2137b15a7cb2d7c6c50738194bdefe7ca6447`, after the deployed code commit.
+  The full hermetic integration suite passed again with Playground `3.1.53`.
+  `npm audit --omit=dev` reports zero vulnerabilities. The full audit reports
+  three moderate transitive `qs` findings through Express in
+  `@wp-playground/cli` `3.1.53`; npm's proposed fix is a breaking downgrade and
+  was not forced. The deployable theme/plugin archives are unaffected.
+- Remaining external/manual gates: staging access control or a documented
+  synthetic-only exception; three labelled real staging enquiries in Airtable;
+  removal of production Square credentials and validated sandbox replacement;
+  Square sandbox end-to-end payment QA; live Meta test-event receipt; SMTP;
+  real cron/failure recovery; manual screen-reader review; named visual-exception
+  approval and Reserve rerun; current Node release/environment capture;
+  backup/restore; and rollback rehearsal. Production cutover remains on hold.
