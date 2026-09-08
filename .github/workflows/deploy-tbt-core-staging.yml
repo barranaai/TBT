@@ -1,0 +1,100 @@
+name: Deploy TBT Core to WordPress staging
+
+on:
+  push:
+    branches:
+      - codex/wordpress-migration
+    paths:
+      - .github/workflows/deploy-tbt-core-staging.yml
+      - wordpress/package.json
+      - wordpress/package-lock.json
+      - wordpress/scripts/package-release.mjs
+      - wordpress/scripts/write-package-manifest.mjs
+      - wordpress/wp-content/plugins/tbt-core/**
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tbt-wordpress-staging
+  cancel-in-progress: false
+
+env:
+  TBT_STAGING_HOST: 1254861.us6.ssh.myftpupload.com
+  TBT_STAGING_USER: git_deployer_2712ac7ea4_1254861
+  TBT_STAGING_HEALTH_URL: https://1254861.us6.myftpupload.com/wp-json/tbt/v1/health
+
+jobs:
+  deploy-plugin:
+    name: Package, deploy, and verify the staging plugin
+    if: contains(github.event.head_commit.message, '[deploy-staging]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: wordpress-staging
+      url: https://1254861.us6.myftpupload.com/
+
+    steps:
+      - name: Check out the requested branch commit
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: wordpress/package-lock.json
+
+      - name: Enforce the staging-only boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/codex/wordpress-migration"
+          test "$TBT_STAGING_HOST" = "1254861.us6.ssh.myftpupload.com"
+          test "$TBT_STAGING_USER" = "git_deployer_2712ac7ea4_1254861"
+          test "$TBT_STAGING_HEALTH_URL" = "https://1254861.us6.myftpupload.com/wp-json/tbt/v1/health"
+
+      - name: Build the deterministic plugin package
+        working-directory: wordpress
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm ci --no-audit --no-fund
+          npm run package
+          (cd ./dist && sha256sum --check SHA256SUMS)
+          mkdir -p ../.deploy
+          unzip -q ./dist/tbt-core-plugin.zip -d ../.deploy
+          test -f ../.deploy/tbt-core/tbt-core.php
+
+      - name: Deploy only TBT Core to WordPress staging
+        # GoDaddy's action uses this tag internally when it checks out its
+        # companion deployer, so the official v1 tag is required here.
+        uses: godaddy-wordpress/gd-wordpress-deployer@v1
+        with:
+          remote_host: ${{ env.TBT_STAGING_HOST }}
+          ssh_user: ${{ env.TBT_STAGING_USER }}
+          ssh_private_key: ${{ secrets.TBT_STAGING_GODADDY_PRIVATE_KEY }}
+          source_path: .deploy/tbt-core
+          deployment_dest: wp-content/plugins/tbt-core
+          cleanup_deleted_files: "no"
+          enable_health_check: "yes"
+
+      - name: Verify the deployed plugin health
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected_version="$(sed -n 's/^ \* Version: //p' wordpress/wp-content/plugins/tbt-core/tbt-core.php | head -n 1)"
+          test -n "$expected_version"
+          health_body="$(curl --fail --show-error --silent --retry 5 --retry-all-errors --retry-delay 5 "$TBT_STAGING_HEALTH_URL")"
+          HEALTH_BODY="$health_body" EXPECTED_VERSION="$expected_version" node -e '
+            const health = JSON.parse(process.env.HEALTH_BODY);
+            if (health.ok !== true) throw new Error("Staging health check did not return ok=true");
+            if (health.plugin !== process.env.EXPECTED_VERSION) {
+              throw new Error(`Expected plugin ${process.env.EXPECTED_VERSION}, received ${health.plugin}`);
+            }
+            if (health.airtable !== true) throw new Error("Staging Airtable integration is not ready");
+            if (health.airtablePending !== 0) throw new Error("Staging has pending Airtable enquiries");
+            if (health.airtablePendingDeposits !== 0) throw new Error("Staging has pending Airtable deposits");
+            if (health.square !== false) throw new Error("Square must remain disabled on staging for this release");
+            console.log(`Verified TBT Core ${health.plugin} on WordPress staging.`);
+          '
