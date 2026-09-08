@@ -410,7 +410,7 @@ final class TBT_Core_REST {
 	}
 
 	private static function square_is_configured(): bool {
-		$enabled = strtolower( self::config( 'SQUARE_ENABLED', '1' ) );
+		$enabled = strtolower( self::config( 'SQUARE_ENABLED', '0' ) );
 		if ( ! in_array( $enabled, array( '1', 'true', 'yes', 'on' ), true ) ) return false;
 		return (bool) ( self::config( 'SQUARE_ACCESS_TOKEN' ) && self::config( 'SQUARE_APPLICATION_ID' ) && self::config( 'SQUARE_LOCATION_ID' ) );
 	}
@@ -447,7 +447,10 @@ final class TBT_Core_REST {
 		global $wpdb;
 		$table = $wpdb->prefix . 'tbt_deposits';
 		$prior = $wpdb->get_row( $wpdb->prepare( "SELECT payment_id, status FROM {$table} WHERE idempotency_key = %s LIMIT 1", $key ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		if ( $prior ) return new WP_REST_Response( array( 'ok' => true, 'paymentId' => $prior['payment_id'], 'status' => $prior['status'], 'idempotent' => true ), 200 );
+		if ( $prior ) {
+			if ( 'COMPLETED' !== (string) $prior['status'] ) return new WP_Error( 'payment_unconfirmed', 'Payment status could not be confirmed. Please contact us before trying again.', array( 'status' => 409 ) );
+			return new WP_REST_Response( array( 'ok' => true, 'paymentId' => $prior['payment_id'], 'status' => $prior['status'], 'idempotent' => true ), 200 );
+		}
 		$kind = in_array( $data['type'] ?? '', array( 'in-person', 'video' ), true ) ? $data['type'] : '';
 		$body = array( 'source_id' => $source, 'idempotency_key' => $key, 'amount_money' => array( 'amount' => self::DEPOSIT_CENTS, 'currency' => 'USD' ), 'location_id' => self::config( 'SQUARE_LOCATION_ID' ), 'autocomplete' => true, 'note' => 'Teeth by Trev — consultation deposit' . ( $kind ? ' (' . $kind . ')' : '' ) );
 		$verification = self::clean( $data['verificationToken'] ?? '', 1024 );
@@ -462,16 +465,20 @@ final class TBT_Core_REST {
 			$error = self::clean( $result['errors'][0]['detail'] ?? 'Your payment was declined.', 300 );
 			return new WP_Error( 'payment_failed', $error, array( 'status' => 402 ) );
 		}
+		$payment_status = self::clean( $result['payment']['status'] ?? '', 30 );
+		if ( 'COMPLETED' !== $payment_status ) {
+			return new WP_Error( 'payment_unconfirmed', 'Payment status could not be confirmed. Please contact us before trying again.', array( 'status' => 409 ) );
+		}
 		$name = self::clean( $data['name'] ?? '', 190 );
 		$phone = self::clean( $data['phone'] ?? '', 60 );
 		$service = 'in-person' === $kind ? 'In-person consultation' : ( 'video' === $kind ? 'Video consultation' : 'Private consultation' );
 		$lead_reference = '';
 		if ( $email ) $lead_reference = (string) $wpdb->get_var( $wpdb->prepare( "SELECT lead_reference FROM {$wpdb->prefix}tbt_inquiries WHERE email = %s ORDER BY id DESC LIMIT 1", $email ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		if ( ! $lead_reference && $phone ) $lead_reference = (string) $wpdb->get_var( $wpdb->prepare( "SELECT lead_reference FROM {$wpdb->prefix}tbt_inquiries WHERE phone = %s ORDER BY id DESC LIMIT 1", $phone ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$deposit_saved = $wpdb->insert( $table, array( 'payment_id' => $result['payment']['id'], 'idempotency_key' => $key, 'lead_reference' => $lead_reference, 'name' => $name, 'email' => $email, 'phone' => $phone, 'service' => $service, 'amount_cents' => self::DEPOSIT_CENTS, 'status' => self::clean( $result['payment']['status'] ?? 'COMPLETED', 30 ), 'created_at' => current_time( 'mysql', true ) ), array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%s' ) );
+		$deposit_saved = $wpdb->insert( $table, array( 'payment_id' => $result['payment']['id'], 'idempotency_key' => $key, 'lead_reference' => $lead_reference, 'name' => $name, 'email' => $email, 'phone' => $phone, 'service' => $service, 'amount_cents' => self::DEPOSIT_CENTS, 'status' => $payment_status, 'created_at' => current_time( 'mysql', true ) ), array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%s' ) );
 		if ( ! $deposit_saved ) error_log( '[tbt-square] Payment succeeded but the local deposit log failed: ' . $result['payment']['id'] );
 		$deposit_airtable = self::send_airtable_deposit( array( 'name' => $name, 'email' => $email, 'phone' => $phone, 'service' => $service, 'amount_cents' => self::DEPOSIT_CENTS, 'payment_id' => $result['payment']['id'], 'lead_reference' => $lead_reference ) );
 		if ( $deposit_saved && $deposit_airtable['ok'] ) $wpdb->update( $table, array( 'airtable_saved' => 1 ), array( 'idempotency_key' => $key ), array( '%d' ), array( '%s' ) );
-		return new WP_REST_Response( array( 'ok' => true, 'paymentId' => $result['payment']['id'], 'status' => $result['payment']['status'] ?? 'COMPLETED' ), 200 );
+		return new WP_REST_Response( array( 'ok' => true, 'paymentId' => $result['payment']['id'], 'status' => $payment_status ), 200 );
 	}
 }

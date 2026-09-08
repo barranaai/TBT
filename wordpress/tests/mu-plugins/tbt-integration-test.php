@@ -64,6 +64,16 @@ add_filter( 'pre_http_request', 'tbt_test_pre_http_request', 10, 3 );
 
 function tbt_test_reset( WP_REST_Request $request ): WP_REST_Response {
 	$data = $request->get_json_params();
+	if ( array_key_exists( 'squareEnabled', $data ) ) {
+		$settings = get_option( 'tbt_core_integrations', array() );
+		$settings = is_array( $settings ) ? $settings : array();
+		if ( null === $data['squareEnabled'] ) {
+			unset( $settings['SQUARE_ENABLED'] );
+		} else {
+			$settings['SQUARE_ENABLED'] = ! empty( $data['squareEnabled'] ) ? '1' : '0';
+		}
+		update_option( 'tbt_core_integrations', $settings, false );
+	}
 	$queues = array();
 	foreach ( array( 'airtable', 'square', 'meta' ) as $service ) {
 		$queues[ $service ] = is_array( $data[ $service ] ?? null ) ? array_values( $data[ $service ] ) : array();

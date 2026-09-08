@@ -231,13 +231,32 @@ function airtableFields(log) {
 }
 
 await request("/", {}, true);
-await reset({}, true);
+await reset({ squareEnabled: null }, true);
 
-const healthResult = await jsonRequest("/wp-json/tbt/v1/health");
-const health = healthResult.body;
-assert(health.ok && health.plugin === "0.2.9" && health.airtable === true && health.square === true && health.airtablePending === 0 && health.airtablePendingDeposits === 0, `configured health mismatch: ${JSON.stringify(health)}`);
+let healthResult = await jsonRequest("/wp-json/tbt/v1/health");
+let health = healthResult.body;
+assert(health.ok && health.plugin === "0.2.10" && health.airtable === true && health.square === false, `default-disabled health mismatch: ${JSON.stringify(health)}`);
+let squareConfigResult = await jsonRequest("/wp-json/tbt/v1/square/config");
+assert(squareConfigResult.body.configured === false, "Square was exposed when credentials were present but the enable flag was absent");
+let disabledSquare = (await postSquare({ sourceId: "cnon:disabled-default", idempotencyKey: "integration-square-disabled-default" }, 503)).body;
+assert(disabledSquare.code === "square_unconfigured", "Square payment endpoint was not fail-closed when the enable flag was absent");
+assert(serviceLogs(await state(), "square").length === 0, "Square made an outbound payment request while default-disabled");
+
+await reset({ squareEnabled: false });
+health = (await jsonRequest("/wp-json/tbt/v1/health")).body;
+assert(health.square === false, "Square was configured when the enable flag was explicitly false");
+disabledSquare = (await postSquare({ sourceId: "cnon:disabled-false", idempotencyKey: "integration-square-disabled-false" }, 503)).body;
+assert(disabledSquare.code === "square_unconfigured", "Square payment endpoint ignored an explicitly false enable flag");
+assert(serviceLogs(await state(), "square").length === 0, "Square made an outbound payment request while explicitly disabled");
+console.log("PASS Square credentials remain fail-closed with an absent or false enable flag and make no outbound payment request");
+
+await reset({ squareEnabled: true });
+
+healthResult = await jsonRequest("/wp-json/tbt/v1/health");
+health = healthResult.body;
+assert(health.ok && health.plugin === "0.2.10" && health.airtable === true && health.square === true && health.airtablePending === 0 && health.airtablePendingDeposits === 0, `configured health mismatch: ${JSON.stringify(health)}`);
 assert(healthResult.response.headers.get("cache-control")?.includes("no-store"), "Health response is cacheable");
-const squareConfigResult = await jsonRequest("/wp-json/tbt/v1/square/config");
+squareConfigResult = await jsonRequest("/wp-json/tbt/v1/square/config");
 const squareConfig = squareConfigResult.body;
 assert(squareConfig.configured && squareConfig.environment === "sandbox", "Square public config is not sandbox-configured");
 assert(squareConfig.applicationId === "sandbox-sq0idb-integration" && squareConfig.locationId === "integration-location", "Square public identifiers mismatch");
@@ -385,6 +404,22 @@ const declined = (await postSquare({ ...squarePayload, idempotencyKey: "integrat
 assert(declined.code === "payment_failed" && declined.message === "Sandbox card declined.", "Square decline was not surfaced safely");
 assert((await state()).deposits.length === depositsBefore + 1, "Declined Square payment was logged as a deposit");
 
+for (const [label, payment] of [
+  ["PENDING", { id: "sq-pending", status: "PENDING" }],
+  ["APPROVED", { id: "sq-approved", status: "APPROVED" }],
+  ["missing status", { id: "sq-missing-status" }],
+]) {
+  const slug = label.toLowerCase().replaceAll(" ", "-");
+  await reset({ square: [{ status: 200, body: { payment } }] });
+  const unconfirmed = (await postSquare({ ...squarePayload, idempotencyKey: `integration-square-${slug}`, sourceId: `cnon:card-nonce-${slug}` }, 409)).body;
+  assert(unconfirmed.code === "payment_unconfirmed", `Square ${label} response was not rejected as unconfirmed`);
+  snapshot = await state();
+  assert(serviceLogs(snapshot, "square").length === 1, `Square ${label} fixture was not sent upstream exactly once`);
+  assert(serviceLogs(snapshot, "airtable").length === 0, `Square ${label} response was incorrectly sent to Airtable as a deposit`);
+  assert(snapshot.deposits.length === depositsBefore + 1, `Square ${label} response was incorrectly recorded as a confirmed deposit`);
+}
+console.log("PASS Square PENDING, APPROVED, and missing-status 2xx responses are never recorded as confirmed deposits");
+
 await reset({ square: [{ error: "simulated timeout" }, { status: 200, body: { payment: { id: "sq-after-timeout", status: "COMPLETED" } } }] });
 const ambiguousPayload = { ...squarePayload, idempotencyKey: "integration-square-timeout", sourceId: "cnon:card-nonce-timeout", email: "integration-general@example.com" };
 const ambiguousFirst = (await postSquare(ambiguousPayload, 502)).body;
@@ -455,6 +490,28 @@ try {
   snapshot = await state();
   const browserSquareLog = serviceLogs(snapshot, "square")[0];
   assert(browserSquareLog?.body?.source_id === "browser-square-token" && browserSquareLog.body.verification_token === "browser-verification-token", "Square browser tokenization/verification tokens did not reach the server");
+
+  const depositsAfterBrowserSuccess = snapshot.deposits.length;
+  for (const [label, payment] of [
+    ["PENDING", { id: "sq-browser-pending", status: "PENDING" }],
+    ["APPROVED", { id: "sq-browser-approved", status: "APPROVED" }],
+    ["missing status", { id: "sq-browser-missing-status" }],
+  ]) {
+    await reset({ square: [{ status: 200, body: { payment } }] });
+    const unconfirmedContext = await squareBrowserContext(browser);
+    const unconfirmedPage = await unconfirmedContext.newPage();
+    await unconfirmedPage.goto(new URL("/reserve/?type=video", base).href, { waitUntil: "networkidle" });
+    await unconfirmedPage.locator("[data-square-form]").waitFor({ state: "visible" });
+    await unconfirmedPage.locator("[data-square-pay]").click();
+    await unconfirmedPage.locator("[data-square-error]").filter({ hasText: "could not be confirmed" }).waitFor({ state: "visible" });
+    assert(!(await unconfirmedPage.locator("[data-square-success]").isVisible()), `Square ${label} response displayed Deposit Received`);
+    assert(await unconfirmedPage.locator("[data-square-form]").isVisible(), `Square ${label} response hid the payment form as if confirmed`);
+    assert(await unconfirmedPage.locator("[data-square-pay]").isDisabled(), `Square ${label} response allowed an unsafe immediate retry`);
+    assert((await unconfirmedPage.locator("[data-square-pay]").textContent())?.includes("Payment status unconfirmed"), `Square ${label} browser state was not labelled unconfirmed`);
+    await unconfirmedContext.close();
+    assert((await state()).deposits.length === depositsAfterBrowserSuccess, `Square ${label} browser response was recorded as a confirmed deposit`);
+  }
+  console.log("PASS Square PENDING, APPROVED, and missing-status browser responses never display Deposit Received");
 
   const tokenFailureContext = await squareBrowserContext(browser, { status: "FAILED", errors: [{ message: "Card details invalid." }] });
   const tokenFailurePage = await tokenFailureContext.newPage();

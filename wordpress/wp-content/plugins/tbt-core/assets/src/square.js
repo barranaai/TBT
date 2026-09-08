@@ -87,7 +87,19 @@ document.querySelectorAll("[data-tbt-square]").forEach((root) => {
       const response = await fetch(config.payEndpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sourceId: token.token, verificationToken, idempotencyKey, type: root.dataset.type, name: root.querySelector('[name="squareName"]').value.trim(), email, phone: root.querySelector('[name="squarePhone"]').value.trim() }) });
       responseReceived = true;
       const result = await response.json().catch(() => ({}));
-      if (!response.ok || !result.ok) throw new Error(result.message || result.error || "Payment could not be completed.");
+      if (!response.ok || !result.ok) {
+        if (result.code === "payment_unconfirmed") {
+          showError(result.message || "Payment status could not be confirmed. Please contact us before trying again.");
+          pay.textContent = "Payment status unconfirmed";
+          return;
+        }
+        throw new Error(result.message || result.error || "Payment could not be completed.");
+      }
+      if (result.status !== "COMPLETED") {
+        showError("Payment status could not be confirmed. Please contact us before trying again.");
+        pay.textContent = "Payment status unconfirmed";
+        return;
+      }
       form.classList.add("hidden");
       success.classList.remove("hidden");
     } catch (failure) {
