@@ -1,0 +1,11 @@
+{
+  "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+  "preferredVersions": { "php": "8.1", "wp": "latest" },
+  "landingPage": "/wp-admin/tools.php?page=tbt-content-setup",
+  "login": true,
+  "steps": [
+    { "step": "setSiteOptions", "options": { "blogname": "Teeth by Trev", "permalink_structure": "/%postname%/", "blog_public": "0", "elementor_disable_color_schemes": "yes", "elementor_disable_typography_schemes": "yes", "elementor_onboarded": true } },
+    { "step": "runPHP", "code": "<?php require_once '/wordpress/wp-load.php'; require_once ABSPATH . 'wp-admin/includes/plugin.php'; activate_plugin('tbt-core/tbt-core.php'); activate_plugin('elementor/elementor.php'); activate_plugin('tbt-content/tbt-content.php'); switch_theme('teeth-by-trev'); flush_rewrite_rules();" },
+    { "step": "runPHP", "code": "<?php require_once '/wordpress/wp-load.php'; wp_set_current_user(1); tbt_editor_prepare_pages(); $result=tbt_content_migrate(); if(is_wp_error($result)) throw new Exception($result->get_error_message()); echo $result;" }
+  ]
+}

@@ -32,3 +32,7 @@
 .elementor-editor-active .tbt-editor-global { display: none; }
 .elementor-editor-active [data-tbt-inquiry],
 .elementor-editor-active [data-tbt-square] { pointer-events: none; }
+/* Native menus can grow without pushing links outside a small screen. */
+.tbt-cms-native-menu { max-height: calc(100dvh - 13rem); overflow-y: auto; }
+.tbt-cms-submenu { margin-left: 1.5rem; display: flex; flex-direction: column; gap: .75rem; }
+.tbt-cms-native-menu .tbt-cms-submenu .font-serif { font-size: 1.4rem; }

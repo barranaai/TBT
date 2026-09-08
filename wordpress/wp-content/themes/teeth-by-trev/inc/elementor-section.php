@@ -18,15 +18,27 @@ class TBT_Elementor_Section extends \Elementor\Widget_Base {
 	protected function is_dynamic_content(): bool { return true; }
 	protected function register_controls() {
 		$layout = tbt_editor_layouts()['sections'][ $this->layout_key ];
+		$managed = function_exists( 'tbt_cms_managed' ) ? tbt_cms_managed( $this->layout_key ) : array();
+		if ( $managed ) {
+			$this->start_controls_section( 'section_cms', array( 'label' => 'Managed WordPress content' ) );
+			$this->add_control( 'cms_legacy_mode', array( 'type' => 'hidden', 'default' => 'no' ) );
+			$links = array( 'site-header' => 'nav-menus.php', 'site-footer' => 'nav-menus.php', 'services-2' => 'edit.php?post_type=tbt_service', 'home-5' => 'edit.php?post_type=tbt_service', 'home-9' => 'edit.php?post_type=tbt_testimonial', 'gallery-2' => 'edit.php?post_type=tbt_smile', 'gallery-3' => 'edit.php?post_type=tbt_smile' );
+			$this->add_control( 'cms_help', array( 'type' => 'raw_html', 'raw' => 'Repeated content is managed in WordPress. Existing Elementor values remain archived as a fallback. <a target="_blank" rel="noopener" href="' . esc_url( admin_url( $links[ $this->layout_key ] ) ) . '">Open content manager</a>', 'content_classes' => 'elementor-panel-alert elementor-panel-alert-info' ) );
+			$this->end_controls_section();
+		}
 		$groups = array( 'text' => 'Text', 'media' => 'Pictures and video', 'links' => 'Links' );
 		foreach ( $groups as $group => $label ) {
-			$this->start_controls_section( 'section_' . $group, array( 'label' => $label ) );
+			$section_config = array( 'label' => $label );
+			$group_fields = array_keys( array_filter( $layout['controls'], static function ( $control ) use ( $group ) { $type = $control['type']; return $group === ( in_array( $type, array( 'media', 'video' ), true ) ? 'media' : ( 'url' === $type ? 'links' : 'text' ) ); } ) );
+			if ( $managed && ! array_diff( $group_fields, $managed ) ) { $section_config['condition'] = array( 'cms_legacy_mode' => 'yes' ); }
+			$this->start_controls_section( 'section_' . $group, $section_config );
 			foreach ( $layout['controls'] as $name => $control ) {
 				$type = $control['type'];
 				$control_group = in_array( $type, array( 'media', 'video' ), true ) ? 'media' : ( 'url' === $type ? 'links' : 'text' );
 				if ( $group !== $control_group ) { continue; }
 				$value = tbt_editor_resolve( $control['default'] );
 				$config = array( 'label' => $control['label'], 'type' => 'video' === $type ? 'media' : $type, 'default' => $value, 'label_block' => true );
+				if ( in_array( $name, $managed, true ) ) { $config['condition'] = array( 'cms_legacy_mode' => 'yes' ); }
 				if ( in_array( $type, array( 'media', 'video', 'url' ), true ) ) { $config['default'] = array( 'url' => $value, 'id' => 0 ); }
 				if ( 'video' === $type ) { $config['media_types'] = array( 'video' ); }
 				if ( 'url' === $type ) { $config['options'] = array( 'url' ); }
@@ -35,7 +47,9 @@ class TBT_Elementor_Section extends \Elementor\Widget_Base {
 			$this->end_controls_section();
 		}
 		if ( isset( $layout['gallery'] ) ) {
-			$this->start_controls_section( 'section_gallery', array( 'label' => __( 'Gallery cards', 'teeth-by-trev' ) ) );
+			$gallery_config = array( 'label' => __( 'Gallery cards', 'teeth-by-trev' ) );
+			if ( in_array( 'gallery_items', $managed, true ) ) { $gallery_config['condition'] = array( 'cms_legacy_mode' => 'yes' ); }
+			$this->start_controls_section( 'section_gallery', $gallery_config );
 			$repeater = new \Elementor\Repeater();
 			$repeater->add_control( 'image', array( 'label' => __( 'Picture', 'teeth-by-trev' ), 'type' => 'media' ) );
 			foreach ( array( 'title' => 'Title', 'caption' => 'Caption', 'alt' => 'Image description (accessibility)' ) as $name => $label ) { $repeater->add_control( $name, array( 'label' => $label, 'type' => 'text', 'label_block' => true ) ); }
@@ -65,9 +79,10 @@ class TBT_Elementor_Section extends \Elementor\Widget_Base {
 		$replace['{{consultation_label}}'] = esc_html( 'Reserve · ' . ( 'video' === $type ? 'Video consultation' : ( 'in-person' === $type ? 'In-person consultation' : 'Private consultation' ) ) );
 		$replace['{{deposit_form}}'] = shortcode_exists( 'tbt_square_deposit' ) ? do_shortcode( '[tbt_square_deposit type="' . $type . '"]' ) : '<p>Please contact our team directly.</p>';
 		$replace['{{gallery_items}}'] = '';
+		$cms_html = function_exists( 'tbt_cms_section' ) ? tbt_cms_section( $this->layout_key, $settings, $replace ) : null;
 		foreach ( $settings['gallery_items'] ?? array() as $item ) {
 			$replace['{{gallery_items}}'] .= '<figure class="tbt-gallery-case reveal group relative aspect-[4/5] overflow-hidden"><img src="' . esc_url( tbt_editor_resolve( $item['image']['url'] ?? '' ) ) . '" alt="' . esc_attr( $item['alt'] ?? '' ) . '" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy"><div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-100"></div><div class="pointer-events-none absolute inset-0 border border-ivory/10"></div><figcaption class="absolute inset-x-0 bottom-0 translate-y-2 p-6 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100"><span class="block font-serif text-2xl font-light text-ivory">' . esc_html( $item['title'] ?? '' ) . '</span><span class="text-[0.72rem] uppercase tracking-[0.18em] text-champagne">' . esc_html( $item['caption'] ?? '' ) . '</span></figcaption></figure>';
 		}
-		echo strtr( tbt_editor_resolve( $layout['html'] ), $replace ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Immutable markup; replacements escaped above.
+		echo strtr( tbt_editor_resolve( $cms_html ?? $layout['html'] ), $replace ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Immutable markup; replacements escaped above.
 	}
 }

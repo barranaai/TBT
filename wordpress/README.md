@@ -9,6 +9,12 @@ on `main` while parity work happens on `codex/wordpress-migration`.
 - `wp-content/themes/teeth-by-trev` — the visitor-facing custom theme.
 - `wp-content/plugins/tbt-core` — enquiries, private photos, Airtable, Square,
   consent, Meta events, and operational data.
+- `wp-content/plugins/tbt-content` — reusable public content and page SEO metadata;
+  no enquiry/payment credentials or visitor photos.
+- `docs/cms-management-guide.md` — native menus, services, testimonials,
+  transformations, SEO/sharing and reversible setup.
+- `blueprint-cms.json`, `blueprint-cms-tests.json` and `scripts/verify-cms.mjs`
+  exercise migration, permissions, revisions and real content-editor workflows.
 - `blueprint.json` — reproducible local WordPress setup for WordPress Playground.
 - `docs/parity-contract.md` — the implementation and acceptance contract.
 - `docs/release-evidence.md` — immutable package evidence and staging gates.

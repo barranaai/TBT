@@ -3,7 +3,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 const dist = path.resolve("dist");
-const archives = ["teeth-by-trev-theme.zip", "tbt-core-plugin.zip"];
+const archives = ["teeth-by-trev-theme.zip", "tbt-core-plugin.zip", "tbt-content-plugin.zip"];
 const lines = [];
 
 for (const archive of archives) {

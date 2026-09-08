@@ -27,6 +27,11 @@ if (!Number.isSafeInteger(sourceDateEpoch) || sourceDateEpoch < 315532800) {
 const normalizedDate = new Date(sourceDateEpoch * 1000);
 const releases = [
   {
+    source: path.join(projectRoot, "wp-content", "plugins", "tbt-content"),
+    rootName: "tbt-content",
+    archiveName: "tbt-content-plugin.zip",
+  },
+  {
     source: path.join(
       projectRoot,
       "wp-content",

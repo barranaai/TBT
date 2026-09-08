@@ -9,8 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TBT_THEME_VERSION', '0.3.1' );
+define( 'TBT_THEME_VERSION', '0.4.0' );
 require_once __DIR__ . '/inc/editor.php';
+require_once __DIR__ . '/inc/cms.php';
 
 function tbt_theme_setup(): void {
 	add_theme_support( 'title-tag' );
@@ -22,6 +23,7 @@ function tbt_theme_setup(): void {
 		array(
 			'primary' => __( 'Primary navigation', 'teeth-by-trev' ),
 			'footer'  => __( 'Footer navigation', 'teeth-by-trev' ),
+			'legal'   => __( 'Legal navigation', 'teeth-by-trev' ),
 		)
 	);
 }
@@ -125,6 +127,10 @@ function tbt_section_motifs( int $variant = 0 ): void {
 }
 
 function tbt_page_description(): string {
+	if ( is_page() && function_exists( 'tbt_content_value' ) ) {
+		$custom = tbt_content_value( get_queried_object_id(), 'seo_description' );
+		if ( '' !== $custom ) { return $custom; }
+	}
 	$descriptions = array(
 		'home'         => 'A couture atelier of cosmetic & implant dentistry by Dr. Trevor J. Thomas. Where the smile becomes art.',
 		'about'        => 'Meet Dr. Trevor J. Thomas, DDS — cosmetic & implant dentist blending artistry, precision, and genuine care into every smile.',
@@ -162,6 +168,10 @@ function tbt_robots( array $robots ): array {
 add_filter( 'wp_robots', 'tbt_robots' );
 
 function tbt_document_title( string $title ): string {
+	if ( is_page() && function_exists( 'tbt_content_value' ) ) {
+		$custom = tbt_content_value( get_queried_object_id(), 'seo_title' );
+		if ( '' !== $custom ) { return $custom; }
+	}
 	$slug = is_front_page() ? 'home' : get_post_field( 'post_name', get_queried_object_id() );
 	$titles = array(
 		'home' => 'Teeth by Trev — Cosmetic & Implant Dentistry',
@@ -186,6 +196,12 @@ function tbt_social_meta(): void {
 	$description = tbt_page_description();
 	$url = is_singular() ? get_permalink() : home_url( '/' );
 	$image = get_template_directory_uri() . '/assets/media/opengraph-image.png';
+	if ( is_page() && function_exists( 'tbt_content_value' ) ) {
+		$id = get_queried_object_id();
+		$title = tbt_content_value( $id, 'social_title' ) ?: $title;
+		$description = tbt_content_value( $id, 'social_description' ) ?: $description;
+		$image = tbt_content_value( $id, 'social_image' ) ?: $image;
+	}
 	echo '<link rel="canonical" href="' . esc_url( $url ) . '">' . "\n";
 	echo '<link rel="icon" href="' . esc_url( get_template_directory_uri() . '/assets/media/favicon.ico' ) . '" sizes="any">' . "\n";
 	echo '<link rel="apple-touch-icon" href="' . esc_url( get_template_directory_uri() . '/assets/media/apple-icon.png' ) . '">' . "\n";

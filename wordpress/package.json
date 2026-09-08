@@ -16,6 +16,7 @@
     "verify:visual-parity": "node ./scripts/verify-visual-parity.mjs",
     "verify:integrations": "node ./scripts/verify-integrations.mjs",
     "verify:editor": "node ./scripts/verify-editor.mjs",
+    "verify:cms": "node ./scripts/verify-cms.mjs",
     "package": "npm run build && node ./scripts/package-release.mjs && node ./scripts/write-package-manifest.mjs",
     "dev:css": "tailwindcss -i ./wp-content/themes/teeth-by-trev/assets/src/theme.css -o ./wp-content/themes/teeth-by-trev/assets/dist/theme.css --watch",
     "playground": "wp-playground-cli server --wp=latest --php=8.3 --port=9400 --login --mount=./wp-content/themes/teeth-by-trev:/wordpress/wp-content/themes/teeth-by-trev --mount=./wp-content/plugins/tbt-core:/wordpress/wp-content/plugins/tbt-core --blueprint=./blueprint.json",
