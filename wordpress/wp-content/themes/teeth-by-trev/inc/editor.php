@@ -24,6 +24,13 @@ function tbt_editor_register_widgets( $manager ): void {
 	}
 }
 add_action( 'elementor/widgets/register', 'tbt_editor_register_widgets' );
+/** Keep historical site's kit styles off the replica; never modify that kit. */
+add_action( 'wp', static function () {
+	if ( ! class_exists( '\\Elementor\\Plugin' ) || ! get_post_meta( get_queried_object_id(), '_tbt_editor_prepared', true ) ) { return; }
+	$kits = \Elementor\Plugin::$instance->kits_manager;
+	remove_action( 'elementor/frontend/after_enqueue_styles', array( $kits, 'frontend_before_enqueue_styles' ), 0 );
+	remove_action( 'elementor/preview/enqueue_styles', array( $kits, 'preview_enqueue_styles' ), 0 );
+}, 20 );
 add_action( 'wp_enqueue_scripts', static function () {
 	if ( class_exists( '\Elementor\Plugin' ) ) {
 		wp_enqueue_style( 'tbt-editor-layout', get_template_directory_uri() . '/assets/dist/editor.css', array( 'tbt-theme' ), TBT_THEME_VERSION );

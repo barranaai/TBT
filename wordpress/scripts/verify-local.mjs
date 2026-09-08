@@ -71,6 +71,10 @@ for (const [path, title, description, marker] of routes) {
   const canonical = html.match(/<link\s+rel=["']canonical["']\s+href=["']([^"']+)["'][^>]*>/i)?.[1];
   assert(canonical && new URL(canonical).origin === base.origin, `${path}: canonical does not use the tested origin`);
   assert(!html.includes('id="wpadminbar"'), `${path}: frontend admin bar leaked into output`);
+  if (html.includes('tbt-editor-content')) {
+    const kitId = html.match(/elementor-kit-(\d+)/)?.[1];
+    assert(!kitId || !new RegExp(`id=["']elementor-post-${kitId}-css["']`).test(html), `${path}: inherited Elementor site kit overrides replica styling`);
+  }
   if (expectNoindex) {
     const stagingRobots = [...html.matchAll(/<meta\s+name=["']robots["']\s+content=["']([^"']+)["'][^>]*>/gi)];
     assert(stagingRobots.some((match) => match[1].includes("noindex")), `${path}: protected staging page is indexable`);

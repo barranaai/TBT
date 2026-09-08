@@ -70,7 +70,7 @@ replica guarantee applies to the supplied page layouts, not arbitrary new design
 
 ## Developer setup and recovery
 
-Install the Teeth by Trev theme 0.3.0 and Elementor 4.2.4 (tested; requires
+Install the Teeth by Trev theme 0.3.1 and Elementor 4.2.4 (tested; requires
 WordPress 6.8 or newer). Activate Elementor, then open **Tools → TBT Page Editor**.
 The ordinary **Prepare editable pages** action skips existing Elementor layouts.
 For the existing staging site, use **Archive older layouts and prepare replica**
@@ -88,3 +88,8 @@ The original PHP templates remain as fallbacks. Legacy unrelated pages are not
 automatically switched to the new rendering path. Client changes live in Elementor
 document settings and revisions; the versioned JSON file contains approved layout
 markup and initial values only. Do not regenerate it to deploy client edits.
+
+Prepared replica pages use the theme's approved typography and colors, not the
+older Elementor Site Settings style kit. That kit remains unchanged for unrelated
+pages. Edit content through the section controls; global design changes require
+a reviewed theme update.

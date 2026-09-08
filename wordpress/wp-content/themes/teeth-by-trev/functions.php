@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TBT_THEME_VERSION', '0.3.0' );
+define( 'TBT_THEME_VERSION', '0.3.1' );
 require_once __DIR__ . '/inc/editor.php';
 
 function tbt_theme_setup(): void {

@@ -1,6 +1,6 @@
 # Elementor CMS conversion — 9 September 2026
 
-Theme version: **0.3.0**. TBT Core remains **0.2.11**, byte-identical to the
+Theme version: **0.3.1**. TBT Core remains **0.2.11**, byte-identical to the
 previous plugin package. Production Node hosting, DNS and credentials are outside
 this release.
 
@@ -47,17 +47,45 @@ The first comparison exposed Elementor image-sizing and figure-margin resets;
 these were fixed. Initial test failures are not treated as passing evidence.
 
 Theme archive SHA-256:
-`8ea4e2ce4aba72c4cd8abd726884f554617077b62b547de5cc0763abe21f47b8`
+`fcebd10241d50e1230fd072c44e1b76b63906104e54ca169a03459d9739f88cf`
 
 Unchanged plugin archive SHA-256:
 `23b3241b10a5b55b50b47af2ce0ac107b09d9b154bc73cb96c9e751997fc8a0f`
 
 ## Staging disposition
 
-Elementor 4.2.4 was already installed on staging and has been activated. The
-staging database contains older Elementor pages as well as the replica pages.
-The new conversion archives the older layouts for the exact canonical pages.
-Theme upload, conversion and post-deployment verification are pending.
+Deployed to **https://1254861.us6.myftpupload.com/** with WordPress **7.0.4**,
+PHP **8.1.34.15**, Elementor **4.2.4**, and theme **0.3.1**.
+
+- The explicit archive-and-prepare action reported Ready for all ten pages and
+  both shared documents. The older canonical page content/metadata was archived.
+- A real hosted Elementor edit changed the About heading, published it, and
+  verified it on the visitor page. The original heading was then restored and
+  verified again. The hosted Media Library chooser opens from the image control.
+- Initial hosted QA caught the old site's Elementor kit overriding typography,
+  colors and buttons, including a font URL pointing at the production domain.
+  Version 0.3.1 suppresses that kit's stylesheet only on explicitly prepared
+  replica pages; the stored kit and unrelated pages are not modified.
+- All 30 responsive route/viewport checks passed, including menu/form controls,
+  analytics consent, and the disabled-payment fallback.
+- All 20 mobile/desktop quality scans passed with **zero axe violations** and
+  within the configured performance budgets. These are lab checks, not field
+  Core Web Vitals certification.
+- Staging integration health reports TBT Core 0.2.11, Airtable configured, zero
+  queued enquiries/deposits, and Square disabled. This release does not claim a
+  new end-to-end Airtable submission or payment test.
+- Production was not deployed, reconfigured or modified. A read-only check of
+  https://teethbytrev.com/ returned HTTP 200.
+
+The final hosted visual comparison passed all **30** page/viewport combinations
+against the original PHP replica, with identical full-page heights. All pages
+except Contact measured **0.00%** raster difference; Contact measured **0.01–0.03%**.
+The final functional rerun passed all ten routes, 16 assets, 11 navigation targets,
+staging noindex/sitemap checks, mandatory phone/photo checks, image validation,
+and the new regression assertion preventing inherited kit styles on replica pages.
+
+Evidence is available locally in `artifacts/visual-parity/report.json`,
+`artifacts/quality/quality-report.json`, and `artifacts/responsive/`.
 
 This release addresses client CMS editing. It does not certify the unrelated
 production readiness gaps from the previous standards audit.
