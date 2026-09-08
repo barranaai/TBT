@@ -18,8 +18,11 @@ class TBT_Elementor_Section extends \Elementor\Widget_Base {
 	protected function is_dynamic_content(): bool { return true; }
 	protected function register_controls() {
 		$layout = tbt_editor_layouts()['sections'][ $this->layout_key ];
+		$managed = function_exists( 'tbt_cms_managed' ) ? tbt_cms_managed( $this->layout_key ) : array();
 		if ( 'site-footer' === $this->layout_key ) {
-			$this->start_controls_section( 'section_locations', array( 'label' => 'City pop-ups (shared with pre-footer)' ) );
+			$location_section = array( 'label' => $managed ? 'Archived city pop-ups' : 'City pop-ups' );
+			if ( $managed ) { $location_section['condition'] = array( 'cms_legacy_mode' => 'yes' ); }
+			$this->start_controls_section( 'section_locations', $location_section );
 			$locations = new \Elementor\Repeater();
 			foreach ( array( 'city' => 'City (same name groups multiple locations)', 'subtitle' => 'Area, e.g. Manhattan', 'venue' => 'Practice name', 'address' => 'Address (one line per line; blank = by appointment)', 'maps_query' => 'Google Maps search text (optional)' ) as $name => $label ) {
 				$locations->add_control( $name, array( 'label' => $label, 'type' => 'address' === $name ? 'textarea' : 'text', 'label_block' => true ) );
@@ -27,11 +30,10 @@ class TBT_Elementor_Section extends \Elementor\Widget_Base {
 			$this->add_control( 'location_items', array( 'type' => 'repeater', 'fields' => $locations->get_controls(), 'title_field' => '{{{ city }}} — {{{ venue }}}', 'default' => tbt_location_defaults() ) );
 			$this->end_controls_section();
 		}
-		$managed = function_exists( 'tbt_cms_managed' ) ? tbt_cms_managed( $this->layout_key ) : array();
 		if ( $managed ) {
 			$this->start_controls_section( 'section_cms', array( 'label' => 'Managed WordPress content' ) );
 			$this->add_control( 'cms_legacy_mode', array( 'type' => 'hidden', 'default' => 'no' ) );
-			$links = array( 'site-header' => 'nav-menus.php', 'site-footer' => 'nav-menus.php', 'services-2' => 'edit.php?post_type=tbt_service', 'home-5' => 'edit.php?post_type=tbt_service', 'home-9' => 'edit.php?post_type=tbt_testimonial', 'gallery-2' => 'edit.php?post_type=tbt_smile', 'gallery-3' => 'edit.php?post_type=tbt_smile' );
+			$links = array( 'site-header' => 'nav-menus.php', 'site-footer' => 'edit.php?post_type=tbt_location', 'services-2' => 'edit.php?post_type=tbt_service', 'home-5' => 'edit.php?post_type=tbt_service', 'home-9' => 'edit.php?post_type=tbt_testimonial', 'gallery-2' => 'edit.php?post_type=tbt_smile', 'gallery-3' => 'edit.php?post_type=tbt_smile' );
 			$this->add_control( 'cms_help', array( 'type' => 'raw_html', 'raw' => 'Repeated content is managed in WordPress. Existing Elementor values remain archived as a fallback. <a target="_blank" rel="noopener" href="' . esc_url( admin_url( $links[ $this->layout_key ] ) ) . '">Open content manager</a>', 'content_classes' => 'elementor-panel-alert elementor-panel-alert-info' ) );
 			$this->end_controls_section();
 		}

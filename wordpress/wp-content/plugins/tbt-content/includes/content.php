@@ -2,7 +2,7 @@
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 add_filter( 'wp_insert_post_data', static function ( $data, $postarr ) {
-	if ( ! in_array( $data['post_type'], array( 'tbt_service', 'tbt_testimonial', 'tbt_smile' ), true ) || ! in_array( $data['post_status'], array( 'publish', 'future' ), true ) ) { return $data; }
+	if ( ! in_array( $data['post_type'], array( 'tbt_service', 'tbt_testimonial', 'tbt_smile', 'tbt_location' ), true ) || ! in_array( $data['post_status'], array( 'publish', 'future' ), true ) ) { return $data; }
 	$id = absint( $postarr['ID'] ?? 0 );
 	$fields = array();
 	// Quick Edit, bulk status changes and programmatic publishing must also
@@ -18,13 +18,20 @@ add_filter( 'wp_insert_post_data', static function ( $data, $postarr ) {
 	}
 	$missing = array();
 	if ( '' === trim( wp_strip_all_tags( wp_unslash( $data['post_title'] ) ) ) ) { $missing[] = 'title'; }
-	$required = 'tbt_service' === $data['post_type'] ? array( 'description' ) : ( 'tbt_testimonial' === $data['post_type'] ? array( 'quote' ) : array( 'image' ) );
+	$required = 'tbt_service' === $data['post_type'] ? array( 'description' ) : ( 'tbt_testimonial' === $data['post_type'] ? array( 'quote' ) : ( 'tbt_smile' === $data['post_type'] ? array( 'image' ) : array( 'city' ) ) );
 	if ( 'tbt_smile' === $data['post_type'] && 'comparison' === ( $fields['placement'] ?? '' ) ) { $required[] = 'before_image'; }
+	if ( 'tbt_location' === $data['post_type'] ) {
+		$required = array_merge( $required, 'appointment' === ( $fields['mode'] ?? '' ) ? array( 'appointment_intro', 'sms_label', 'sms_number', 'appointment_outro' ) : array( 'address' ) );
+	}
 	$definitions = tbt_content_fields( $data['post_type'] );
 	foreach ( $required as $field ) {
 		$value = tbt_content_sanitize( $fields[ $field ] ?? '', $definitions[ $field ] );
 		$attachment = absint( $fields[ $field . '_id' ] ?? 0 );
 		if ( '' === trim( $value ) || ( 'image' === $definitions[ $field ][1] && $attachment && ! wp_attachment_is_image( $attachment ) ) ) { $missing[] = str_replace( '_', ' ', $field ); }
+	}
+	if ( 'tbt_location' === $data['post_type'] && 'appointment' === ( $fields['mode'] ?? '' ) ) {
+		$digits = preg_replace( '/\D/', '', (string) ( $fields['sms_number'] ?? '' ) );
+		if ( strlen( $digits ) < 7 || strlen( $digits ) > 15 ) { $missing[] = 'valid SMS number'; }
 	}
 	if ( $missing ) { $data['post_status'] = 'draft'; set_transient( 'tbt_content_notice_' . get_current_user_id(), 'Saved as a draft. Complete these fields before publishing: ' . implode( ', ', $missing ) . '.', 120 ); }
 	return $data;
@@ -32,10 +39,16 @@ add_filter( 'wp_insert_post_data', static function ( $data, $postarr ) {
 add_action( 'admin_notices', static function () {
 	$key = 'tbt_content_notice_' . get_current_user_id(); $message = get_transient( $key );
 	if ( $message ) { echo '<div class="notice notice-warning"><p>' . esc_html( $message ) . '</p></div>'; delete_transient( $key ); }
+	$schema = get_transient( 'tbt_content_schema_error' );
+	if ( $schema && current_user_can( 'manage_options' ) ) { echo '<div class="notice notice-error"><p>Location setup could not complete: ' . esc_html( $schema ) . '</p></div>'; delete_transient( 'tbt_content_schema_error' ); }
 } );
 
+add_filter( 'enter_title_here', static function ( $placeholder, $post ) {
+	return 'tbt_location' === $post->post_type ? 'Internal location label, e.g. New York — Manhattan' : $placeholder;
+}, 10, 2 );
+
 add_action( 'add_meta_boxes', static function () {
-	foreach ( array( 'tbt_service', 'tbt_testimonial', 'tbt_smile', 'page' ) as $type ) {
+	foreach ( array( 'tbt_service', 'tbt_testimonial', 'tbt_smile', 'tbt_location', 'page' ) as $type ) {
 		add_meta_box( 'tbt-content-fields', 'page' === $type ? 'Search & Social Sharing' : 'Website content', 'tbt_content_box', $type, 'normal', 'high', array( '__block_editor_compatible_meta_box' => true ) );
 	}
 } );
@@ -45,14 +58,15 @@ function tbt_content_box( WP_Post $post ): void {
 	if ( 'page' === $post->post_type ) {
 		echo '<p>These fields change search results and link previews, not the visible page heading. Blank fields keep the existing defaults. Search engines may choose a different snippet. Staging remains noindex; these fields cannot make it public.</p>';
 	} else {
-		echo '<p>Published items appear automatically on the website. Drafts and trashed items are hidden. Use the Order field (lowest first) to change their position. The title is the service name, patient attribution or internal transformation name.</p>';
+		echo '<p>Published items appear automatically on the website. Drafts and trashed items are hidden. Use the Order field (lowest first) to change their position. The title is an administrator-facing label.</p>';
 		if ( 'tbt_smile' === $post->post_type ) { echo '<p><strong>Public website media only:</strong> publish only pictures and patient details approved for public use. Private visitor enquiry uploads are not imported here. For comparisons, Public picture is the after picture.</p>'; }
+		if ( 'tbt_location' === $post->post_type ) { echo '<p><strong>Footer and pre-footer:</strong> the internal title is for administrators. The City field is the public button label; records with an identical City are grouped into one pop-up. Choose By appointment to show the editable SMS message instead of an address.</p>'; }
 	}
 	echo '<div class="tbt-content-fields">';
 	foreach ( tbt_content_fields( $post->post_type ) as $name => $field ) {
 		$value = tbt_content_value( $post->ID, $name );
 		$id = 'tbt-field-' . $name;
-		echo '<div class="tbt-field"><label for="' . esc_attr( $id ) . '"><strong>' . esc_html( $field[0] ) . '</strong></label>';
+		echo '<div class="tbt-field" data-tbt-field="' . esc_attr( $name ) . '"><label for="' . esc_attr( $id ) . '"><strong>' . esc_html( $field[0] ) . '</strong></label>';
 		if ( 'textarea' === $field[1] ) {
 			echo '<textarea id="' . esc_attr( $id ) . '" name="tbt_content[' . esc_attr( $name ) . ']" rows="4" class="large-text">' . esc_textarea( $value ) . '</textarea>';
 		} elseif ( 'select' === $field[1] ) {
@@ -136,17 +150,24 @@ add_action( 'admin_post_tbt_save_seo', static function () {
 	wp_safe_redirect( admin_url( 'edit.php?post_type=page&page=tbt-page-seo&post=' . $id . '&saved=1' ) ); exit;
 } );
 
-foreach ( array( 'tbt_service', 'tbt_testimonial', 'tbt_smile' ) as $tbt_type ) {
+foreach ( array( 'tbt_service', 'tbt_testimonial', 'tbt_smile', 'tbt_location' ) as $tbt_type ) {
 	add_filter( 'manage_' . $tbt_type . '_posts_columns', static function ( $columns ) { $columns['tbt_order'] = 'Order'; $columns['tbt_display'] = 'Website display'; return $columns; } );
 	add_action( 'manage_' . $tbt_type . '_posts_custom_column', static function ( $column, $id ) {
 		if ( 'tbt_order' === $column ) { echo (int) get_post_field( 'menu_order', $id ); }
 		if ( 'tbt_display' === $column ) {
 			$type = get_post_type( $id );
-			echo esc_html( 'tbt_service' === $type ? ( '1' === tbt_content_value( $id, 'home_featured' ) ? 'Services + Home' : 'Services' ) : ( 'tbt_smile' === $type ? ( 'comparison' === tbt_content_value( $id, 'placement' ) ? 'Gallery comparison' : 'Gallery card' ) : 'Home testimonials' ) );
+			echo esc_html( 'tbt_service' === $type ? ( '1' === tbt_content_value( $id, 'home_featured' ) ? 'Services + Home' : 'Services' ) : ( 'tbt_smile' === $type ? ( 'comparison' === tbt_content_value( $id, 'placement' ) ? 'Gallery comparison' : 'Gallery card' ) : ( 'tbt_location' === $type ? 'appointment' === tbt_content_value( $id, 'mode' ) ? 'City pop-up — appointment' : 'City pop-up — address' : 'Home testimonials' ) ) );
 		}
 	}, 10, 2 );
 }
 unset( $tbt_type );
+add_filter( 'manage_tbt_location_posts_columns', static function ( $columns ) {
+	$columns['tbt_city'] = 'Public city'; $columns['tbt_area'] = 'Area'; $columns['tbt_practice'] = 'Practice'; return $columns;
+}, 20 );
+add_action( 'manage_tbt_location_posts_custom_column', static function ( $column, $id ) {
+	$fields = array( 'tbt_city' => 'city', 'tbt_area' => 'area', 'tbt_practice' => 'practice' );
+	if ( isset( $fields[ $column ] ) ) { echo esc_html( tbt_content_value( $id, $fields[ $column ] ) ?: '—' ); }
+}, 20, 2 );
 add_action( 'pre_get_posts', static function ( $query ) {
-	if ( is_admin() && $query->is_main_query() && in_array( $query->get( 'post_type' ), array( 'tbt_service', 'tbt_testimonial', 'tbt_smile' ), true ) && ! $query->get( 'orderby' ) ) { $query->set( 'orderby', array( 'menu_order' => 'ASC', 'ID' => 'ASC' ) ); }
+	if ( is_admin() && $query->is_main_query() && in_array( $query->get( 'post_type' ), array( 'tbt_service', 'tbt_testimonial', 'tbt_smile', 'tbt_location' ), true ) && ! $query->get( 'orderby' ) ) { $query->set( 'orderby', array( 'menu_order' => 'ASC', 'ID' => 'ASC' ) ); }
 } );

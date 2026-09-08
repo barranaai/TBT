@@ -9,7 +9,7 @@ on `main` while parity work happens on `codex/wordpress-migration`.
 - `wp-content/themes/teeth-by-trev` — the visitor-facing custom theme.
 - `wp-content/plugins/tbt-core` — enquiries, private photos, Airtable, Square,
   consent, Meta events, and operational data.
-- `wp-content/plugins/tbt-content` — reusable public content and page SEO metadata;
+- `wp-content/plugins/tbt-content` — reusable services, testimonials, public smiles, locations and page SEO metadata;
   no enquiry/payment credentials or visitor photos.
 - `docs/cms-management-guide.md` — native menus, services, testimonials,
   transformations, SEO/sharing and reversible setup.

@@ -1,6 +1,6 @@
 <?php
 // Local-only blueprint test, never included in a deployment archive.
-function cms_assert( $condition, string $message ): void { if ( ! $condition ) { throw new Exception( $message ); } echo 'PASS ' . $message . "\n"; }
+function cms_assert( $condition, string $message ): void { if ( ! $condition ) { echo 'FAIL ' . $message . "\n"; throw new Exception( $message ); } echo 'PASS ' . $message . "\n"; }
 wp_set_current_user( 1 );
 tbt_editor_prepare_pages();
 $page = get_page_by_path( 'services' );
@@ -15,6 +15,9 @@ $expected_source = get_post_meta( $page->ID, '_elementor_data', true );
 $result = tbt_content_migrate(); cms_assert( ! is_wp_error( $result ), 'Migration succeeded' );
 $services = tbt_content_records( 'tbt_service' );
 cms_assert( count( $services ) === 5, 'Five services migrated' );
+$locations = tbt_content_records( 'tbt_location' );
+cms_assert( count( $locations ) === 9 && tbt_content_locations_ready(), 'Nine locations seeded and ready' );
+cms_assert( 2 === count( array_filter( tbt_content_location_rows(), static function ( $row ) { return 'New York' === $row['city']; } ) ), 'Two New York records group under one city' );
 cms_assert( tbt_content_value( $services[0]->ID, 'description' ) === 'Client-edited "description" with a ' . chr(92) . 'backslash & apostrophe\'s.', 'Current client copy preserved including quotes and backslash' );
 cms_assert( get_post_meta( $page->ID, '_elementor_data', true ) === $expected_source, 'Source Elementor document not modified' );
 $backup = get_option( 'tbt_content_migration_backup' );
@@ -58,8 +61,14 @@ $revisions = wp_get_post_revisions( $about->ID ); $revision = reset( $revisions 
 update_post_meta( $about->ID, '_tbt_seo_title', 'SEO revision B' ); wp_save_post_revision( $about->ID );
 wp_restore_post_revision( $revision->ID );
 cms_assert( 'SEO revision A' === tbt_content_value( $about->ID, 'seo_title' ), 'SEO metadata restored through WordPress revisions' );
+$location = $locations[0];
+update_post_meta( $location->ID, '_tbt_practice', 'Location revision A' ); wp_save_post_revision( $location->ID );
+$revisions = wp_get_post_revisions( $location->ID ); $revision = reset( $revisions );
+update_post_meta( $location->ID, '_tbt_practice', 'Location revision B' ); wp_save_post_revision( $location->ID );
+wp_restore_post_revision( $revision->ID );
+cms_assert( 'Location revision A' === tbt_content_value( $location->ID, 'practice' ), 'Location metadata restored through WordPress revisions' );
 
-foreach ( array( 'tbt_service', 'tbt_testimonial', 'tbt_smile' ) as $type ) {
+foreach ( array( 'tbt_service', 'tbt_testimonial', 'tbt_smile', 'tbt_location' ) as $type ) {
 	$obj = get_post_type_object( $type );
 	cms_assert( ! $obj->publicly_queryable && ! $obj->show_in_rest && ! $obj->has_archive, $type . ' has no unintended public endpoint or archive' );
 }

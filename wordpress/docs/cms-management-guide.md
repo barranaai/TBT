@@ -1,6 +1,6 @@
 # Managing menus, reusable content and SEO
 
-These features use **TBT Content Manager 1.0.0** with the **Teeth by Trev 0.4.0**
+These features use **TBT Content Manager 1.1.0** with the **Teeth by Trev 0.4.2**
 theme. They do not require Elementor Pro. Elementor still controls page headings,
 introductions and layout; repeated content is managed in the screens below.
 
@@ -90,18 +90,20 @@ The content plugin keeps its records if the theme changes or it is deactivated.
 A different theme needs its own presentation integration. Do not replace a
 production database with a staging database containing older client content.
 
-## Footer and pre-footer city pop-ups (theme 0.4.1)
+## Footer and pre-footer city pop-ups (content manager 1.1.0)
 
-Open **Tools → TBT Page Editor → Site Footer**, select the footer widget in
-Elementor, then open **City pop-ups (shared with pre-footer)**. Edit the city,
-area, practice name, multiline address and optional Google Maps search text.
-Publish once to update both the footer and the homepage pre-footer.
+Open **Locations** in the main WordPress menu. Each location is a separate
+WordPress record with an administrator-facing title, public city, optional area
+and practice name, visit type, address and Google Maps search text. Published
+records update both the footer and the homepage pre-footer automatically.
 
-Rows with exactly the same city name share one pop-up (for example Manhattan and
-Brooklyn under New York). Reorder rows to change city/location order. A blank
-address displays the existing appointment-by-text message. The contact number
-in that fallback message is currently maintained in the theme.
+Records with exactly the same City value share one pop-up (for example Manhattan
+and Brooklyn under New York). Use the native Order field to change city/location
+order. Choose **By appointment** to edit its introductory text, SMS link label,
+international SMS number and closing text. Drafts and trashed records are hidden.
 
-The old static address/city fields remain archived but are no longer displayed.
-Footer navigation still uses **Appearance → Menus**. Changes to these city
-details do not modify enquiry destinations, private photos or payment settings.
+The prior Elementor location repeater and old static address/city fields remain
+archived for recovery but are no longer displayed. Footer navigation still uses
+**Appearance → Menus**. Location edits do not modify enquiry destinations,
+private photos or payment settings. Location records are stored by the content
+plugin and remain in WordPress if the theme changes.

@@ -18,3 +18,14 @@ document.addEventListener('click', (event) => {
   picker.open();
 });
 document.querySelectorAll('.tbt-choose-image, .tbt-clear-image').forEach((button) => { button.disabled = false; });
+const tbtLocationMode = document.querySelector('#tbt-field-mode');
+if (tbtLocationMode) {
+  const physical = ['address', 'map_query'];
+  const appointment = ['appointment_intro', 'sms_label', 'sms_number', 'appointment_outro'];
+  const syncLocationFields = () => {
+    for (const name of physical) document.querySelector(`[data-tbt-field="${name}"]`)?.toggleAttribute('hidden', tbtLocationMode.value === 'appointment');
+    for (const name of appointment) document.querySelector(`[data-tbt-field="${name}"]`)?.toggleAttribute('hidden', tbtLocationMode.value !== 'appointment');
+  };
+  tbtLocationMode.addEventListener('change', syncLocationFields);
+  syncLocationFields();
+}

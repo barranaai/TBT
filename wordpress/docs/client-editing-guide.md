@@ -1,6 +1,6 @@
 # Editing the Teeth by Trev website
 
-For the CMS upgrade (theme 0.4.0 and TBT Content Manager), use the
+For the CMS upgrade (theme 0.4.2 and TBT Content Manager 1.1.0), use the
 [menus, services, testimonials, transformations and SEO guide](cms-management-guide.md).
 After CMS setup, those repeated sections and navigation entries are managed there,
 not through their older Elementor fields. The instructions below still apply to
@@ -81,12 +81,12 @@ replica guarantee applies to the supplied page layouts, not arbitrary new design
 
 ## Developer setup and recovery
 
-Install the Teeth by Trev theme 0.4.0 and Elementor 4.2.4 (tested; requires
+Install the Teeth by Trev theme 0.4.2 and Elementor 4.2.4 (tested; requires
 WordPress 6.8 or newer). Activate Elementor, then open **Tools → TBT Page Editor**.
 The ordinary **Prepare editable pages** action skips existing Elementor layouts.
 For the existing staging site, use **Archive older layouts and prepare replica**
 to preserve the older stored layouts and seed the current approved replica.
-For native content/menu management, also install TBT Content Manager 1.0.0 and
+For native content/menu/location management, also install TBT Content Manager 1.1.0 and
 follow **Tools → TBT Content Setup** after preparing the Elementor pages.
 
 Only the ten named replica pages plus two global documents are eligible. Conversion

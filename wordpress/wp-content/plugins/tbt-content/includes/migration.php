@@ -3,16 +3,69 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 add_action( 'admin_menu', static function () { add_management_page( 'TBT Content Setup', 'TBT Content Setup', 'manage_options', 'tbt-content-setup', 'tbt_content_setup_page' ); } );
 
+function tbt_content_location_defaults(): array {
+	$appointment = array( 'mode' => 'appointment', 'address' => '', 'map_query' => '', 'area' => '', 'practice' => '', 'appointment_intro' => 'By appointment.', 'sms_label' => 'Text 424-672-3910', 'sms_number' => '+14246723910', 'appointment_outro' => 'to arrange your visit.' );
+	return array(
+		array( 'title' => 'Beverly Hills', 'city' => 'Beverly Hills', 'area' => '', 'practice' => 'Bedford Dental Group', 'mode' => 'physical', 'address' => "436 N Bedford Dr, Suite 300\nBeverly Hills, CA 90210", 'map_query' => 'Bedford Dental Group, 436 N Bedford Dr Suite 300, Beverly Hills, CA 90210' ),
+		array( 'title' => 'New York — Manhattan', 'city' => 'New York', 'area' => 'Manhattan', 'practice' => 'Nylo', 'mode' => 'physical', 'address' => "10 W 37th St, 3rd Floor\nNew York, NY 10018", 'map_query' => '10 W 37th St 3rd Floor, New York, NY 10018' ),
+		array( 'title' => 'New York — Brooklyn', 'city' => 'New York', 'area' => 'Brooklyn', 'practice' => 'Pure Dentistry Arts', 'mode' => 'physical', 'address' => "761 Washington Ave\nBrooklyn, NY 11238", 'map_query' => 'Pure Dentistry Arts, 761 Washington Ave, Brooklyn, NY 11238' ),
+		array( 'title' => 'Atlanta', 'city' => 'Atlanta', 'area' => '', 'practice' => 'Dentistry in Motion Suites', 'mode' => 'physical', 'address' => "572 Hank Aaron Drive SE, Suite 1110\nAtlanta, GA 30312", 'map_query' => 'Dentistry in Motion Suites, 572 Hank Aaron Drive SE Suite 1110, Atlanta, GA 30312' ),
+		array( 'title' => 'Houston', 'city' => 'Houston', 'area' => '', 'practice' => 'FLOSS Midtown', 'mode' => 'physical', 'address' => "2707 Milam St, Suite C\nHouston, TX 77006", 'map_query' => 'FLOSS Midtown, 2707 Milam St Suite C, Houston, TX 77006' ),
+		array( 'title' => 'Miami', 'city' => 'Miami', 'area' => '', 'practice' => 'All Smiles at Sunset', 'mode' => 'physical', 'address' => "8585 SW 72nd Street, Suite 101\nMiami, FL 33143", 'map_query' => 'All Smiles at Sunset, 8585 SW 72nd Street Suite 101, Miami, FL 33143' ),
+		array( 'title' => 'Washington D.C.', 'city' => 'Washington D.C.', 'area' => '', 'practice' => '', 'mode' => 'physical', 'address' => "1010 Quincy St NE\nWashington, DC 20017", 'map_query' => '1010 Quincy St NE, Washington, DC 20017' ),
+		array_merge( array( 'title' => 'Tampa', 'city' => 'Tampa' ), $appointment ),
+		array_merge( array( 'title' => 'Memphis', 'city' => 'Memphis' ), $appointment ),
+	);
+}
+
+function tbt_content_location_seed_source(): array {
+	$source = tbt_content_location_defaults();
+	if ( function_exists( 'tbt_location_legacy_rows' ) ) {
+		$legacy = tbt_location_legacy_rows( false );
+		if ( is_array( $legacy ) && $legacy ) {
+			$source = array();
+			foreach ( $legacy as $index => $row ) {
+				$mode = ! empty( $row['address'] ) ? 'physical' : 'appointment';
+				$source[] = array( 'title' => ( $row['city'] ?? 'Location' ) . ( ! empty( $row['subtitle'] ) ? ' — ' . $row['subtitle'] : '' ), 'city' => $row['city'] ?? '', 'area' => $row['subtitle'] ?? '', 'practice' => $row['venue'] ?? '', 'mode' => $mode, 'address' => $row['address'] ?? '', 'map_query' => $row['maps_query'] ?? '', 'appointment_intro' => $row['appointment_intro'] ?? 'By appointment.', 'sms_label' => $row['sms_label'] ?? 'Text 424-672-3910', 'sms_number' => $row['sms_number'] ?? '+14246723910', 'appointment_outro' => $row['appointment_outro'] ?? 'to arrange your visit.' );
+			}
+		}
+	}
+	return $source;
+}
+
+/** Idempotent schema seed: existing, drafted or trashed records are never replaced. */
+function tbt_content_seed_locations() {
+	$source = tbt_content_location_seed_source();
+	$backup = get_option( 'tbt_content_migration_backup', array() );
+	if ( is_array( $backup ) && isset( $backup['source'] ) && ! isset( $backup['location_source'] ) ) { $backup['location_source'] = $source; update_option( 'tbt_content_migration_backup', $backup, false ); }
+	$created = array();
+	foreach ( $source as $index => $row ) {
+		$seed = 'location-' . $index;
+		$existing = get_posts( array( 'post_type' => 'tbt_location', 'post_status' => array( 'publish', 'draft', 'pending', 'private', 'future', 'trash' ), 'numberposts' => 1, 'meta_key' => '_tbt_seed_key', 'meta_value' => $seed ) );
+		if ( $existing ) { $created[] = $existing[0]->ID; continue; }
+		$title = sanitize_text_field( $row['title'] ?? $row['city'] ?? 'Location' ); unset( $row['title'] );
+		$meta = array( '_tbt_seed_key' => $seed );
+		foreach ( tbt_content_fields( 'tbt_location' ) as $name => $definition ) { $meta[ '_tbt_' . $name ] = tbt_content_sanitize( $row[ $name ] ?? '', $definition ); }
+		$id = wp_insert_post( wp_slash( array( 'post_type' => 'tbt_location', 'post_title' => $title, 'post_status' => 'publish', 'menu_order' => ( $index + 1 ) * 10, 'meta_input' => $meta ) ), true );
+		if ( is_wp_error( $id ) ) { return $id; }
+		$created[] = $id;
+	}
+	update_option( 'tbt_location_records_ready', '1', false );
+	return $created;
+}
+
 function tbt_content_migrate() {
 	if ( ! current_user_can( 'manage_options' ) || ! function_exists( 'tbt_cms_export' ) ) { return new WP_Error( 'unavailable', 'Administrator access and the compatible Teeth by Trev theme are required.' ); }
-	if ( get_option( 'tbt_content_migrated' ) ) { update_option( 'tbt_content_enabled', '1', false ); tbt_content_clear_cache(); return 'Existing content preserved; CMS display enabled.'; }
+	$location_result = tbt_content_seed_locations();
+	if ( is_wp_error( $location_result ) ) { return $location_result; }
+	if ( get_option( 'tbt_content_migrated' ) ) { update_option( 'tbt_content_enabled', '1', false ); tbt_content_clear_cache(); return 'Existing content preserved; CMS display enabled. Location records are ready.'; }
 	if ( ! add_option( 'tbt_content_migration_lock', time(), '', false ) ) { return new WP_Error( 'locked', 'A migration is already running. Do not submit again. An administrator can inspect the migration lock if a request was interrupted.' ); }
 	try {
 		$source = tbt_cms_export();
 		if ( is_wp_error( $source ) ) { return $source; }
 		$backup = get_option( 'tbt_content_migration_backup' );
 		if ( ! $backup ) {
-			$backup = array( 'date' => gmdate( 'c' ), 'source' => $source, 'menus' => get_theme_mod( 'nav_menu_locations', array() ) );
+			$backup = array( 'date' => gmdate( 'c' ), 'source' => $source, 'location_source' => tbt_content_location_seed_source(), 'menus' => get_theme_mod( 'nav_menu_locations', array() ) );
 			if ( ! add_option( 'tbt_content_migration_backup', $backup, '', false ) ) { return new WP_Error( 'backup', 'Could not save the migration backup. Nothing was switched.' ); }
 		}
 		// A partial retry reuses the captured source and any already-created records.
@@ -54,7 +107,7 @@ function tbt_content_migrate() {
 		update_option( 'tbt_content_migrated', array( 'version' => 1, 'date' => gmdate( 'c' ), 'records' => $created ), false );
 		update_option( 'tbt_content_enabled', '1', false );
 		tbt_content_clear_cache();
-		return count( $created ) . ' content records and 3 native menus prepared. Original Elementor documents and previous menu assignments are preserved.';
+		return count( $created ) . ' page content records, ' . count( $location_result ) . ' location records and 3 native menus prepared. Original Elementor documents and previous menu assignments are preserved.';
 	} finally { delete_option( 'tbt_content_migration_lock' ); }
 }
 
@@ -68,11 +121,11 @@ function tbt_content_setup_page(): void {
 	}
 	echo '<div class="wrap"><h1>TBT Content Setup</h1>';
 	if ( $result ) { echo '<div class="notice ' . ( is_wp_error( $result ) ? 'notice-error' : 'notice-success' ) . '"><p>' . esc_html( is_wp_error( $result ) ? $result->get_error_message() : $result ) . '</p></div>'; }
-	echo '<p><strong>CMS display: ' . ( tbt_content_enabled() ? 'Enabled' : 'Original Elementor content' ) . '</strong></p><p>This explicit migration imports the currently saved replica content into Services, Testimonials and Smile Transformations, and creates Primary, Footer and Legal menus. It does not change existing Elementor documents, SEO defaults, enquiries, payment settings or other websites. Run on staging first.</p>';
+	echo '<p><strong>CMS display: ' . ( tbt_content_enabled() ? 'Enabled' : 'Original Elementor content' ) . '</strong></p><p>This explicit migration imports the currently saved replica content into Services, Testimonials, Smile Transformations and Locations, and creates Primary, Footer and Legal menus. It does not change existing Elementor documents, SEO defaults, enquiries, payment settings or other websites. Run on staging first.</p>';
 	echo '<form method="post">'; wp_nonce_field( 'tbt_content_setup' );
 	echo '<button class="button button-primary" name="tbt_content_action" value="prepare">' . ( get_option( 'tbt_content_migrated' ) ? 'Enable CMS display — preserve all edits' : 'Back up and prepare CMS content' ) . '</button> ';
 	if ( tbt_content_enabled() ) { echo '<button class="button" name="tbt_content_action" value="pause">Use original Elementor content</button>'; }
 	echo '</form><h2>Manage content</h2><ul>';
-	foreach ( array( 'edit.php?post_type=tbt_service' => 'Services', 'edit.php?post_type=tbt_testimonial' => 'Testimonials', 'edit.php?post_type=tbt_smile' => 'Smile Transformations', 'nav-menus.php' => 'Navigation Menus', 'edit.php?post_type=page' => 'Pages — SEO & Sharing' ) as $url => $label ) { echo '<li><a href="' . esc_url( admin_url( $url ) ) . '">' . esc_html( $label ) . '</a></li>'; }
+	foreach ( array( 'edit.php?post_type=tbt_service' => 'Services', 'edit.php?post_type=tbt_testimonial' => 'Testimonials', 'edit.php?post_type=tbt_smile' => 'Smile Transformations', 'edit.php?post_type=tbt_location' => 'Locations', 'nav-menus.php' => 'Navigation Menus', 'edit.php?post_type=page' => 'Pages — SEO & Sharing' ) as $url => $label ) { echo '<li><a href="' . esc_url( admin_url( $url ) ) . '">' . esc_html( $label ) . '</a></li>'; }
 	echo '</ul><p>Content remains in WordPress when themes change. Menu assignment backups and the captured Elementor source are stored in the non-autoloaded tbt_content_migration_backup option. Re-running completed setup never replaces client edits. A full WordPress backup must include the database and media.</p></div>';
 }

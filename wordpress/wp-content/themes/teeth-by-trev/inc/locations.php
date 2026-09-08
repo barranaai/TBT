@@ -23,8 +23,8 @@ function tbt_location_defaults(): array {
 	);
 }
 
-/** The Site Footer Elementor document owns locations for both instances. */
-function tbt_location_rows(): array {
+/** Read archived Elementor rows only for a plugin-free recovery fallback. */
+function tbt_location_legacy_rows( bool $use_defaults = true ): array {
 	$id = absint( get_option( 'tbt_editor_footer' ) );
 	$data = json_decode( (string) get_post_meta( $id, '_elementor_data', true ), true );
 	$find = static function ( array $elements ) use ( &$find ): ?array {
@@ -34,7 +34,14 @@ function tbt_location_rows(): array {
 		}
 		return null;
 	};
-	return $find( is_array( $data ) ? $data : array() ) ?? tbt_location_defaults();
+	$rows = $find( is_array( $data ) ? $data : array() );
+	return null !== $rows ? $rows : ( $use_defaults ? tbt_location_defaults() : array() );
+}
+
+/** Published Location records are the sole live source once their seed is ready. */
+function tbt_location_rows(): array {
+	if ( function_exists( 'tbt_content_locations_ready' ) && tbt_content_locations_ready() && function_exists( 'tbt_content_location_rows' ) ) { return tbt_content_location_rows(); }
+	return tbt_location_legacy_rows();
 }
 
 function tbt_location_list( string $area = 'footer', ?array $rows = null ): string {
@@ -52,14 +59,15 @@ function tbt_location_list( string $area = 'footer', ?array $rows = null ): stri
 			$html .= '<span class="tbt-city-place">';
 			if ( ! empty( $row['subtitle'] ) ) { $html .= '<span class="tbt-city-subtitle">' . esc_html( $row['subtitle'] ) . '</span>'; }
 			if ( ! empty( $row['venue'] ) ) { $html .= '<span class="tbt-city-venue">' . esc_html( $row['venue'] ) . '</span>'; }
-			if ( ! empty( $row['address'] ) ) {
+			if ( 'appointment' !== ( $row['mode'] ?? '' ) && ! empty( $row['address'] ) ) {
 				$html .= '<span class="tbt-city-address">';
 				foreach ( explode( "\n", $row['address'] ) as $line ) { $html .= '<span>' . esc_html( $line ) . '</span>'; }
 				$html .= '</span>';
 				$query = $row['maps_query'] ?? ''; if ( '' === trim( $query ) ) { $query = str_replace( "\n", ', ', $row['address'] ); }
 				$html .= '<a class="tbt-city-directions" target="_blank" rel="noopener noreferrer" href="' . esc_url( 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode( $query ) ) . '">Get directions ↗</a>';
 			} else {
-				$html .= '<span class="tbt-city-address">By appointment. <a class="tbt-city-text" href="sms:+14246723910">Text 424-672-3910</a> to arrange your visit.</span>';
+				$intro = $row['appointment_intro'] ?? 'By appointment.'; $label = $row['sms_label'] ?? 'Text 424-672-3910'; $digits = preg_replace( '/\D/', '', $row['sms_number'] ?? '+14246723910' ); $number = '' === $digits ? '' : '+' . $digits; $outro = $row['appointment_outro'] ?? 'to arrange your visit.';
+				$html .= '<span class="tbt-city-address">' . esc_html( $intro ) . ' <a class="tbt-city-text" href="' . esc_attr( 'sms:' . $number ) . '">' . esc_html( $label ) . '</a> ' . esc_html( $outro ) . '</span>';
 			}
 			$html .= '</span>';
 		}
@@ -73,7 +81,7 @@ function tbt_location_template( string $key, string $html, array $settings ): st
 	if ( 'site-footer' === $key ) {
 		$html = preg_replace( '~<p[^>]*>\{\{content_018\}\}</p>~', '', $html );
 		$html = str_replace( '{{content_019}}<br>{{content_020}}<br>', '', $html );
-		$html = str_replace( '<span>{{content_030}}</span>', tbt_location_list( 'footer', $settings['location_items'] ?? null ), $html );
+		$html = str_replace( '<span>{{content_030}}</span>', tbt_location_list( 'footer' ), $html );
 	} elseif ( 'home-10' === $key ) {
 		$html = preg_replace( '~<address[^>]*>\{\{content_009\}\}</address>~', tbt_location_list( 'prefooter' ), $html );
 	}

@@ -1,8 +1,9 @@
 # Footer / pre-footer live-site alignment — 9 September 2026
 
 Reference: https://teethbytrev.com/ (read-only inspection). Target: WordPress
-staging https://1254861.us6.myftpupload.com/. Theme 0.4.1 only; no plugin,
-production, domain, enquiry, Airtable or payment changes.
+staging https://1254861.us6.myftpupload.com/. This record now also covers the
+follow-up Location CMS release (theme 0.4.2/content manager 1.1.0); no production,
+domain, enquiry, Airtable or payment changes.
 
 ## Changes
 
@@ -12,8 +13,15 @@ production, domain, enquiry, Airtable or payment changes.
 - Added eight city buttons to both sections. Verified seven physical-location
   entries (including two New York locations), plus Tampa/Memphis appointment-text
   fallbacks, against the live UI. Google Maps query URLs match the live site.
-- Added one shared Elementor location repeater in Site Footer; edits update both
-  sections. Existing native navigation menus and all surrounding content remain.
+- Replaced the temporary Elementor ownership with first-class **Locations**
+  records in the content plugin. Administrators can add, edit, publish, reorder,
+  draft or trash locations; both sections read the same published records.
+- On upgrade, nine records are seeded idempotently from the saved Elementor rows
+  when available, otherwise from the verified live data. Existing/trashed records
+  are never overwritten, and the captured seed source is retained in the existing
+  non-autoloaded migration backup.
+- The old Elementor location repeater stays registered but hidden as recovery
+  data so later Elementor saves cannot discard it.
 - Added single-open disclosures, Escape/focus return, keyboard link access,
   outside-click/focus dismissal, viewport clamping and small-screen scrolling.
 - Corrected pre-footer heading line spacing to match the current live layout.
@@ -27,26 +35,39 @@ production, domain, enquiry, Airtable or payment changes.
 - Local city text and links matched all eight live pop-ups in both sections at
   375px, 768px and 1440px widths. Every panel remained within the viewport;
   keyboard/dismissal checks passed. All eight footer-bearing routes passed.
-- Real Elementor edit/save test updated both sections and restored original
-  local content. No hosted content fixture was needed.
+- Real WordPress Locations workflow verification covers add, required-field draft,
+  publish, order, edit, rendering in both sections and trash, with original local
+  content restored. Backend regression also verifies revision restoration,
+  sanitization, author denial and absence of a public endpoint/archive.
 - At 375px, final live/WordPress pre-footer heights both measured 801.5625px and
   footer heights both measured 817.859375px. Screenshots were visually reviewed.
 - Four local automated accessibility scans (Home/About, mobile/desktop) passed
   with zero axe violations before staging deployment.
-- Hosted verification passed on staging after the theme upload confirmed
-  version 0.4.1: 24 footer-bearing route/viewport combinations and 48 city-popup
-  comparisons (eight cities × two sections × three viewports), including text,
-  links, visibility, viewport bounds, keyboard and dismissal behavior.
+- Hosted verification first passed for theme 0.4.1, then passed again after the
+  staged upgrade to theme 0.4.2 and TBT Content Manager 1.1.0: 24
+  footer-bearing route/viewport combinations and 48 city-popup comparisons
+  (eight cities × two sections × three viewports), including text, links,
+  visibility, viewport bounds, keyboard and dismissal behavior.
+- WordPress confirmed nine published Location records. Hosted inspection verified
+  the physical-address and appointment editor modes, the normalized SMS number,
+  the two New York records, and the absence of a public REST endpoint or archive.
 - All ten functional routes, 16 media assets, 11 navigation targets, noindex and
   required phone/photo validation checks passed. No real enquiry was submitted.
-- Four hosted Home/About accessibility/performance scans passed with zero axe
-  violations, plus two scans with the longest (New York) pop-up open. Browser
-  measurements: LCP 520–732 ms and CLS at most 0.0508; not real-user field data.
+- Four final hosted Home/About accessibility/performance scans passed with zero
+  axe violations. Browser measurements: LCP 504–560 ms and CLS at most 0.0523;
+  not real-user field data. Earlier open-New-York-panel scans also passed with
+  zero axe violations.
 
-QA: `scripts/verify-footer.mjs`, `scripts/verify-location-editor.mjs`; generated
+QA: `scripts/verify-footer.mjs`, `scripts/verify-location-admin.mjs`; generated
 screenshots and report in `artifacts/footer` (not committed). Source rollback is
-the preceding commit `0182484`; no original Elementor documents were migrated or
-overwritten by this release.
+commit `ae00089` for the Location CMS upgrade, or `0182484` for the preceding
+footer implementation; no original Elementor documents were migrated or
+overwritten by either release.
 
-Theme ZIP SHA-256:
-`ad1cb45bf677eba7ea5cef8f103319b280d214c12856835b37728bc70a6c32bc`.
+Final archive SHA-256 checksums:
+
+```text
+f70b26ff8d436641b2f75e40b31d8a07df65fac54b5099431b6e80f8493453d3  teeth-by-trev-theme.zip
+7f7810bc1699488dafb1b6a027f05f1bcea6142c4abf29fadf49ad5520911c07  tbt-content-plugin.zip
+23b3241b10a5b55b50b47af2ce0ac107b09d9b154bc73cb96c9e751997fc8a0f  tbt-core-plugin.zip (unchanged; not redeployed)
+```
