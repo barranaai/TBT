@@ -57,7 +57,7 @@ file hashes, so installed-byte hashes are not claimed.
 - Ten routes, 16 same-origin assets, and 11 internal links pass on staging.
 - All ten routes pass at mobile, tablet, and desktop viewports.
 - Twenty accessibility/performance scans pass with zero axe violations, LCP of
-  approximately 580–1196 ms, and maximum CLS of 0.0829.
+  approximately 464–1252 ms, and maximum CLS of 0.0829.
 - New, Existing, and General enquiry branches require phone, Instagram handle,
   and at least one smile photo in the browser and REST endpoint.
 - Hermetic Airtable mapping is exactly `Instagram: <handle>` for every intent.

@@ -319,6 +319,10 @@ Verified: 2026-08-21
   `{"ok":true,"plugin":"0.2.11","php":"8.1.34.15","wp":"7.0.4","storage":"wordpress-database","airtable":true,"airtablePending":0,"airtablePendingDeposits":0,"square":false}`.
   The live site returned HTTP 200 and the separate production WordPress TBT
   health route remained HTTP 404.
+- Fresh post-CI route, responsive, and quality suites pass: ten routes, 16
+  same-origin assets, 11 internal links, all three viewports, and 20
+  accessibility/performance scans with zero axe violations. LCP is
+  approximately 464–1252 ms and maximum CLS is 0.0829.
 - One non-blocking GitHub warning remains in GoDaddy's official `v1` composite
   action because it internally invokes `actions/checkout@v3`. The two actions
   controlled by this repository are pinned to their Node 24 versions.
