@@ -32,13 +32,32 @@ staging hostname with its own database and uploads directory.
 
 Required Airtable schema before testing:
 
-- Leads: `Lead Reference`, `Submission Token`, `Caller Name`, `Email`, `Social`,
-  and `Photos`. `Submission Token` must be a writable single-line text field and
-  is the idempotent upsert key.
+- Leads: `Lead Reference`, `Submission Token`, `Caller Name`, `Email`, `Phone
+  Number`, `Social`, and `Photos`. `Submission Token` must be a writable
+  single-line text field and is the idempotent upsert key.
 - Deposits: `Payment ID`, `Amount`, and `Service`. `Payment ID` must be a
   writable single-line text field and is the idempotent upsert key.
 - Optional fields may be absent; the plugin drops an unknown optional field and
   retries once. Required fields are never silently dropped.
+
+### Staging-only GitHub deployment
+
+The repository workflow `.github/workflows/deploy-tbt-core-staging.yml` is
+intentionally limited to the TBT Core plugin. It runs only for relevant pushes
+to `codex/wordpress-migration` whose head commit contains `[deploy-staging]`.
+It rebuilds the deterministic archive, extracts only `tbt-core/`, and deploys
+that directory to staging `wp-content/plugins/tbt-core` with deletion disabled
+and GoDaddy health rollback enabled.
+
+The private deploy key is stored as the encrypted repository secret
+`TBT_STAGING_GODADDY_PRIVATE_KEY`. Keep GoDaddy production CI/CD disabled. Do
+not add the production host, a production key, a pull-request trigger, or the
+repository root to this workflow. Theme releases remain a separate reviewed
+deployment until a dedicated staging-only theme workflow is approved.
+
+Monitor GoDaddy's official deploy action for an update: its current `v1`
+composite internally invokes `actions/checkout@v3`, which produces a
+non-blocking Node 20 deprecation warning even though the deployment succeeds.
 
 ## 3. External integration verification
 

@@ -112,7 +112,8 @@ Verified: 2026-08-21
   blank and no configured Airtable automation was visible. This confirms the
   WordPress payload/mapping and leaves an Airtable-side normalization/display
   anomaly to investigate. General phone was optional in this historical
-  release; the current `0.2.10` release requires it for every enquiry type.
+  release; the current `0.2.11` release requires it for every enquiry type and
+  the later grid recheck below confirms the stored phone value.
 - `verify:local` passes all ten routes, 21 same-origin image/video assets, 11
   internal links, protected-staging robots behavior, form requirements, image
   signature validation, health, the canonical Square configuration endpoint,
@@ -292,3 +293,34 @@ Verified: 2026-08-21
   real cron/failure recovery; manual screen-reader review; named visual-exception
   approval and Reserve rerun; current Node release/environment capture;
   backup/restore; and rollback rehearsal. Production cutover remains on hold.
+
+## 2026-09-08 phone hardening and staging CI/CD verification
+
+- TBT Core `0.2.11` adds `Phone Number` to the critical Airtable schema. If that
+  column is missing or renamed, the API now fails safely instead of retrying
+  without the visitor's phone number. Exact phone mapping tests pass for New,
+  Existing, and General enquiries.
+- Airtable record `recWaLibqSjjP8mQF` was rechecked in the grid and stores
+  `Phone Number = +1 202-555-0101`. The earlier blank field-editor state was a
+  misleading Airtable UI view, not evidence that the submitted value was lost.
+- The deterministic TBT Core `0.2.11` archive SHA-256 is
+  `23b3241b10a5b55b50b47af2ce0ac107b09d9b154bc73cb96c9e751997fc8a0f`.
+- GitHub Actions secret `TBT_STAGING_GODADDY_PRIVATE_KEY` was created for the
+  staging-only GoDaddy deploy user. Temporary local working and rejected keys
+  were removed after the encrypted repository secret was confirmed.
+- Workflow commits `32043ef` and `6d201b3` produced successful staging runs
+  [34262656018](https://github.com/barranaai/TBT/actions/runs/34262656018)
+  and [34262951673](https://github.com/barranaai/TBT/actions/runs/34262951673).
+  The final workflow rebuilt and verified the release, deployed only
+  `.deploy/tbt-core` to staging `wp-content/plugins/tbt-core`, kept deletion
+  disabled, and passed GoDaddy rollback health plus the explicit TBT health
+  assertions.
+- Post-run staging health returned
+  `{"ok":true,"plugin":"0.2.11","php":"8.1.34.15","wp":"7.0.4","storage":"wordpress-database","airtable":true,"airtablePending":0,"airtablePendingDeposits":0,"square":false}`.
+  The live site returned HTTP 200 and the separate production WordPress TBT
+  health route remained HTTP 404.
+- One non-blocking GitHub warning remains in GoDaddy's official `v1` composite
+  action because it internally invokes `actions/checkout@v3`. The two actions
+  controlled by this repository are pinned to their Node 24 versions.
+- Production CI/CD, production WordPress, production DNS, and the live Node.js
+  application were not changed. Production cutover remains on hold.

@@ -61,3 +61,13 @@ export, hosting backup, or rollback rehearsal.
   Square disabled.
 - The staging URL is anonymous/public. `noindex, nofollow` and sitemap
   suppression are indexing controls, not access control.
+
+## 2026-09-08 post-CI/CD read-only revalidation
+
+- Staging health returned
+  `{"ok":true,"plugin":"0.2.11","php":"8.1.34.15","wp":"7.0.4","storage":"wordpress-database","airtable":true,"airtablePending":0,"airtablePendingDeposits":0,"square":false}`.
+- `https://teethbytrev.com/` returned HTTP 200.
+- The production WordPress TBT health route at
+  `https://32741.us6.myftpupload.com/wp-json/tbt/v1/health` returned HTTP 404.
+- Production DNS, the production WordPress host, and the live Node.js
+  application remained unchanged.
