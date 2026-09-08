@@ -89,3 +89,19 @@ live editing source. Follow the in-editor link to the relevant content manager.
 The content plugin keeps its records if the theme changes or it is deactivated.
 A different theme needs its own presentation integration. Do not replace a
 production database with a staging database containing older client content.
+
+## Footer and pre-footer city pop-ups (theme 0.4.1)
+
+Open **Tools → TBT Page Editor → Site Footer**, select the footer widget in
+Elementor, then open **City pop-ups (shared with pre-footer)**. Edit the city,
+area, practice name, multiline address and optional Google Maps search text.
+Publish once to update both the footer and the homepage pre-footer.
+
+Rows with exactly the same city name share one pop-up (for example Manhattan and
+Brooklyn under New York). Reorder rows to change city/location order. A blank
+address displays the existing appointment-by-text message. The contact number
+in that fallback message is currently maintained in the theme.
+
+The old static address/city fields remain archived but are no longer displayed.
+Footer navigation still uses **Appearance → Menus**. Changes to these city
+details do not modify enquiry destinations, private photos or payment settings.

@@ -210,3 +210,43 @@ if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     window.addEventListener("resize", queueParallax, { passive: true });
   }
 }
+// Shared footer/pre-footer city disclosures. Delegation also supports Elementor.
+(() => {
+  let active = null;
+  const close = (restoreFocus = false) => {
+    if (!active) return;
+    const { button, panel } = active;
+    button.setAttribute('aria-expanded', 'false'); panel.hidden = true;
+    active = null;
+    if (restoreFocus) button.focus({ preventScroll: true });
+  };
+  const position = () => {
+    if (!active) return;
+    const { panel } = active;
+    panel.style.setProperty('--tbt-popup-shift', '0px');
+    if (window.innerWidth < 640) return;
+    const rect = panel.getBoundingClientRect();
+    const shift = Math.max(12 - rect.left, Math.min(0, window.innerWidth - 12 - rect.right));
+    panel.style.setProperty('--tbt-popup-shift', `${shift}px`);
+  };
+  document.addEventListener('click', event => {
+    if (!(event.target instanceof Element)) return;
+    const button = event.target.closest('.tbt-city-button');
+    if (button) {
+      const wasOpen = active?.button === button; close();
+      if (!wasOpen) {
+        const panel = document.getElementById(button.getAttribute('aria-controls'));
+        if (!panel) return;
+        panel.hidden = false; button.setAttribute('aria-expanded', 'true');
+        active = { button, panel }; position();
+      }
+    } else if (active && !active.panel.contains(event.target)) close();
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && active) { event.preventDefault(); close(true); }
+  });
+  document.addEventListener('focusin', event => {
+    if (active && event.target !== active.button && !active.panel.contains(event.target)) close();
+  });
+  window.addEventListener('resize', position, { passive: true });
+})();

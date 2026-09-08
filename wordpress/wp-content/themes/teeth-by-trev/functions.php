@@ -9,9 +9,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TBT_THEME_VERSION', '0.4.0' );
+define( 'TBT_THEME_VERSION', '0.4.1' );
 require_once __DIR__ . '/inc/editor.php';
 require_once __DIR__ . '/inc/cms.php';
+require_once __DIR__ . '/inc/locations.php';
 
 function tbt_theme_setup(): void {
 	add_theme_support( 'title-tag' );
