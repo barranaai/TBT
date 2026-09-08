@@ -14,6 +14,10 @@ on `main` while parity work happens on `codex/wordpress-migration`.
 - `docs/release-evidence.md` — immutable package evidence and staging gates.
 - `docs/qa-report-2026-09-08.md` — latest deployed-staging QA disposition.
 - `docs/dns-inventory.md` — read-only public routing evidence and cutover safeguards.
+- `docs/client-editing-guide.md` — Elementor editing, safe initial conversion, and recovery.
+- Theme `inc/editor.php`, `inc/elementor-section.php`, and `inc/editor-layouts.json`
+  provide editable Elementor sections without requiring Elementor Pro. Client content
+  is saved in WordPress, independently of subsequent code releases.
 
 WordPress core, uploads, secrets, database files, and generated caches are not
 committed.

@@ -85,7 +85,9 @@ for (const [path, title, description, marker] of routes) {
 
 const assetUrls = new Set();
 const internalUrls = new Set();
-for (const html of htmlByRoute.values()) {
+for (const documentHtml of htmlByRoute.values()) {
+  // Editor/lightbox templates inside scripts are inert text, not visitor links.
+  const html = documentHtml.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '');
   for (const match of html.matchAll(/<(?:img|source|video)[^>]+(?:src|poster)=["']([^"']+)["']/g)) {
     const url = new URL(match[1], base);
     if (url.origin === base.origin) assetUrls.add(url.href);

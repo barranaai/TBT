@@ -1,0 +1,2823 @@
+{
+  "version": 1,
+  "pages": {
+    "home": {
+      "title": "Teeth by Trev — Cosmetic & Implant Dentistry",
+      "mainClass": "bg-onyx text-ivory",
+      "sections": [
+        "home-1",
+        "home-2",
+        "home-3",
+        "home-4",
+        "home-5",
+        "home-6",
+        "home-7",
+        "home-8",
+        "home-9",
+        "home-10"
+      ],
+      "minimal": false,
+      "reserve": false,
+      "consultation": false
+    },
+    "about": {
+      "title": "About Dr. Trev — Teeth by Trev",
+      "mainClass": "bg-onyx text-ivory",
+      "sections": [
+        "about-1",
+        "about-2",
+        "about-3",
+        "about-4"
+      ],
+      "minimal": false,
+      "reserve": false,
+      "consultation": false
+    },
+    "services": {
+      "title": "Services — Teeth by Trev",
+      "mainClass": "bg-onyx text-ivory",
+      "sections": [
+        "services-1",
+        "services-2",
+        "services-3",
+        "services-4"
+      ],
+      "minimal": false,
+      "reserve": false,
+      "consultation": false
+    },
+    "gallery": {
+      "title": "Smile Gallery — Teeth by Trev",
+      "mainClass": "bg-onyx text-ivory",
+      "sections": [
+        "gallery-1",
+        "gallery-2",
+        "gallery-3",
+        "gallery-4"
+      ],
+      "minimal": false,
+      "reserve": false,
+      "consultation": false
+    },
+    "financing": {
+      "title": "Financing — Teeth by Trev",
+      "mainClass": "bg-onyx text-ivory",
+      "sections": [
+        "financing-1",
+        "financing-2",
+        "financing-3",
+        "financing-4",
+        "financing-5"
+      ],
+      "minimal": false,
+      "reserve": false,
+      "consultation": false
+    },
+    "contact": {
+      "title": "Contact the Teeth by Trev Concierge Team",
+      "mainClass": "bg-onyx text-ivory",
+      "sections": [
+        "contact-1",
+        "contact-2"
+      ],
+      "minimal": false,
+      "reserve": false,
+      "consultation": false
+    },
+    "consultation": {
+      "title": "Book a Consultation — Teeth by Trev",
+      "mainClass": "min-h-screen bg-onyx text-ivory",
+      "sections": [
+        "consultation-1",
+        "consultation-2"
+      ],
+      "minimal": false,
+      "reserve": false,
+      "consultation": true
+    },
+    "reserve": {
+      "title": "Reserve Your Consultation — Teeth by Trev",
+      "mainClass": "bg-onyx text-ivory",
+      "sections": [
+        "reserve-1"
+      ],
+      "minimal": false,
+      "reserve": true,
+      "consultation": false
+    },
+    "privacy": {
+      "title": "Privacy Policy — Teeth by Trev",
+      "mainClass": "min-h-screen bg-ink px-6 py-28 text-ivory lg:px-10",
+      "sections": [
+        "privacy-1"
+      ],
+      "minimal": true,
+      "reserve": false,
+      "consultation": false
+    },
+    "terms": {
+      "title": "Terms & Conditions — Teeth by Trev",
+      "mainClass": "min-h-screen bg-ink px-6 py-28 text-ivory lg:px-10",
+      "sections": [
+        "terms-1"
+      ],
+      "minimal": true,
+      "reserve": false,
+      "consultation": false
+    }
+  },
+  "sections": {
+    "home-1": {
+      "title": "Where the smilebecomes art.",
+      "html": "<section id=\"top\" class=\"relative flex min-h-dvh flex-col justify-center overflow-hidden bg-onyx\">\n\t\t<video class=\"absolute inset-0 h-full w-full object-cover opacity-30 motion-safe:animate-[heroZoom_28s_ease-in-out_infinite_alternate]\" autoplay=\"\" muted=\"\" loop=\"\" playsinline=\"\" poster=\"{{content_001}}\" aria-hidden=\"true\"><source src=\"{{content_002}}\" type=\"video/mp4\"></video>\n\t\t<div class=\"absolute inset-0 bg-gradient-to-b from-onyx via-onyx/70 to-onyx\"></div>\n\t\t<div class=\"tbt-radial-vignette absolute inset-0\"></div>\n\t\t<div class=\"pointer-events-none absolute inset-5 z-10 border border-gold/25 sm:inset-8 lg:inset-10\"></div>\n\t\t<div class=\"relative z-20 mx-auto w-full max-w-[1600px] px-6 lg:px-12\">\n\t\t\t<div class=\"mb-10 flex items-center justify-between text-[0.6rem] uppercase tracking-[0.32em] text-ivory/45\"><span>{{content_004}}</span><span class=\"hidden sm:block\">{{content_005}}</span><span>{{content_006}}</span></div>\n\t\t\t<h1 class=\"mx-auto max-w-5xl text-center font-serif text-[3.25rem] font-light leading-[0.98] tracking-[-0.01em] text-ivory sm:text-7xl lg:text-[7.5rem]\"><span class=\"line-reveal\"><span style=\"transition-delay:200ms\">{{content_007}}</span></span><span class=\"line-reveal\"><span style=\"transition-delay:340ms\">{{content_008}} <span class=\"italic text-gold\">{{content_009}}</span></span></span></h1>\n\t\t\t<p class=\"reveal mx-auto mt-10 max-w-md text-center text-sm leading-relaxed tracking-wide text-ivory/55\">{{content_010}}</p>\n\t\t\t<div class=\"reveal mt-12 flex justify-center\"><span class=\"inline-block transition-transform duration-300 ease-out will-change-transform\" data-tbt-magnetic=\"\"><a href=\"{{content_003}}\" class=\"group inline-flex items-center gap-4 border border-ivory/30 px-9 py-4 text-[0.66rem] uppercase tracking-[0.26em] text-ivory transition-colors duration-300 hover:border-gold hover:text-gold\">{{content_011}}<span class=\"transition-transform duration-300 group-hover:translate-x-1\">→</span></a></span></div>\n\t\t</div>\n\t\t<div class=\"absolute inset-x-0 bottom-8 z-20 flex justify-center\"><span class=\"text-[0.58rem] uppercase tracking-[0.3em] text-ivory/40\">{{content_012}}</span></div>\n\t</section>",
+      "controls": {
+        "content_001": {
+          "type": "media",
+          "default": "{{theme}}/assets/media/video/trevor-hero-poster.jpg",
+          "label": "Video poster"
+        },
+        "content_002": {
+          "type": "video",
+          "default": "{{theme}}/assets/media/video/trevor-hero.mp4",
+          "label": "Background video"
+        },
+        "content_003": {
+          "type": "url",
+          "default": "{{site}}/consultation/",
+          "label": "Link: Request a Consultation→"
+        },
+        "content_004": {
+          "type": "text",
+          "default": "N° 01",
+          "label": "text: N° 01"
+        },
+        "content_005": {
+          "type": "text",
+          "default": "Cosmetic Atelier — Est. Beverly Hills",
+          "label": "text: Cosmetic Atelier — Est. Beverly Hills"
+        },
+        "content_006": {
+          "type": "text",
+          "default": "Dr. Trevor J. Thomas",
+          "label": "text: Dr. Trevor J. Thomas"
+        },
+        "content_007": {
+          "type": "text",
+          "default": "Where the smile",
+          "label": "h1: Where the smile"
+        },
+        "content_008": {
+          "type": "text",
+          "default": "becomes",
+          "label": "h1: becomes"
+        },
+        "content_009": {
+          "type": "text",
+          "default": "art.",
+          "label": "h1: art."
+        },
+        "content_010": {
+          "type": "textarea",
+          "default": "An atelier of cosmetic & implant dentistry — composing faces, restoring confidence, and finishing every smile by hand.",
+          "label": "p: An atelier of cosmetic & implant dentistry — composing faces, restoring confidence, and"
+        },
+        "content_011": {
+          "type": "text",
+          "default": "Request a Consultation",
+          "label": "a: Request a Consultation"
+        },
+        "content_012": {
+          "type": "text",
+          "default": "Scroll to enter",
+          "label": "text: Scroll to enter"
+        }
+      }
+    },
+    "home-2": {
+      "title": "home section 2",
+      "html": "<div class=\"border-y border-ivory/10 bg-onyx py-6\"><div class=\"flex overflow-hidden\"><div class=\"flex shrink-0 animate-marquee whitespace-nowrap\"><span class=\"mx-8 flex items-center gap-8 font-serif text-2xl font-light text-ivory/70 sm:text-3xl\">{{content_001}}<span class=\"text-gold\">✦</span></span><span class=\"mx-8 flex items-center gap-8 font-serif text-2xl font-light text-ivory/70 sm:text-3xl\">{{content_002}}<span class=\"text-gold\">✦</span></span><span class=\"mx-8 flex items-center gap-8 font-serif text-2xl font-light text-ivory/70 sm:text-3xl\">{{content_003}}<span class=\"text-gold\">✦</span></span><span class=\"mx-8 flex items-center gap-8 font-serif text-2xl font-light text-ivory/70 sm:text-3xl\">{{content_004}}<span class=\"text-gold\">✦</span></span><span class=\"mx-8 flex items-center gap-8 font-serif text-2xl font-light text-ivory/70 sm:text-3xl\">{{content_005}}<span class=\"text-gold\">✦</span></span><span class=\"mx-8 flex items-center gap-8 font-serif text-2xl font-light text-ivory/70 sm:text-3xl\">{{content_006}}<span class=\"text-gold\">✦</span></span><span class=\"mx-8 flex items-center gap-8 font-serif text-2xl font-light text-ivory/70 sm:text-3xl\">{{content_007}}<span class=\"text-gold\">✦</span></span><span class=\"mx-8 flex items-center gap-8 font-serif text-2xl font-light text-ivory/70 sm:text-3xl\">{{content_008}}<span class=\"text-gold\">✦</span></span><span class=\"mx-8 flex items-center gap-8 font-serif text-2xl font-light text-ivory/70 sm:text-3xl\">{{content_009}}<span class=\"text-gold\">✦</span></span><span class=\"mx-8 flex items-center gap-8 font-serif text-2xl font-light text-ivory/70 sm:text-3xl\">{{content_010}}<span class=\"text-gold\">✦</span></span><span class=\"mx-8 flex items-center gap-8 font-serif text-2xl font-light text-ivory/70 sm:text-3xl\">{{content_011}}<span class=\"text-gold\">✦</span></span><span class=\"mx-8 flex items-center gap-8 font-serif text-2xl font-light text-ivory/70 sm:text-3xl\">{{content_012}}<span class=\"text-gold\">✦</span></span><span class=\"mx-8 flex items-center gap-8 font-serif text-2xl font-light text-ivory/70 sm:text-3xl\">{{content_013}}<span class=\"text-gold\">✦</span></span><span class=\"mx-8 flex items-center gap-8 font-serif text-2xl font-light text-ivory/70 sm:text-3xl\">{{content_014}}<span class=\"text-gold\">✦</span></span><span class=\"mx-8 flex items-center gap-8 font-serif text-2xl font-light text-ivory/70 sm:text-3xl\">{{content_015}}<span class=\"text-gold\">✦</span></span><span class=\"mx-8 flex items-center gap-8 font-serif text-2xl font-light text-ivory/70 sm:text-3xl\">{{content_016}}<span class=\"text-gold\">✦</span></span></div></div></div>",
+      "controls": {
+        "content_001": {
+          "type": "text",
+          "default": "Beverly Hills",
+          "label": "text: Beverly Hills"
+        },
+        "content_002": {
+          "type": "text",
+          "default": "New York",
+          "label": "text: New York"
+        },
+        "content_003": {
+          "type": "text",
+          "default": "Atlanta",
+          "label": "text: Atlanta"
+        },
+        "content_004": {
+          "type": "text",
+          "default": "Houston",
+          "label": "text: Houston"
+        },
+        "content_005": {
+          "type": "text",
+          "default": "Miami",
+          "label": "text: Miami"
+        },
+        "content_006": {
+          "type": "text",
+          "default": "Washington D.C.",
+          "label": "text: Washington D.C."
+        },
+        "content_007": {
+          "type": "text",
+          "default": "Tampa",
+          "label": "text: Tampa"
+        },
+        "content_008": {
+          "type": "text",
+          "default": "Memphis",
+          "label": "text: Memphis"
+        },
+        "content_009": {
+          "type": "text",
+          "default": "Beverly Hills",
+          "label": "text: Beverly Hills"
+        },
+        "content_010": {
+          "type": "text",
+          "default": "New York",
+          "label": "text: New York"
+        },
+        "content_011": {
+          "type": "text",
+          "default": "Atlanta",
+          "label": "text: Atlanta"
+        },
+        "content_012": {
+          "type": "text",
+          "default": "Houston",
+          "label": "text: Houston"
+        },
+        "content_013": {
+          "type": "text",
+          "default": "Miami",
+          "label": "text: Miami"
+        },
+        "content_014": {
+          "type": "text",
+          "default": "Washington D.C.",
+          "label": "text: Washington D.C."
+        },
+        "content_015": {
+          "type": "text",
+          "default": "Tampa",
+          "label": "text: Tampa"
+        },
+        "content_016": {
+          "type": "text",
+          "default": "Memphis",
+          "label": "text: Memphis"
+        }
+      }
+    },
+    "home-3": {
+      "title": "Dentistry is my ministry.",
+      "html": "<section id=\"maison\" class=\"bg-onyx py-32 lg:py-44\"><div class=\"mx-auto max-w-5xl px-6 lg:px-12\">\n\t\t<div class=\"reveal\"><p class=\"mb-6 text-[0.6rem] uppercase tracking-[0.34em] text-gold/70\">{{content_003}}</p><h2 class=\"mb-12 font-serif text-4xl font-light leading-[1.05] text-ivory sm:text-5xl\">{{content_004}}</h2></div>\n\t\t<p class=\"reveal font-serif text-3xl font-light leading-[1.35] tracking-[-0.01em] text-ivory/85 sm:text-4xl lg:text-[2.85rem]\">{{content_005}} <span class=\"italic text-gold\">{{content_006}}</span> {{content_007}} <span class=\"italic text-gold\">{{content_008}}</span> {{content_009}}</p>\n\t\t<p class=\"reveal mt-10 font-serif text-2xl italic text-gold sm:text-3xl\">{{content_010}}</p>\n\t\t<div class=\"reveal mt-16 flex flex-col items-start gap-7 sm:flex-row sm:items-center sm:gap-10\"><div class=\"relative h-36 w-28 shrink-0 overflow-hidden sm:h-40 sm:w-32\"><img src=\"{{content_001}}\" alt=\"{{content_002}}\" class=\"h-full w-full object-cover object-[center_20%]\" loading=\"lazy\"><div class=\"pointer-events-none absolute inset-0 border border-gold/30\"></div></div><div><span class=\"font-script block text-5xl leading-none text-gold sm:text-6xl\">{{content_011}}</span><span class=\"mt-3 block text-[0.6rem] uppercase tracking-[0.28em] text-ivory/50\">{{content_012}}</span></div></div>\n\t</div></section>",
+      "controls": {
+        "content_001": {
+          "type": "media",
+          "default": "{{theme}}/assets/media/people/dr-trev-portrait.png",
+          "label": "Image: Dr. Trevor J. Thomas, DDS"
+        },
+        "content_002": {
+          "type": "text",
+          "default": "Dr. Trevor J. Thomas, DDS",
+          "label": "Image description"
+        },
+        "content_003": {
+          "type": "text",
+          "default": "The Maison",
+          "label": "p: The Maison"
+        },
+        "content_004": {
+          "type": "text",
+          "default": "Dentistry is my ministry.",
+          "label": "h2: Dentistry is my ministry."
+        },
+        "content_005": {
+          "type": "text",
+          "default": "We do not sell dentistry. We compose",
+          "label": "p: We do not sell dentistry. We compose"
+        },
+        "content_006": {
+          "type": "text",
+          "default": "faces",
+          "label": "p: faces"
+        },
+        "content_007": {
+          "type": "textarea",
+          "default": "— reading the light of a smile, the line of a lip, the architecture beneath. Every veneer is drawn by hand, every restoration weighed against a single question:",
+          "label": "p: — reading the light of a smile, the line of a lip, the architecture beneath. Every vene"
+        },
+        "content_008": {
+          "type": "text",
+          "default": "does it look inevitable?",
+          "label": "p: does it look inevitable?"
+        },
+        "content_009": {
+          "type": "text",
+          "default": "The finest work is the work no one can see was done.",
+          "label": "p: The finest work is the work no one can see was done."
+        },
+        "content_010": {
+          "type": "text",
+          "default": "Real people. Real problems. Real results.",
+          "label": "p: Real people. Real problems. Real results."
+        },
+        "content_011": {
+          "type": "text",
+          "default": "Dr. Trev",
+          "label": "text: Dr. Trev"
+        },
+        "content_012": {
+          "type": "text",
+          "default": "Dr. Trevor J. Thomas, DDS",
+          "label": "text: Dr. Trevor J. Thomas, DDS"
+        }
+      }
+    },
+    "home-4": {
+      "title": "home section 4",
+      "html": "<section class=\"bg-ink py-24 lg:py-28\"><div class=\"mx-auto grid max-w-7xl grid-cols-2 gap-y-14 px-6 lg:grid-cols-4 lg:gap-y-0 lg:px-10\" data-tbt-stats=\"\"><div class=\"text-center\"><div class=\"font-serif text-5xl font-light tracking-tight text-ivory tabular-nums sm:text-6xl lg:text-7xl\"><span data-tbt-count=\"{{content_001}}\">{{content_001}}</span><span class=\"text-champagne\">{{content_005}}</span></div><span class=\"mx-auto mt-5 block h-px w-10 origin-center bg-champagne/60\"></span><div class=\"mt-4 text-[0.62rem] uppercase tracking-[0.26em] text-ivory/50\">{{content_006}}</div></div><div class=\"text-center\"><div class=\"font-serif text-5xl font-light tracking-tight text-ivory tabular-nums sm:text-6xl lg:text-7xl\"><span data-tbt-count=\"{{content_002}}\">{{content_002}}</span><span class=\"text-champagne\"></span></div><span class=\"mx-auto mt-5 block h-px w-10 origin-center bg-champagne/60\"></span><div class=\"mt-4 text-[0.62rem] uppercase tracking-[0.26em] text-ivory/50\">{{content_007}}</div></div><div class=\"text-center\"><div class=\"font-serif text-5xl font-light tracking-tight text-ivory tabular-nums sm:text-6xl lg:text-7xl\"><span data-tbt-count=\"{{content_003}}\">{{content_003}}</span><span class=\"text-champagne\">{{content_008}}</span></div><span class=\"mx-auto mt-5 block h-px w-10 origin-center bg-champagne/60\"></span><div class=\"mt-4 text-[0.62rem] uppercase tracking-[0.26em] text-ivory/50\">{{content_009}}</div></div><div class=\"text-center\"><div class=\"font-serif text-5xl font-light tracking-tight text-ivory tabular-nums sm:text-6xl lg:text-7xl\"><span data-tbt-count=\"{{content_004}}\">{{content_004}}</span><span class=\"text-champagne\">{{content_010}}</span></div><span class=\"mx-auto mt-5 block h-px w-10 origin-center bg-champagne/60\"></span><div class=\"mt-4 text-[0.62rem] uppercase tracking-[0.26em] text-ivory/50\">{{content_011}}</div></div></div></section>",
+      "controls": {
+        "content_001": {
+          "type": "number",
+          "default": "10",
+          "label": "Statistic value"
+        },
+        "content_002": {
+          "type": "number",
+          "default": "8",
+          "label": "Statistic value"
+        },
+        "content_003": {
+          "type": "number",
+          "default": "5000",
+          "label": "Statistic value"
+        },
+        "content_004": {
+          "type": "number",
+          "default": "100",
+          "label": "Statistic value"
+        },
+        "content_005": {
+          "type": "text",
+          "default": "+",
+          "label": "text: +"
+        },
+        "content_006": {
+          "type": "text",
+          "default": "Years in Practice",
+          "label": "text: Years in Practice"
+        },
+        "content_007": {
+          "type": "text",
+          "default": "Cities Served",
+          "label": "text: Cities Served"
+        },
+        "content_008": {
+          "type": "text",
+          "default": "+",
+          "label": "text: +"
+        },
+        "content_009": {
+          "type": "text",
+          "default": "Smiles Transformed",
+          "label": "text: Smiles Transformed"
+        },
+        "content_010": {
+          "type": "text",
+          "default": "%",
+          "label": "text: %"
+        },
+        "content_011": {
+          "type": "text",
+          "default": "Care, Every Visit",
+          "label": "text: Care, Every Visit"
+        }
+      }
+    },
+    "home-5": {
+      "title": "Selected Work",
+      "html": "<section id=\"work\" class=\"bg-onyx py-24 lg:py-32\"><div class=\"mx-auto max-w-6xl px-6 lg:px-10\">\n\t\t<div class=\"mb-16 flex items-end justify-between border-b border-ivory/10 pb-6 lg:mb-24\"><div><p class=\"mb-4 text-[0.6rem] uppercase tracking-[0.34em] text-gold/70\">{{content_009}}</p><h2 class=\"font-serif text-4xl font-light text-ivory sm:text-5xl\"><span class=\"line-reveal\"><span>{{content_010}}</span></span></h2></div><span class=\"hidden whitespace-nowrap pb-1 text-[0.6rem] uppercase tracking-[0.3em] text-ivory/40 sm:block\">{{content_011}}</span></div>\n\t\t<div class=\"space-y-24 lg:space-y-32\"><article class=\"reveal group grid items-center gap-12 lg:gap-16 lg:grid-cols-[5fr_7fr]\"><div class=\"\"><div class=\"relative aspect-[4/5] overflow-hidden\"><div class=\"absolute inset-0 overflow-hidden\" data-tbt-parallax=\"\"><div class=\"absolute inset-x-0 -top-[10%] h-[120%] will-change-transform\" data-tbt-parallax-inner=\"\"><img src=\"{{content_001}}\" alt=\"{{content_002}}\" class=\"h-full w-full object-cover grayscale transition-[filter,transform] duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03] group-hover:grayscale-0\" loading=\"lazy\"></div></div><div class=\"pointer-events-none absolute inset-0 border border-gold/20\"></div><div class=\"pointer-events-none absolute inset-0 bg-gradient-to-t from-onyx/40 to-transparent opacity-60 transition-opacity duration-700 group-hover:opacity-20\"></div></div></div><div class=\"relative \"><span aria-hidden=\"true\" class=\"pointer-events-none absolute -top-14 left-0 font-serif text-[7rem] font-light leading-none text-ivory/[0.05] sm:text-[9rem] lg:-top-24 lg:text-[12rem]\">{{content_012}}</span><div class=\"relative\"><div class=\"flex items-center gap-5\"><span class=\"whitespace-nowrap text-[0.62rem] uppercase tracking-[0.28em] text-gold/70\">{{content_013}}</span><span class=\"h-px flex-1 bg-ivory/15\"></span></div><h3 class=\"mt-6 font-serif text-3xl font-light leading-[1.08] text-ivory transition-colors duration-500 group-hover:text-champagne sm:text-4xl lg:text-5xl\">{{content_014}}</h3><p class=\"mt-6 max-w-md text-sm leading-relaxed text-ivory/55 sm:text-base\">{{content_015}}</p></div></div></article><article class=\"reveal group grid items-center gap-12 lg:gap-16 lg:grid-cols-[7fr_5fr]\"><div class=\"lg:order-2\"><div class=\"relative aspect-[4/5] overflow-hidden\"><div class=\"absolute inset-0 overflow-hidden\" data-tbt-parallax=\"\"><div class=\"absolute inset-x-0 -top-[10%] h-[120%] will-change-transform\" data-tbt-parallax-inner=\"\"><img src=\"{{content_003}}\" alt=\"{{content_004}}\" class=\"h-full w-full object-cover grayscale transition-[filter,transform] duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03] group-hover:grayscale-0\" loading=\"lazy\"></div></div><div class=\"pointer-events-none absolute inset-0 border border-gold/20\"></div><div class=\"pointer-events-none absolute inset-0 bg-gradient-to-t from-onyx/40 to-transparent opacity-60 transition-opacity duration-700 group-hover:opacity-20\"></div></div></div><div class=\"relative lg:order-1\"><span aria-hidden=\"true\" class=\"pointer-events-none absolute -top-14 left-0 font-serif text-[7rem] font-light leading-none text-ivory/[0.05] sm:text-[9rem] lg:-top-24 lg:text-[12rem]\">{{content_016}}</span><div class=\"relative\"><div class=\"flex items-center gap-5\"><span class=\"whitespace-nowrap text-[0.62rem] uppercase tracking-[0.28em] text-gold/70\">{{content_017}}</span><span class=\"h-px flex-1 bg-ivory/15\"></span></div><h3 class=\"mt-6 font-serif text-3xl font-light leading-[1.08] text-ivory transition-colors duration-500 group-hover:text-champagne sm:text-4xl lg:text-5xl\">{{content_018}}</h3><p class=\"mt-6 max-w-md text-sm leading-relaxed text-ivory/55 sm:text-base\">{{content_019}}</p></div></div></article><article class=\"reveal group grid items-center gap-12 lg:gap-16 lg:grid-cols-[5fr_7fr]\"><div class=\"\"><div class=\"relative aspect-[4/5] overflow-hidden\"><div class=\"absolute inset-0 overflow-hidden\" data-tbt-parallax=\"\"><div class=\"absolute inset-x-0 -top-[10%] h-[120%] will-change-transform\" data-tbt-parallax-inner=\"\"><img src=\"{{content_005}}\" alt=\"{{content_006}}\" class=\"h-full w-full object-cover grayscale transition-[filter,transform] duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03] group-hover:grayscale-0\" loading=\"lazy\"></div></div><div class=\"pointer-events-none absolute inset-0 border border-gold/20\"></div><div class=\"pointer-events-none absolute inset-0 bg-gradient-to-t from-onyx/40 to-transparent opacity-60 transition-opacity duration-700 group-hover:opacity-20\"></div></div></div><div class=\"relative \"><span aria-hidden=\"true\" class=\"pointer-events-none absolute -top-14 left-0 font-serif text-[7rem] font-light leading-none text-ivory/[0.05] sm:text-[9rem] lg:-top-24 lg:text-[12rem]\">{{content_020}}</span><div class=\"relative\"><div class=\"flex items-center gap-5\"><span class=\"whitespace-nowrap text-[0.62rem] uppercase tracking-[0.28em] text-gold/70\">{{content_021}}</span><span class=\"h-px flex-1 bg-ivory/15\"></span></div><h3 class=\"mt-6 font-serif text-3xl font-light leading-[1.08] text-ivory transition-colors duration-500 group-hover:text-champagne sm:text-4xl lg:text-5xl\">{{content_022}}</h3><p class=\"mt-6 max-w-md text-sm leading-relaxed text-ivory/55 sm:text-base\">{{content_023}}</p></div></div></article><article class=\"reveal group grid items-center gap-12 lg:gap-16 lg:grid-cols-[7fr_5fr]\"><div class=\"lg:order-2\"><div class=\"relative aspect-[4/5] overflow-hidden\"><div class=\"absolute inset-0 overflow-hidden\" data-tbt-parallax=\"\"><div class=\"absolute inset-x-0 -top-[10%] h-[120%] will-change-transform\" data-tbt-parallax-inner=\"\"><img src=\"{{content_007}}\" alt=\"{{content_008}}\" class=\"h-full w-full object-cover grayscale transition-[filter,transform] duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03] group-hover:grayscale-0\" loading=\"lazy\"></div></div><div class=\"pointer-events-none absolute inset-0 border border-gold/20\"></div><div class=\"pointer-events-none absolute inset-0 bg-gradient-to-t from-onyx/40 to-transparent opacity-60 transition-opacity duration-700 group-hover:opacity-20\"></div></div></div><div class=\"relative lg:order-1\"><span aria-hidden=\"true\" class=\"pointer-events-none absolute -top-14 left-0 font-serif text-[7rem] font-light leading-none text-ivory/[0.05] sm:text-[9rem] lg:-top-24 lg:text-[12rem]\">{{content_024}}</span><div class=\"relative\"><div class=\"flex items-center gap-5\"><span class=\"whitespace-nowrap text-[0.62rem] uppercase tracking-[0.28em] text-gold/70\">{{content_025}}</span><span class=\"h-px flex-1 bg-ivory/15\"></span></div><h3 class=\"mt-6 font-serif text-3xl font-light leading-[1.08] text-ivory transition-colors duration-500 group-hover:text-champagne sm:text-4xl lg:text-5xl\">{{content_026}}</h3><p class=\"mt-6 max-w-md text-sm leading-relaxed text-ivory/55 sm:text-base\">{{content_027}}</p></div></div></article></div>\n\t</div></section>",
+      "controls": {
+        "content_001": {
+          "type": "media",
+          "default": "{{theme}}/assets/media/gallery/trev-veneer-craft.jpg",
+          "label": "Image: The Porcelain Veneer"
+        },
+        "content_002": {
+          "type": "text",
+          "default": "The Porcelain Veneer",
+          "label": "Image description"
+        },
+        "content_003": {
+          "type": "media",
+          "default": "{{theme}}/assets/media/gallery/trev-scan-suite.jpg",
+          "label": "Image: Full-Mouth Rehabilitation"
+        },
+        "content_004": {
+          "type": "text",
+          "default": "Full-Mouth Rehabilitation",
+          "label": "Image description"
+        },
+        "content_005": {
+          "type": "media",
+          "default": "{{theme}}/assets/media/gallery/trev-intraoral-scan.jpg",
+          "label": "Image: The Implant Restoration"
+        },
+        "content_006": {
+          "type": "text",
+          "default": "The Implant Restoration",
+          "label": "Image description"
+        },
+        "content_007": {
+          "type": "media",
+          "default": "{{theme}}/assets/media/gallery/trev-consult-blue.jpg",
+          "label": "Image: General Dentistry & Hygiene"
+        },
+        "content_008": {
+          "type": "text",
+          "default": "General Dentistry & Hygiene",
+          "label": "Image description"
+        },
+        "content_009": {
+          "type": "text",
+          "default": "Case Studies",
+          "label": "p: Case Studies"
+        },
+        "content_010": {
+          "type": "text",
+          "default": "Selected Work",
+          "label": "h2: Selected Work"
+        },
+        "content_011": {
+          "type": "text",
+          "default": "Cosmetic & Implant Dentistry",
+          "label": "text: Cosmetic & Implant Dentistry"
+        },
+        "content_012": {
+          "type": "text",
+          "default": "01",
+          "label": "text: 01"
+        },
+        "content_013": {
+          "type": "text",
+          "default": "Where artistry meets engineering",
+          "label": "text: Where artistry meets engineering"
+        },
+        "content_014": {
+          "type": "text",
+          "default": "The Porcelain Veneer",
+          "label": "h3: The Porcelain Veneer"
+        },
+        "content_015": {
+          "type": "textarea",
+          "default": "A hand-layered ceramic restoration tuned to the patient's complexion and lip dynamics — translucency at the edge, warmth at the core.",
+          "label": "p: A hand-layered ceramic restoration tuned to the patient's complexion and lip dynamics —"
+        },
+        "content_016": {
+          "type": "text",
+          "default": "02",
+          "label": "text: 02"
+        },
+        "content_017": {
+          "type": "text",
+          "default": "Reconstruction · function & form",
+          "label": "text: Reconstruction · function & form"
+        },
+        "content_018": {
+          "type": "text",
+          "default": "Full-Mouth Rehabilitation",
+          "label": "h3: Full-Mouth Rehabilitation"
+        },
+        "content_019": {
+          "type": "text",
+          "default": "Rebuilding a collapsed bite into a balanced, youthful smile — engineered for the jaw, finished for the eye.",
+          "label": "p: Rebuilding a collapsed bite into a balanced, youthful smile — engineered for the jaw, f"
+        },
+        "content_020": {
+          "type": "text",
+          "default": "03",
+          "label": "text: 03"
+        },
+        "content_021": {
+          "type": "text",
+          "default": "Small in size, built to last",
+          "label": "text: Small in size, built to last"
+        },
+        "content_022": {
+          "type": "text",
+          "default": "The Implant Restoration",
+          "label": "h3: The Implant Restoration"
+        },
+        "content_023": {
+          "type": "textarea",
+          "default": "A titanium foundation crowned in custom ceramic, placed so precisely that the result disappears into the natural arch.",
+          "label": "p: A titanium foundation crowned in custom ceramic, placed so precisely that the result di"
+        },
+        "content_024": {
+          "type": "text",
+          "default": "04",
+          "label": "text: 04"
+        },
+        "content_025": {
+          "type": "text",
+          "default": "The foundation of every smile",
+          "label": "text: The foundation of every smile"
+        },
+        "content_026": {
+          "type": "text",
+          "default": "General Dentistry & Hygiene",
+          "label": "h3: General Dentistry & Hygiene"
+        },
+        "content_027": {
+          "type": "textarea",
+          "default": "Cleanings, exams, and preventive care performed with the same precision as the artistry — because a beautiful smile begins with a healthy one.",
+          "label": "p: Cleanings, exams, and preventive care performed with the same precision as the artistry"
+        }
+      }
+    },
+    "home-6": {
+      "title": "The dentist the stars come to.",
+      "html": "<section class=\"relative isolate overflow-hidden bg-ink py-28 lg:py-40\"><div class=\"mx-auto max-w-7xl px-6 lg:px-10\"><div class=\"reveal max-w-2xl\"><p class=\"eyebrow mb-6 flex items-center gap-3 text-champagne\"><span class=\"tabular-nums opacity-80\">{{content_001}}</span><span class=\"h-px w-8 bg-current opacity-50\" aria-hidden=\"true\"></span><span>{{content_002}}</span></p><h2 class=\"font-serif text-4xl font-light leading-[1.1] text-ivory sm:text-5xl\">{{content_003}}</h2><span class=\"accent-line mt-8\"></span><p class=\"mt-8 max-w-xl text-base leading-relaxed text-ivory/70 sm:text-lg\">{{content_004}} <span class=\"text-champagne\">{{content_005}}</span>{{content_006}}</p></div><div class=\"mt-16 border-t border-ivory/15 pt-10\"><p class=\"eyebrow mb-8 text-gold/70\">{{content_007}}</p><ul class=\"flex flex-wrap items-center gap-x-12 gap-y-6\"><li class=\"reveal font-serif text-2xl font-light text-ivory/60 transition-colors duration-300 hover:text-ivory sm:text-3xl\">{{content_008}}</li><li class=\"reveal font-serif text-2xl font-light text-ivory/60 transition-colors duration-300 hover:text-ivory sm:text-3xl\">{{content_009}}</li><li class=\"reveal font-serif text-2xl font-light text-ivory/60 transition-colors duration-300 hover:text-ivory sm:text-3xl\">{{content_010}}</li><li class=\"reveal font-serif text-2xl font-light text-ivory/60 transition-colors duration-300 hover:text-ivory sm:text-3xl\">{{content_011}}</li><li class=\"reveal font-serif text-2xl font-light text-ivory/60 transition-colors duration-300 hover:text-ivory sm:text-3xl\">{{content_012}}</li><li class=\"reveal font-serif text-2xl font-light text-ivory/60 transition-colors duration-300 hover:text-ivory sm:text-3xl\">{{content_013}}</li><li class=\"reveal font-serif text-2xl font-light text-ivory/60 transition-colors duration-300 hover:text-ivory sm:text-3xl\">{{content_014}}</li><li class=\"reveal font-serif text-2xl font-light text-ivory/60 transition-colors duration-300 hover:text-ivory sm:text-3xl\">{{content_015}}</li><li class=\"reveal font-serif text-2xl font-light text-ivory/60 transition-colors duration-300 hover:text-ivory sm:text-3xl\">{{content_016}}</li><li class=\"reveal font-serif text-2xl font-light text-ivory/60 transition-colors duration-300 hover:text-ivory sm:text-3xl\">{{content_017}}</li></ul></div></div></section>",
+      "controls": {
+        "content_001": {
+          "type": "text",
+          "default": "04",
+          "label": "p: 04"
+        },
+        "content_002": {
+          "type": "text",
+          "default": "Trusted By",
+          "label": "p: Trusted By"
+        },
+        "content_003": {
+          "type": "text",
+          "default": "The dentist the stars come to.",
+          "label": "h2: The dentist the stars come to."
+        },
+        "content_004": {
+          "type": "text",
+          "default": "Star of",
+          "label": "p: Star of"
+        },
+        "content_005": {
+          "type": "text",
+          "default": "SMILE: LA",
+          "label": "p: SMILE: LA"
+        },
+        "content_006": {
+          "type": "textarea",
+          "default": ", and the Hollywood smile behind some of music and entertainment's most recognizable faces — designed with the same care given to every patient who sits in the chair.",
+          "label": "p: , and the Hollywood smile behind some of music and entertainment's most recognizable fa"
+        },
+        "content_007": {
+          "type": "text",
+          "default": "As Seen On",
+          "label": "p: As Seen On"
+        },
+        "content_008": {
+          "type": "text",
+          "default": "SMILE: LA",
+          "label": "li: SMILE: LA"
+        },
+        "content_009": {
+          "type": "text",
+          "default": "Zeus Network",
+          "label": "li: Zeus Network"
+        },
+        "content_010": {
+          "type": "text",
+          "default": "TMZ",
+          "label": "li: TMZ"
+        },
+        "content_011": {
+          "type": "text",
+          "default": "Yahoo",
+          "label": "li: Yahoo"
+        },
+        "content_012": {
+          "type": "text",
+          "default": "Black Enterprise",
+          "label": "li: Black Enterprise"
+        },
+        "content_013": {
+          "type": "text",
+          "default": "The Source",
+          "label": "li: The Source"
+        },
+        "content_014": {
+          "type": "text",
+          "default": "AllHipHop",
+          "label": "li: AllHipHop"
+        },
+        "content_015": {
+          "type": "text",
+          "default": "HotNewHipHop",
+          "label": "li: HotNewHipHop"
+        },
+        "content_016": {
+          "type": "text",
+          "default": "The Hype Magazine",
+          "label": "li: The Hype Magazine"
+        },
+        "content_017": {
+          "type": "text",
+          "default": "Respect Magazine",
+          "label": "li: Respect Magazine"
+        }
+      }
+    },
+    "home-7": {
+      "title": "The Ritual",
+      "html": "<section class=\"border-t border-ivory/10 bg-onyx py-24 lg:py-32\"><div class=\"mx-auto max-w-[1600px] px-6 lg:px-12\"><div class=\"mb-16 flex items-end justify-between border-b border-ivory/10 pb-6\"><h2 class=\"font-serif text-4xl font-light text-ivory sm:text-5xl\"><span class=\"line-reveal\"><span>{{content_001}}</span></span></h2><span class=\"text-[0.6rem] uppercase tracking-[0.3em] text-ivory/40\">{{content_002}}</span></div><div class=\"grid gap-x-12 gap-y-14 sm:grid-cols-2 lg:grid-cols-4\"><div class=\"reveal\"><div class=\"flex h-full flex-col border-t border-gold/25 pt-6\"><span class=\"font-serif text-5xl font-light leading-none text-gold/40\">{{content_003}}</span><h3 class=\"mt-6 font-serif text-2xl font-light text-ivory\">{{content_004}}</h3><p class=\"mt-4 text-sm leading-relaxed text-ivory/55\">{{content_005}}</p></div></div><div class=\"reveal\"><div class=\"flex h-full flex-col border-t border-gold/25 pt-6\"><span class=\"font-serif text-5xl font-light leading-none text-gold/40\">{{content_006}}</span><h3 class=\"mt-6 font-serif text-2xl font-light text-ivory\">{{content_007}}</h3><p class=\"mt-4 text-sm leading-relaxed text-ivory/55\">{{content_008}}</p></div></div><div class=\"reveal\"><div class=\"flex h-full flex-col border-t border-gold/25 pt-6\"><span class=\"font-serif text-5xl font-light leading-none text-gold/40\">{{content_009}}</span><h3 class=\"mt-6 font-serif text-2xl font-light text-ivory\">{{content_010}}</h3><p class=\"mt-4 text-sm leading-relaxed text-ivory/55\">{{content_011}}</p></div></div><div class=\"reveal\"><div class=\"flex h-full flex-col border-t border-gold/25 pt-6\"><span class=\"font-serif text-5xl font-light leading-none text-gold/40\">{{content_012}}</span><h3 class=\"mt-6 font-serif text-2xl font-light text-ivory\">{{content_013}}</h3><p class=\"mt-4 text-sm leading-relaxed text-ivory/55\">{{content_014}}</p></div></div></div></div></section>",
+      "controls": {
+        "content_001": {
+          "type": "text",
+          "default": "The Ritual",
+          "label": "h2: The Ritual"
+        },
+        "content_002": {
+          "type": "text",
+          "default": "Four Movements",
+          "label": "text: Four Movements"
+        },
+        "content_003": {
+          "type": "text",
+          "default": "I",
+          "label": "text: I"
+        },
+        "content_004": {
+          "type": "text",
+          "default": "The Consultation",
+          "label": "h3: The Consultation"
+        },
+        "content_005": {
+          "type": "text",
+          "default": "We begin in conversation — studying your face, your bite, and the smile you imagine. Nothing is templated.",
+          "label": "p: We begin in conversation — studying your face, your bite, and the smile you imagine. No"
+        },
+        "content_006": {
+          "type": "text",
+          "default": "II",
+          "label": "text: II"
+        },
+        "content_007": {
+          "type": "text",
+          "default": "The Design",
+          "label": "h3: The Design"
+        },
+        "content_008": {
+          "type": "textarea",
+          "default": "A bespoke blueprint, previewed before a single tooth is touched. Proportion, translucency, and line are drawn to your features.",
+          "label": "p: A bespoke blueprint, previewed before a single tooth is touched. Proportion, translucen"
+        },
+        "content_009": {
+          "type": "text",
+          "default": "III",
+          "label": "text: III"
+        },
+        "content_010": {
+          "type": "text",
+          "default": "The Craft",
+          "label": "h3: The Craft"
+        },
+        "content_011": {
+          "type": "textarea",
+          "default": "Each restoration is hand-layered and refined under magnification — ceramic worked like fine material until it disappears.",
+          "label": "p: Each restoration is hand-layered and refined under magnification — ceramic worked like "
+        },
+        "content_012": {
+          "type": "text",
+          "default": "IV",
+          "label": "text: IV"
+        },
+        "content_013": {
+          "type": "text",
+          "default": "The Reveal",
+          "label": "h3: The Reveal"
+        },
+        "content_014": {
+          "type": "textarea",
+          "default": "The finished smile is placed, balanced, and polished. The result looks not done, but inevitable — as though it was always yours.",
+          "label": "p: The finished smile is placed, balanced, and polished. The result looks not done, but in"
+        }
+      }
+    },
+    "home-8": {
+      "title": "The Atelier",
+      "html": "<section id=\"atelier\" class=\"relative bg-onyx py-24 lg:py-32\" data-tbt-services=\"\"><div class=\"mx-auto max-w-[1600px] px-6 lg:px-12\"><div class=\"mb-16 flex items-end justify-between border-b border-ivory/10 pb-6\"><h2 class=\"font-serif text-4xl font-light text-ivory sm:text-5xl\"><span class=\"line-reveal\"><span>{{content_013}}</span></span></h2><span class=\"text-[0.6rem] uppercase tracking-[0.3em] text-ivory/40\">{{content_014}}</span></div><div class=\"tbt-service-preview pointer-events-none fixed left-0 top-0 z-30 hidden h-72 w-56 opacity-0 transition-opacity duration-500 lg:block\" aria-hidden=\"true\"><div class=\"absolute inset-0 overflow-hidden opacity-0 transition-all duration-500\" data-tbt-service-image=\"0\"><img src=\"{{content_001}}\" alt=\"\" class=\"h-full w-full object-cover\"><div class=\"absolute inset-0 border border-gold/30\"></div></div><div class=\"absolute inset-0 overflow-hidden opacity-0 transition-all duration-500\" data-tbt-service-image=\"1\"><img src=\"{{content_002}}\" alt=\"\" class=\"h-full w-full object-cover\"><div class=\"absolute inset-0 border border-gold/30\"></div></div><div class=\"absolute inset-0 overflow-hidden opacity-0 transition-all duration-500\" data-tbt-service-image=\"2\"><img src=\"{{content_003}}\" alt=\"\" class=\"h-full w-full object-cover\"><div class=\"absolute inset-0 border border-gold/30\"></div></div><div class=\"absolute inset-0 overflow-hidden opacity-0 transition-all duration-500\" data-tbt-service-image=\"3\"><img src=\"{{content_004}}\" alt=\"\" class=\"h-full w-full object-cover\"><div class=\"absolute inset-0 border border-gold/30\"></div></div><div class=\"absolute inset-0 overflow-hidden opacity-0 transition-all duration-500\" data-tbt-service-image=\"4\"><img src=\"{{content_005}}\" alt=\"\" class=\"h-full w-full object-cover\"><div class=\"absolute inset-0 border border-gold/30\"></div></div><div class=\"absolute inset-0 overflow-hidden opacity-0 transition-all duration-500\" data-tbt-service-image=\"5\"><img src=\"{{content_006}}\" alt=\"\" class=\"h-full w-full object-cover\"><div class=\"absolute inset-0 border border-gold/30\"></div></div></div><ul><li class=\"reveal\"><a href=\"{{content_007}}\" data-tbt-service=\"0\" class=\"group flex items-center justify-between gap-6 border-b border-ivory/10 py-7 transition-colors duration-500 lg:py-9\"><span class=\"flex items-baseline gap-5\"><span class=\"text-[0.7rem] tabular-nums text-gold/60\">{{content_015}}</span><span class=\"font-serif text-3xl font-light text-ivory/75 transition-colors duration-300 group-hover:text-gold sm:text-5xl lg:text-6xl\">{{content_016}}</span></span><span class=\"hidden text-[0.6rem] uppercase tracking-[0.28em] text-ivory/40 transition-colors duration-300 group-hover:text-ivory/70 sm:block\">{{content_017}}</span></a></li><li class=\"reveal\"><a href=\"{{content_008}}\" data-tbt-service=\"1\" class=\"group flex items-center justify-between gap-6 border-b border-ivory/10 py-7 transition-colors duration-500 lg:py-9\"><span class=\"flex items-baseline gap-5\"><span class=\"text-[0.7rem] tabular-nums text-gold/60\">{{content_018}}</span><span class=\"font-serif text-3xl font-light text-ivory/75 transition-colors duration-300 group-hover:text-gold sm:text-5xl lg:text-6xl\">{{content_019}}</span></span><span class=\"hidden text-[0.6rem] uppercase tracking-[0.28em] text-ivory/40 transition-colors duration-300 group-hover:text-ivory/70 sm:block\">{{content_020}}</span></a></li><li class=\"reveal\"><a href=\"{{content_009}}\" data-tbt-service=\"2\" class=\"group flex items-center justify-between gap-6 border-b border-ivory/10 py-7 transition-colors duration-500 lg:py-9\"><span class=\"flex items-baseline gap-5\"><span class=\"text-[0.7rem] tabular-nums text-gold/60\">{{content_021}}</span><span class=\"font-serif text-3xl font-light text-ivory/75 transition-colors duration-300 group-hover:text-gold sm:text-5xl lg:text-6xl\">{{content_022}}</span></span><span class=\"hidden text-[0.6rem] uppercase tracking-[0.28em] text-ivory/40 transition-colors duration-300 group-hover:text-ivory/70 sm:block\">{{content_023}}</span></a></li><li class=\"reveal\"><a href=\"{{content_010}}\" data-tbt-service=\"3\" class=\"group flex items-center justify-between gap-6 border-b border-ivory/10 py-7 transition-colors duration-500 lg:py-9\"><span class=\"flex items-baseline gap-5\"><span class=\"text-[0.7rem] tabular-nums text-gold/60\">{{content_024}}</span><span class=\"font-serif text-3xl font-light text-ivory/75 transition-colors duration-300 group-hover:text-gold sm:text-5xl lg:text-6xl\">{{content_025}}</span></span><span class=\"hidden text-[0.6rem] uppercase tracking-[0.28em] text-ivory/40 transition-colors duration-300 group-hover:text-ivory/70 sm:block\">{{content_026}}</span></a></li><li class=\"reveal\"><a href=\"{{content_011}}\" data-tbt-service=\"4\" class=\"group flex items-center justify-between gap-6 border-b border-ivory/10 py-7 transition-colors duration-500 lg:py-9\"><span class=\"flex items-baseline gap-5\"><span class=\"text-[0.7rem] tabular-nums text-gold/60\">{{content_027}}</span><span class=\"font-serif text-3xl font-light text-ivory/75 transition-colors duration-300 group-hover:text-gold sm:text-5xl lg:text-6xl\">{{content_028}}</span></span><span class=\"hidden text-[0.6rem] uppercase tracking-[0.28em] text-ivory/40 transition-colors duration-300 group-hover:text-ivory/70 sm:block\">{{content_029}}</span></a></li><li class=\"reveal\"><a href=\"{{content_012}}\" data-tbt-service=\"5\" class=\"group flex items-center justify-between gap-6 border-b border-ivory/10 py-7 transition-colors duration-500 lg:py-9\"><span class=\"flex items-baseline gap-5\"><span class=\"text-[0.7rem] tabular-nums text-gold/60\">{{content_030}}</span><span class=\"font-serif text-3xl font-light text-ivory/75 transition-colors duration-300 group-hover:text-gold sm:text-5xl lg:text-6xl\">{{content_031}}</span></span><span class=\"hidden text-[0.6rem] uppercase tracking-[0.28em] text-ivory/40 transition-colors duration-300 group-hover:text-ivory/70 sm:block\">{{content_032}}</span></a></li></ul></div></section>",
+      "controls": {
+        "content_001": {
+          "type": "media",
+          "default": "{{theme}}/assets/media/gallery/trev-veneer-craft.jpg",
+          "label": "Image: The Atelier"
+        },
+        "content_002": {
+          "type": "media",
+          "default": "{{theme}}/assets/media/gallery/trev-intraoral-scan.jpg",
+          "label": "Image: The Atelier"
+        },
+        "content_003": {
+          "type": "media",
+          "default": "{{theme}}/assets/media/gallery/trev-smile-design.jpg",
+          "label": "Image: The Atelier"
+        },
+        "content_004": {
+          "type": "media",
+          "default": "{{theme}}/assets/media/gallery/trev-scan-suite.jpg",
+          "label": "Image: The Atelier"
+        },
+        "content_005": {
+          "type": "media",
+          "default": "{{theme}}/assets/media/stock/after-smile.jpg",
+          "label": "Image: The Atelier"
+        },
+        "content_006": {
+          "type": "media",
+          "default": "{{theme}}/assets/media/gallery/trev-consult-blue.jpg",
+          "label": "Image: The Atelier"
+        },
+        "content_007": {
+          "type": "url",
+          "default": "#contact",
+          "label": "Link: 01Porcelain VeneersCosmetic"
+        },
+        "content_008": {
+          "type": "url",
+          "default": "#contact",
+          "label": "Link: 02Dental ImplantsRestorative"
+        },
+        "content_009": {
+          "type": "url",
+          "default": "#contact",
+          "label": "Link: 03Smile DesignBespoke"
+        },
+        "content_010": {
+          "type": "url",
+          "default": "#contact",
+          "label": "Link: 04Full-Mouth RehabilitationReconstruction"
+        },
+        "content_011": {
+          "type": "url",
+          "default": "#contact",
+          "label": "Link: 05Professional WhiteningRefinement"
+        },
+        "content_012": {
+          "type": "url",
+          "default": "#contact",
+          "label": "Link: 06General Dentistry & HygieneFoundation"
+        },
+        "content_013": {
+          "type": "text",
+          "default": "The Atelier",
+          "label": "h2: The Atelier"
+        },
+        "content_014": {
+          "type": "text",
+          "default": "Disciplines",
+          "label": "text: Disciplines"
+        },
+        "content_015": {
+          "type": "text",
+          "default": "01",
+          "label": "a: 01"
+        },
+        "content_016": {
+          "type": "text",
+          "default": "Porcelain Veneers",
+          "label": "a: Porcelain Veneers"
+        },
+        "content_017": {
+          "type": "text",
+          "default": "Cosmetic",
+          "label": "a: Cosmetic"
+        },
+        "content_018": {
+          "type": "text",
+          "default": "02",
+          "label": "a: 02"
+        },
+        "content_019": {
+          "type": "text",
+          "default": "Dental Implants",
+          "label": "a: Dental Implants"
+        },
+        "content_020": {
+          "type": "text",
+          "default": "Restorative",
+          "label": "a: Restorative"
+        },
+        "content_021": {
+          "type": "text",
+          "default": "03",
+          "label": "a: 03"
+        },
+        "content_022": {
+          "type": "text",
+          "default": "Smile Design",
+          "label": "a: Smile Design"
+        },
+        "content_023": {
+          "type": "text",
+          "default": "Bespoke",
+          "label": "a: Bespoke"
+        },
+        "content_024": {
+          "type": "text",
+          "default": "04",
+          "label": "a: 04"
+        },
+        "content_025": {
+          "type": "text",
+          "default": "Full-Mouth Rehabilitation",
+          "label": "a: Full-Mouth Rehabilitation"
+        },
+        "content_026": {
+          "type": "text",
+          "default": "Reconstruction",
+          "label": "a: Reconstruction"
+        },
+        "content_027": {
+          "type": "text",
+          "default": "05",
+          "label": "a: 05"
+        },
+        "content_028": {
+          "type": "text",
+          "default": "Professional Whitening",
+          "label": "a: Professional Whitening"
+        },
+        "content_029": {
+          "type": "text",
+          "default": "Refinement",
+          "label": "a: Refinement"
+        },
+        "content_030": {
+          "type": "text",
+          "default": "06",
+          "label": "a: 06"
+        },
+        "content_031": {
+          "type": "text",
+          "default": "General Dentistry & Hygiene",
+          "label": "a: General Dentistry & Hygiene"
+        },
+        "content_032": {
+          "type": "text",
+          "default": "Foundation",
+          "label": "a: Foundation"
+        }
+      }
+    },
+    "home-9": {
+      "title": "home section 9",
+      "html": "<section class=\"border-t border-ivory/10 bg-ink py-28 lg:py-40\"><div class=\"mx-auto max-w-7xl px-6 lg:px-10\"><div class=\"grid gap-12 lg:grid-cols-2 lg:gap-20\"><figure class=\"reveal flex h-full flex-col justify-between border-t border-ivory/15 pt-10\"><blockquote class=\"font-serif text-3xl font-light italic leading-[1.25] text-ivory sm:text-4xl\">{{content_001}}</blockquote><figcaption class=\"mt-10\"><span class=\"block font-medium text-ivory\">{{content_002}}</span><span class=\"text-[0.72rem] uppercase tracking-[0.16em] text-gold/70\">{{content_003}}</span></figcaption></figure><figure class=\"reveal flex h-full flex-col justify-between border-t border-ivory/15 pt-10\"><blockquote class=\"font-serif text-3xl font-light italic leading-[1.25] text-ivory sm:text-4xl\">{{content_004}}</blockquote><figcaption class=\"mt-10\"><span class=\"block font-medium text-ivory\">{{content_005}}</span><span class=\"text-[0.72rem] uppercase tracking-[0.16em] text-gold/70\">{{content_006}}</span></figcaption></figure></div></div></section>",
+      "controls": {
+        "content_001": {
+          "type": "text",
+          "default": "“I hid my smile for fifteen years. Dr. Trev gave me back something I didn't know I'd lost — myself.”",
+          "label": "blockquote: “I hid my smile for fifteen years. Dr. Trev gave me back something I didn't kn"
+        },
+        "content_002": {
+          "type": "text",
+          "default": "Maya R.",
+          "label": "text: Maya R."
+        },
+        "content_003": {
+          "type": "text",
+          "default": "Smile makeover",
+          "label": "text: Smile makeover"
+        },
+        "content_004": {
+          "type": "text",
+          "default": "“It never felt clinical. It felt like someone finally saw me, then made me look the way I always felt inside.”",
+          "label": "blockquote: “It never felt clinical. It felt like someone finally saw me, then made me loo"
+        },
+        "content_005": {
+          "type": "text",
+          "default": "Andre T.",
+          "label": "text: Andre T."
+        },
+        "content_006": {
+          "type": "text",
+          "default": "Full-mouth rehabilitation",
+          "label": "text: Full-mouth rehabilitation"
+        }
+      }
+    },
+    "home-10": {
+      "title": "Begin yourcommission.",
+      "html": "<section id=\"contact\" class=\"relative overflow-hidden bg-onyx py-32 lg:py-44\"><div class=\"tbt-contact-glow absolute inset-0\"></div><div class=\"relative mx-auto max-w-3xl px-6 text-center lg:px-12\"><p class=\"reveal mb-8 text-[0.6rem] uppercase tracking-[0.34em] text-gold/70\">{{content_003}}</p><h2 class=\"font-serif text-5xl font-light leading-[1.02] tracking-[-0.01em] text-ivory sm:text-6xl lg:text-7xl\"><span class=\"line-reveal inline-block\"><span>{{content_004}}</span></span><br><span class=\"line-reveal inline-block italic text-gold\"><span>{{content_005}}</span></span></h2><p class=\"reveal mx-auto mt-8 max-w-md text-sm leading-relaxed text-ivory/55\">{{content_006}}</p><div class=\"reveal mt-12 flex flex-col items-center justify-center gap-5 sm:flex-row\"><span class=\"inline-block transition-transform duration-300 ease-out will-change-transform\" data-tbt-magnetic=\"\"><a href=\"{{content_001}}\" class=\"inline-flex items-center gap-4 border border-gold px-9 py-4 text-[0.66rem] uppercase tracking-[0.26em] text-gold transition-colors hover:bg-gold hover:text-onyx\">{{content_007}}</a></span><a href=\"{{content_002}}\" class=\"text-[0.66rem] uppercase tracking-[0.26em] text-ivory/60 transition-colors hover:text-ivory\">{{content_008}}</a></div><address class=\"reveal mx-auto mt-10 text-[0.66rem] not-italic uppercase tracking-[0.26em] text-ivory/40\">{{content_009}}</address></div></section>",
+      "controls": {
+        "content_001": {
+          "type": "url",
+          "default": "tel:+14246723910",
+          "label": "Link: Call the Studio"
+        },
+        "content_002": {
+          "type": "url",
+          "default": "mailto:TeethByTrev@gmail.com",
+          "label": "Link: TeethByTrev@gmail.com"
+        },
+        "content_003": {
+          "type": "text",
+          "default": "Request a Consultation",
+          "label": "p: Request a Consultation"
+        },
+        "content_004": {
+          "type": "text",
+          "default": "Begin your",
+          "label": "h2: Begin your"
+        },
+        "content_005": {
+          "type": "text",
+          "default": "commission.",
+          "label": "h2: commission."
+        },
+        "content_006": {
+          "type": "textarea",
+          "default": "Consultations are by appointment and limited each month, so that every smile receives the attention of the atelier.",
+          "label": "p: Consultations are by appointment and limited each month, so that every smile receives t"
+        },
+        "content_007": {
+          "type": "text",
+          "default": "Call the Studio",
+          "label": "a: Call the Studio"
+        },
+        "content_008": {
+          "type": "text",
+          "default": "TeethByTrev@gmail.com",
+          "label": "a: TeethByTrev@gmail.com"
+        },
+        "content_009": {
+          "type": "text",
+          "default": "436 N Bedford Dr #300 · Beverly Hills, CA 90210",
+          "label": "address: 436 N Bedford Dr #300 · Beverly Hills, CA 90210"
+        }
+      }
+    },
+    "site-header": {
+      "title": "Site header",
+      "html": "<header class=\"tbt-nav fixed inset-x-0 top-0 z-50 transition-all duration-500\" data-tbt-nav=\"\">\n\t<nav class=\"relative z-10 mx-auto flex max-w-[1600px] items-center justify-between px-8 py-8 transition-all duration-500 sm:px-11 sm:py-11 lg:px-14 lg:py-14\" aria-label=\"Primary navigation\">\n\t\t<a href=\"{{content_001}}\" aria-label=\"Teeth by Trev — home\" class=\"relative z-10\">\n\t\t\t<img src=\"{{content_002}}\" alt=\"{{content_003}}\" class=\"h-12 w-auto\" width=\"546\" height=\"256\">\n\t\t</a>\n\t\t<div class=\"relative z-10 flex items-center gap-8\">\n\t\t\t<a href=\"{{content_004}}\" class=\"hidden border border-gold/50 px-5 py-2.5 text-[0.6rem] uppercase tracking-[0.24em] text-gold transition-colors hover:bg-gold hover:text-onyx sm:block\">{{content_012}}</a>\n\t\t\t<button type=\"button\" class=\"tbt-menu-toggle relative z-10 flex items-center gap-3 text-[0.62rem] uppercase tracking-[0.28em] text-ivory\" aria-label=\"Open menu\" aria-expanded=\"false\" aria-controls=\"tbt-overlay-menu\" data-tbt-menu-toggle=\"\">\n\t\t\t\t<span class=\"relative block h-4 w-6\" aria-hidden=\"true\"><span class=\"absolute left-0 top-0 h-px w-6 bg-ivory transition-transform\"></span><span class=\"absolute left-0 top-2 h-px w-6 bg-ivory transition-opacity\"></span><span class=\"absolute left-0 top-4 h-px w-6 bg-ivory transition-transform\"></span></span>\n\t\t\t\t<span data-tbt-menu-label=\"\">{{content_013}}</span>\n\t\t\t</button>\n\t\t</div>\n\t</nav>\n\t<div id=\"tbt-overlay-menu\" class=\"pointer-events-none fixed inset-0 z-0 flex bg-onyx opacity-0 transition-opacity duration-500\" aria-hidden=\"true\" inert=\"\" data-tbt-menu=\"\">\n\t\t<div class=\"mx-auto flex h-full w-full max-w-[1600px] flex-col justify-center px-6 lg:px-12\">\n\t\t\t\t\t\t<ul class=\"space-y-2\">\n\t\t\t\t\t\t\t\t\t<li><a class=\"group flex items-baseline gap-7 py-2\" href=\"{{content_005}}\"><span class=\"text-xs tracking-[0.24em] text-gold/70\">{{content_014}}</span><span class=\"font-serif text-4xl font-light text-ivory/80 transition-colors group-hover:text-gold sm:text-6xl\">{{content_015}}</span></a></li>\n\t\t\t\t\t\t\t\t\t<li><a class=\"group flex items-baseline gap-7 py-2\" href=\"{{content_006}}\"><span class=\"text-xs tracking-[0.24em] text-gold/70\">{{content_016}}</span><span class=\"font-serif text-4xl font-light text-ivory/80 transition-colors group-hover:text-gold sm:text-6xl\">{{content_017}}</span></a></li>\n\t\t\t\t\t\t\t\t\t<li><a class=\"group flex items-baseline gap-7 py-2\" href=\"{{content_007}}\"><span class=\"text-xs tracking-[0.24em] text-gold/70\">{{content_018}}</span><span class=\"font-serif text-4xl font-light text-ivory/80 transition-colors group-hover:text-gold sm:text-6xl\">{{content_019}}</span></a></li>\n\t\t\t\t\t\t\t\t\t<li><a class=\"group flex items-baseline gap-7 py-2\" href=\"{{content_008}}\"><span class=\"text-xs tracking-[0.24em] text-gold/70\">{{content_020}}</span><span class=\"font-serif text-4xl font-light text-ivory/80 transition-colors group-hover:text-gold sm:text-6xl\">{{content_021}}</span></a></li>\n\t\t\t\t\t\t\t\t\t<li><a class=\"group flex items-baseline gap-7 py-2\" href=\"{{content_009}}\"><span class=\"text-xs tracking-[0.24em] text-gold/70\">{{content_022}}</span><span class=\"font-serif text-4xl font-light text-ivory/80 transition-colors group-hover:text-gold sm:text-6xl\">{{content_023}}</span></a></li>\n\t\t\t\t\t\t\t\t\t<li><a class=\"group flex items-baseline gap-7 py-2\" href=\"{{content_010}}\"><span class=\"text-xs tracking-[0.24em] text-gold/70\">{{content_024}}</span><span class=\"font-serif text-4xl font-light text-ivory/80 transition-colors group-hover:text-gold sm:text-6xl\">{{content_025}}</span></a></li>\n\t\t\t\t\t\t\t</ul>\n\t\t\t<a href=\"{{content_011}}\" class=\"mt-9 inline-flex border border-gold px-7 py-3.5 text-[0.66rem] uppercase tracking-[0.22em] text-gold transition-colors hover:bg-gold hover:text-onyx\">{{content_026}}</a>\n\t\t</div>\n\t</div>\n</header>",
+      "controls": {
+        "content_001": {
+          "type": "url",
+          "default": "{{site}}/",
+          "label": "Link: Teeth by Trev — home"
+        },
+        "content_002": {
+          "type": "media",
+          "default": "{{theme}}/assets/media/brand/tbt-atelier-logo.png",
+          "label": "Image: Teeth by Trev — Dental Atelier"
+        },
+        "content_003": {
+          "type": "text",
+          "default": "Teeth by Trev — Dental Atelier",
+          "label": "Image description"
+        },
+        "content_004": {
+          "type": "url",
+          "default": "{{site}}/consultation/",
+          "label": "Link: Book"
+        },
+        "content_005": {
+          "type": "url",
+          "default": "{{site}}/",
+          "label": "Link: 01Home"
+        },
+        "content_006": {
+          "type": "url",
+          "default": "{{site}}/about/",
+          "label": "Link: 02About"
+        },
+        "content_007": {
+          "type": "url",
+          "default": "{{site}}/services/",
+          "label": "Link: 03Services"
+        },
+        "content_008": {
+          "type": "url",
+          "default": "{{site}}/gallery/",
+          "label": "Link: 04Gallery"
+        },
+        "content_009": {
+          "type": "url",
+          "default": "{{site}}/financing/",
+          "label": "Link: 05Financing"
+        },
+        "content_010": {
+          "type": "url",
+          "default": "{{site}}/contact/",
+          "label": "Link: 06Contact"
+        },
+        "content_011": {
+          "type": "url",
+          "default": "{{site}}/consultation/",
+          "label": "Link: Book a Consultation →"
+        },
+        "content_012": {
+          "type": "text",
+          "default": "Book",
+          "label": "a: Book"
+        },
+        "content_013": {
+          "type": "text",
+          "default": "Menu",
+          "label": "text: Menu"
+        },
+        "content_014": {
+          "type": "text",
+          "default": "01",
+          "label": "a: 01"
+        },
+        "content_015": {
+          "type": "text",
+          "default": "Home",
+          "label": "a: Home"
+        },
+        "content_016": {
+          "type": "text",
+          "default": "02",
+          "label": "a: 02"
+        },
+        "content_017": {
+          "type": "text",
+          "default": "About",
+          "label": "a: About"
+        },
+        "content_018": {
+          "type": "text",
+          "default": "03",
+          "label": "a: 03"
+        },
+        "content_019": {
+          "type": "text",
+          "default": "Services",
+          "label": "a: Services"
+        },
+        "content_020": {
+          "type": "text",
+          "default": "04",
+          "label": "a: 04"
+        },
+        "content_021": {
+          "type": "text",
+          "default": "Gallery",
+          "label": "a: Gallery"
+        },
+        "content_022": {
+          "type": "text",
+          "default": "05",
+          "label": "a: 05"
+        },
+        "content_023": {
+          "type": "text",
+          "default": "Financing",
+          "label": "a: Financing"
+        },
+        "content_024": {
+          "type": "text",
+          "default": "06",
+          "label": "a: 06"
+        },
+        "content_025": {
+          "type": "text",
+          "default": "Contact",
+          "label": "a: Contact"
+        },
+        "content_026": {
+          "type": "text",
+          "default": "Book a Consultation →",
+          "label": "a: Book a Consultation →"
+        }
+      }
+    },
+    "site-footer": {
+      "title": "Site footer",
+      "html": "<footer class=\"border-t border-ivory/10 bg-onyx py-16 text-ivory\">\n\t<div class=\"mx-auto max-w-[1600px] px-6 lg:px-12\">\n\t\t<div class=\"flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between\">\n\t\t\t<div>\n\t\t\t\t<img src=\"{{content_001}}\" alt=\"{{content_002}}\" width=\"546\" height=\"256\" class=\"h-14 w-auto\" loading=\"lazy\">\n\t\t\t\t<p class=\"mt-5 max-w-xs text-sm leading-relaxed text-ivory/45\">{{content_017}}</p>\n\t\t\t\t<p class=\"mt-4 max-w-sm text-xs leading-relaxed text-ivory/55\">{{content_018}}</p>\n\t\t\t\t<address class=\"mt-6 text-sm not-italic leading-relaxed text-ivory/55\">{{content_019}}<br>{{content_020}}<br><a href=\"{{content_003}}\" class=\"transition-colors hover:text-gold\">{{content_021}}</a><br><a href=\"{{content_004}}\" class=\"transition-colors hover:text-gold\">{{content_022}}</a></address>\n\t\t\t\t<ul class=\"mt-7 flex items-center gap-3\">\n\t\t\t\t\t<li><a href=\"{{content_005}}\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"Instagram\" class=\"flex h-9 w-9 items-center justify-center rounded-full border border-ivory/15 text-ivory/55 transition-colors duration-300 hover:border-gold hover:text-gold\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" class=\"h-[18px] w-[18px]\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"5\" stroke-width=\"1.5\"></rect><circle cx=\"12\" cy=\"12\" r=\"4\" stroke-width=\"1.5\"></circle><circle cx=\"17.5\" cy=\"6.5\" r=\"1\" fill=\"currentColor\" stroke=\"none\"></circle></svg></a></li>\n\t\t\t\t\t<li><a href=\"{{content_006}}\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"Facebook\" class=\"flex h-9 w-9 items-center justify-center rounded-full border border-ivory/15 text-ivory/55 transition-colors duration-300 hover:border-gold hover:text-gold\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" class=\"h-[18px] w-[18px]\"><path d=\"M14 8.5h2.5M14 8.5V7a2 2 0 0 1 2-2h.5M14 8.5V21M14 8.5h-1.5m1.5 4.5h-3\" stroke-width=\"1.5\"></path></svg></a></li>\n\t\t\t\t\t<li><a href=\"{{content_007}}\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"TikTok\" class=\"flex h-9 w-9 items-center justify-center rounded-full border border-ivory/15 text-ivory/55 transition-colors duration-300 hover:border-gold hover:text-gold\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" class=\"h-[18px] w-[18px]\"><path d=\"M13.5 4v9.5a3.5 3.5 0 1 1-3.5-3.5M13.5 4c.3 2.2 1.8 3.8 4 4\" stroke-width=\"1.5\"></path></svg></a></li>\n\t\t\t\t\t<li><a href=\"{{content_008}}\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"LinkedIn\" class=\"flex h-9 w-9 items-center justify-center rounded-full border border-ivory/15 text-ivory/55 transition-colors duration-300 hover:border-gold hover:text-gold\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" class=\"h-[18px] w-[18px]\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"3\" stroke-width=\"1.5\"></rect><path d=\"M7 10v7M7 7v.01M11 17v-4a2 2 0 0 1 4 0v4M11 10v7\" stroke-width=\"1.5\"></path></svg></a></li>\n\t\t\t\t</ul>\n\t\t\t</div>\n\t\t\t<nav aria-label=\"Footer navigation\" class=\"flex flex-col gap-3 text-[0.62rem] uppercase tracking-[0.26em] text-ivory/45 lg:items-end\"><a href=\"{{content_009}}\" class=\"transition-colors hover:text-gold\">{{content_023}}</a><a href=\"{{content_010}}\" class=\"transition-colors hover:text-gold\">{{content_024}}</a><a href=\"{{content_011}}\" class=\"transition-colors hover:text-gold\">{{content_025}}</a><a href=\"{{content_012}}\" class=\"transition-colors hover:text-gold\">{{content_026}}</a><a href=\"{{content_013}}\" class=\"transition-colors hover:text-gold\">{{content_027}}</a><a href=\"{{content_014}}\" class=\"transition-colors hover:text-gold\">{{content_028}}</a></nav>\n\t\t</div>\n\t\t<div class=\"mt-12 flex flex-col items-start justify-between gap-3 border-t border-ivory/10 pt-8 text-[0.58rem] uppercase tracking-[0.26em] text-ivory/55 sm:flex-row\"><span>{{content_029}}</span><span>{{content_030}}</span></div>\n\t\t<div class=\"mt-6 flex flex-wrap items-center gap-x-8 gap-y-3 text-[0.58rem] uppercase tracking-[0.26em] text-ivory/55\"><a href=\"{{content_015}}\" class=\"transition-colors hover:text-gold\">{{content_031}}</a><a href=\"{{content_016}}\" class=\"transition-colors hover:text-gold\">{{content_032}}</a></div>\n\t</div>\n</footer>",
+      "controls": {
+        "content_001": {
+          "type": "media",
+          "default": "{{theme}}/assets/media/brand/tbt-atelier-logo.png",
+          "label": "Image: Teeth by Trev — Dental Atelier"
+        },
+        "content_002": {
+          "type": "text",
+          "default": "Teeth by Trev — Dental Atelier",
+          "label": "Image description"
+        },
+        "content_003": {
+          "type": "url",
+          "default": "mailto:dr.trev@teethbytrev.com",
+          "label": "Link: dr.trev@teethbytrev.com"
+        },
+        "content_004": {
+          "type": "url",
+          "default": "tel:+14246723910",
+          "label": "Link: 424-672-3910"
+        },
+        "content_005": {
+          "type": "url",
+          "default": "https://www.instagram.com/dr.trevthomas/",
+          "label": "Link: Instagram"
+        },
+        "content_006": {
+          "type": "url",
+          "default": "https://www.facebook.com/dr.trevthomas/",
+          "label": "Link: Facebook"
+        },
+        "content_007": {
+          "type": "url",
+          "default": "https://www.tiktok.com/@dr.trevthomas",
+          "label": "Link: TikTok"
+        },
+        "content_008": {
+          "type": "url",
+          "default": "https://www.linkedin.com/in/drtrev/",
+          "label": "Link: LinkedIn"
+        },
+        "content_009": {
+          "type": "url",
+          "default": "{{site}}/",
+          "label": "Link: Home"
+        },
+        "content_010": {
+          "type": "url",
+          "default": "{{site}}/about/",
+          "label": "Link: About"
+        },
+        "content_011": {
+          "type": "url",
+          "default": "{{site}}/services/",
+          "label": "Link: Services"
+        },
+        "content_012": {
+          "type": "url",
+          "default": "{{site}}/gallery/",
+          "label": "Link: Gallery"
+        },
+        "content_013": {
+          "type": "url",
+          "default": "{{site}}/financing/",
+          "label": "Link: Financing"
+        },
+        "content_014": {
+          "type": "url",
+          "default": "{{site}}/contact/",
+          "label": "Link: Contact"
+        },
+        "content_015": {
+          "type": "url",
+          "default": "{{site}}/privacy/",
+          "label": "Link: Privacy Policy"
+        },
+        "content_016": {
+          "type": "url",
+          "default": "{{site}}/terms/",
+          "label": "Link: Terms & Conditions"
+        },
+        "content_017": {
+          "type": "text",
+          "default": "An atelier of cosmetic & implant dentistry by Dr. Trevor J. Thomas, DDS.",
+          "label": "p: An atelier of cosmetic & implant dentistry by Dr. Trevor J. Thomas, DDS."
+        },
+        "content_018": {
+          "type": "text",
+          "default": "Teeth by Trev is operated by Trevor Jamal Thomas DDS, Inc., a California professional corporation.",
+          "label": "p: Teeth by Trev is operated by Trevor Jamal Thomas DDS, Inc., a California professional c"
+        },
+        "content_019": {
+          "type": "text",
+          "default": "436 N Bedford Dr #300",
+          "label": "address: 436 N Bedford Dr #300"
+        },
+        "content_020": {
+          "type": "text",
+          "default": "Beverly Hills, CA 90210",
+          "label": "address: Beverly Hills, CA 90210"
+        },
+        "content_021": {
+          "type": "text",
+          "default": "dr.trev@teethbytrev.com",
+          "label": "a: dr.trev@teethbytrev.com"
+        },
+        "content_022": {
+          "type": "text",
+          "default": "424-672-3910",
+          "label": "a: 424-672-3910"
+        },
+        "content_023": {
+          "type": "text",
+          "default": "Home",
+          "label": "a: Home"
+        },
+        "content_024": {
+          "type": "text",
+          "default": "About",
+          "label": "a: About"
+        },
+        "content_025": {
+          "type": "text",
+          "default": "Services",
+          "label": "a: Services"
+        },
+        "content_026": {
+          "type": "text",
+          "default": "Gallery",
+          "label": "a: Gallery"
+        },
+        "content_027": {
+          "type": "text",
+          "default": "Financing",
+          "label": "a: Financing"
+        },
+        "content_028": {
+          "type": "text",
+          "default": "Contact",
+          "label": "a: Contact"
+        },
+        "content_029": {
+          "type": "text",
+          "default": "© 2026 Teeth by Trev. All rights reserved.",
+          "label": "text: © 2026 Teeth by Trev. All rights reserved."
+        },
+        "content_030": {
+          "type": "text",
+          "default": "Beverly Hills · New York · Atlanta · Houston · Miami · Washington D.C. · Tampa · Memphis",
+          "label": "text: Beverly Hills · New York · Atlanta · Houston · Miami · Washington D.C. · Tampa · Mem"
+        },
+        "content_031": {
+          "type": "text",
+          "default": "Privacy Policy",
+          "label": "a: Privacy Policy"
+        },
+        "content_032": {
+          "type": "text",
+          "default": "Terms & Conditions",
+          "label": "a: Terms & Conditions"
+        }
+      }
+    },
+    "about-1": {
+      "title": "Meet Dr. Trev.",
+      "html": "<section class=\"relative isolate overflow-hidden bg-ink\">\n\t\t<img src=\"{{content_001}}\" alt=\"{{content_002}}\" class=\"absolute inset-0 h-full w-full object-cover opacity-40\">\n\t\t<div class=\"absolute inset-0 bg-gradient-to-t from-ink via-ink/70 to-ink/60\"></div>\n\t\t<div class=\"relative z-10 mx-auto flex min-h-[60vh] max-w-7xl flex-col justify-end px-6 pb-20 pt-40 lg:px-10 lg:pb-28 lg:pt-52\">\n\t\t\t<p class=\"mb-6 text-[0.6rem] uppercase tracking-[0.34em] text-champagne\">{{content_003}}</p>\n\t\t\t<h1 class=\"max-w-4xl font-serif text-5xl font-light leading-[1.04] text-ivory sm:text-6xl lg:text-7xl\">{{content_004}}</h1>\n\t\t\t<p class=\"mt-8 max-w-xl text-base leading-relaxed text-ivory/75 sm:text-lg\">{{content_005}}</p>\t\t</div>\n\t</section>",
+      "controls": {
+        "content_001": {
+          "type": "media",
+          "default": "{{theme}}/assets/media/stock/process.jpg",
+          "label": "Image: Dr. Trevor J. Thomas holding dental instruments in the Teeth by Trev operatory"
+        },
+        "content_002": {
+          "type": "text",
+          "default": "Dr. Trevor J. Thomas holding dental instruments in the Teeth by Trev operatory",
+          "label": "Image description"
+        },
+        "content_003": {
+          "type": "text",
+          "default": "The Dentist",
+          "label": "p: The Dentist"
+        },
+        "content_004": {
+          "type": "text",
+          "default": "Meet Dr. Trev.",
+          "label": "h1: Meet Dr. Trev."
+        },
+        "content_005": {
+          "type": "text",
+          "default": "Dr. Trevor J. Thomas, DDS — an artist working in enamel and light, devoted to the people behind every smile.",
+          "label": "p: Dr. Trevor J. Thomas, DDS — an artist working in enamel and light, devoted to the peopl"
+        }
+      }
+    },
+    "about-2": {
+      "title": "Dentistry is my ministry.",
+      "html": "<section class=\"bg-onyx py-28 lg:py-40\"><div class=\"mx-auto grid max-w-7xl items-center gap-16 px-6 lg:grid-cols-2 lg:gap-24 lg:px-10\">\n\t\t<div class=\"reveal order-2 lg:order-1\"><div class=\"relative\"><div class=\"relative aspect-[4/5] w-full overflow-hidden\"><img src=\"{{content_001}}\" alt=\"{{content_002}}\" class=\"h-full w-full object-cover object-top\"><div class=\"pointer-events-none absolute inset-0 border border-ivory/10\"></div></div><div class=\"absolute -bottom-6 -right-6 hidden h-32 w-32 border border-gold/40 lg:block\"></div></div></div>\n\t\t<div class=\"reveal order-1 lg:order-2\"><p class=\"mb-6 text-[0.6rem] uppercase tracking-[0.34em] text-gold/70\">{{content_003}}</p><h2 class=\"font-serif text-4xl font-light leading-[1.1] text-ivory sm:text-5xl\">{{content_004}}</h2><span class=\"mt-8 block h-px w-14 bg-gold/50\"></span><div class=\"mt-8 space-y-6 text-base leading-relaxed text-ivory/65 sm:text-lg\"><p>{{content_005}}</p><p>{{content_006}}</p><p>{{content_007}}</p></div><p class=\"mt-10 font-serif text-2xl italic text-gold\">{{content_008}}</p><div class=\"mt-10\"><span class=\"block font-script text-5xl leading-none text-gold sm:text-6xl\">{{content_009}}</span><span class=\"mt-3 block text-[0.62rem] uppercase tracking-[0.26em] text-ivory/50\">{{content_010}}</span></div></div>\n\t</div></section>",
+      "controls": {
+        "content_001": {
+          "type": "media",
+          "default": "{{theme}}/assets/media/people/dr-trev-portrait.png",
+          "label": "Image: Dr. Trevor J. Thomas, DDS"
+        },
+        "content_002": {
+          "type": "text",
+          "default": "Dr. Trevor J. Thomas, DDS",
+          "label": "Image description"
+        },
+        "content_003": {
+          "type": "text",
+          "default": "01 — The Philosophy",
+          "label": "p: 01 — The Philosophy"
+        },
+        "content_004": {
+          "type": "text",
+          "default": "Dentistry is my ministry.",
+          "label": "h2: Dentistry is my ministry."
+        },
+        "content_005": {
+          "type": "textarea",
+          "default": "For Dr. Trev, a smile is a gateway — to confidence, to better mental health, to a fuller life. Every case begins not with a tooth, but with a person and the story they carry.",
+          "label": "p: For Dr. Trev, a smile is a gateway — to confidence, to better mental health, to a fulle"
+        },
+        "content_006": {
+          "type": "textarea",
+          "default": "Over ten years he has refined a practice where world-class craftsmanship meets genuine care. He studies the face before the teeth, designs every smile by hand, and treats each patient like he'd treat his own mother.",
+          "label": "p: Over ten years he has refined a practice where world-class craftsmanship meets genuine "
+        },
+        "content_007": {
+          "type": "textarea",
+          "default": "The result is work that looks effortless and feels like coming home to yourself — restorations so natural they seem not done, but inevitable.",
+          "label": "p: The result is work that looks effortless and feels like coming home to yourself — resto"
+        },
+        "content_008": {
+          "type": "text",
+          "default": "Real people. Real problems. Real results.",
+          "label": "p: Real people. Real problems. Real results."
+        },
+        "content_009": {
+          "type": "text",
+          "default": "Dr. Trev",
+          "label": "text: Dr. Trev"
+        },
+        "content_010": {
+          "type": "text",
+          "default": "Dr. Trevor Thomas, DDS",
+          "label": "text: Dr. Trevor Thomas, DDS"
+        }
+      }
+    },
+    "about-3": {
+      "title": "Training, taste, and a steady hand.",
+      "html": "<section class=\"border-t border-ivory/10 bg-ink py-28 lg:py-40\"><div class=\"mx-auto max-w-7xl px-6 lg:px-10\"><div class=\"reveal max-w-2xl\"><p class=\"mb-6 text-[0.6rem] uppercase tracking-[0.34em] text-gold/70\">{{content_001}}</p><h2 class=\"font-serif text-4xl font-light leading-[1.1] text-ivory sm:text-5xl\">{{content_002}}</h2></div><div class=\"mt-16 grid gap-x-12 gap-y-12 sm:grid-cols-2\"><div class=\"reveal border-t border-ivory/15 pt-6\"><h3 class=\"font-serif text-2xl font-light text-ivory\">{{content_003}}</h3><p class=\"mt-3 max-w-md text-base leading-relaxed text-ivory/60\">{{content_004}}</p></div><div class=\"reveal border-t border-ivory/15 pt-6\"><h3 class=\"font-serif text-2xl font-light text-ivory\">{{content_005}}</h3><p class=\"mt-3 max-w-md text-base leading-relaxed text-ivory/60\">{{content_006}}</p></div><div class=\"reveal border-t border-ivory/15 pt-6\"><h3 class=\"font-serif text-2xl font-light text-ivory\">{{content_007}}</h3><p class=\"mt-3 max-w-md text-base leading-relaxed text-ivory/60\">{{content_008}}</p></div><div class=\"reveal border-t border-ivory/15 pt-6\"><h3 class=\"font-serif text-2xl font-light text-ivory\">{{content_009}}</h3><p class=\"mt-3 max-w-md text-base leading-relaxed text-ivory/60\">{{content_010}}</p></div></div></div></section>",
+      "controls": {
+        "content_001": {
+          "type": "text",
+          "default": "02 — The Credentials",
+          "label": "p: 02 — The Credentials"
+        },
+        "content_002": {
+          "type": "text",
+          "default": "Training, taste, and a steady hand.",
+          "label": "h2: Training, taste, and a steady hand."
+        },
+        "content_003": {
+          "type": "text",
+          "default": "Doctor of Dental Surgery",
+          "label": "h3: Doctor of Dental Surgery"
+        },
+        "content_004": {
+          "type": "text",
+          "default": "Advanced training in cosmetic and restorative dentistry, with a focus on the art of the natural smile.",
+          "label": "p: Advanced training in cosmetic and restorative dentistry, with a focus on the art of the"
+        },
+        "content_005": {
+          "type": "text",
+          "default": "Cosmetic & Implant Focus",
+          "label": "h3: Cosmetic & Implant Focus"
+        },
+        "content_006": {
+          "type": "text",
+          "default": "Years dedicated to veneers, implants, and full-mouth rehabilitation — the most demanding work in dentistry.",
+          "label": "p: Years dedicated to veneers, implants, and full-mouth rehabilitation — the most demandin"
+        },
+        "content_007": {
+          "type": "text",
+          "default": "Hands-On, Every Case",
+          "label": "h3: Hands-On, Every Case"
+        },
+        "content_008": {
+          "type": "text",
+          "default": "Every restoration is designed and finished by Dr. Thomas himself. Nothing is outsourced, nothing is templated.",
+          "label": "p: Every restoration is designed and finished by Dr. Thomas himself. Nothing is outsourced"
+        },
+        "content_009": {
+          "type": "text",
+          "default": "Cities Coast to Coast",
+          "label": "h3: Cities Coast to Coast"
+        },
+        "content_010": {
+          "type": "textarea",
+          "default": "Caring for patients across Beverly Hills, New York, Atlanta, Houston, Miami, Washington D.C., Tampa, and Memphis — by appointment.",
+          "label": "p: Caring for patients across Beverly Hills, New York, Atlanta, Houston, Miami, Washington"
+        }
+      }
+    },
+    "about-4": {
+      "title": "Let's design the smile that's always been yours.",
+      "html": "<section class=\"border-t border-ivory/10 bg-onyx py-24 lg:py-32\"><div class=\"mx-auto flex max-w-7xl flex-col items-start justify-between gap-10 px-6 lg:flex-row lg:items-center lg:px-10\"><div class=\"reveal\"><h2 class=\"max-w-2xl font-serif text-4xl font-light leading-[1.08] text-ivory sm:text-5xl\">{{content_002}}</h2></div><div class=\"reveal\"><span class=\"inline-block transition-transform duration-300 ease-out will-change-transform\" data-tbt-magnetic=\"\"><a href=\"{{content_001}}\" class=\"inline-flex items-center justify-center border border-gold px-8 py-4 text-[0.72rem] font-medium uppercase tracking-[0.2em] text-gold transition-colors duration-300 hover:bg-gold hover:text-onyx\">{{content_003}}</a></span></div></div></section>",
+      "controls": {
+        "content_001": {
+          "type": "url",
+          "default": "{{site}}/consultation/",
+          "label": "Link: Book Your Consultation"
+        },
+        "content_002": {
+          "type": "text",
+          "default": "Let's design the smile that's always been yours.",
+          "label": "h2: Let's design the smile that's always been yours."
+        },
+        "content_003": {
+          "type": "text",
+          "default": "Book Your Consultation",
+          "label": "a: Book Your Consultation"
+        }
+      }
+    },
+    "services-1": {
+      "title": "Signature services, executed as artistry.",
+      "html": "<section class=\"relative isolate overflow-hidden bg-ink\">\n\t\t<img src=\"{{content_001}}\" alt=\"{{content_002}}\" class=\"absolute inset-0 h-full w-full object-cover opacity-40\">\n\t\t<div class=\"absolute inset-0 bg-gradient-to-t from-ink via-ink/70 to-ink/60\"></div>\n\t\t<div class=\"relative z-10 mx-auto flex min-h-[60vh] max-w-7xl flex-col justify-end px-6 pb-20 pt-40 lg:px-10 lg:pb-28 lg:pt-52\">\n\t\t\t<p class=\"mb-6 text-[0.6rem] uppercase tracking-[0.34em] text-champagne\">{{content_003}}</p>\n\t\t\t<h1 class=\"max-w-4xl font-serif text-5xl font-light leading-[1.04] text-ivory sm:text-6xl lg:text-7xl\">{{content_004}}</h1>\n\t\t\t<p class=\"mt-8 max-w-xl text-base leading-relaxed text-ivory/75 sm:text-lg\">{{content_005}}</p>\t\t</div>\n\t</section>",
+      "controls": {
+        "content_001": {
+          "type": "media",
+          "default": "{{theme}}/assets/media/gallery/trev-veneer-craft.jpg",
+          "label": "Image: Porcelain veneer craftsmanship in the Teeth by Trev atelier"
+        },
+        "content_002": {
+          "type": "text",
+          "default": "Porcelain veneer craftsmanship in the Teeth by Trev atelier",
+          "label": "Image description"
+        },
+        "content_003": {
+          "type": "text",
+          "default": "The Craft",
+          "label": "p: The Craft"
+        },
+        "content_004": {
+          "type": "text",
+          "default": "Signature services, executed as artistry.",
+          "label": "h1: Signature services, executed as artistry."
+        },
+        "content_005": {
+          "type": "text",
+          "default": "Every treatment is designed and finished by hand — proportion, translucency, and line drawn to your features.",
+          "label": "p: Every treatment is designed and finished by hand — proportion, translucency, and line d"
+        }
+      }
+    },
+    "services-2": {
+      "title": "Smile Makeovers",
+      "html": "<section class=\"bg-onyx py-28 lg:py-40\"><div class=\"mx-auto max-w-7xl space-y-28 px-6 lg:space-y-40 lg:px-10\"><div class=\"grid items-center gap-12 lg:grid-cols-2 lg:gap-24\"><div class=\"reveal \"><div class=\"relative aspect-[4/5] overflow-hidden\"><img src=\"{{content_001}}\" alt=\"{{content_002}}\" class=\"h-full w-full object-cover object-top\" loading=\"lazy\"><div class=\"pointer-events-none absolute inset-0 border border-ivory/10\"></div></div></div><div class=\"reveal \"><span class=\"font-serif text-5xl font-light leading-none text-gold/40\">{{content_011}}</span><h2 class=\"mt-6 font-serif text-4xl font-light leading-[1.1] text-ivory sm:text-5xl\">{{content_012}}</h2><p class=\"mt-6 max-w-md text-base leading-relaxed text-ivory/65 sm:text-lg\">{{content_013}}</p><ul class=\"mt-8 flex flex-wrap gap-x-8 gap-y-3\"><li class=\"text-[0.72rem] uppercase tracking-[0.18em] text-ivory/55\"><span class=\"mr-2 text-gold\">{{content_014}}</span>{{content_015}}</li><li class=\"text-[0.72rem] uppercase tracking-[0.18em] text-ivory/55\"><span class=\"mr-2 text-gold\">{{content_016}}</span>{{content_017}}</li><li class=\"text-[0.72rem] uppercase tracking-[0.18em] text-ivory/55\"><span class=\"mr-2 text-gold\">{{content_018}}</span>{{content_019}}</li></ul></div></div><div class=\"grid items-center gap-12 lg:grid-cols-2 lg:gap-24\"><div class=\"reveal lg:order-2\"><div class=\"relative aspect-[4/5] overflow-hidden\"><img src=\"{{content_003}}\" alt=\"{{content_004}}\" class=\"h-full w-full object-cover object-center\" loading=\"lazy\"><div class=\"pointer-events-none absolute inset-0 border border-ivory/10\"></div></div></div><div class=\"reveal lg:order-1\"><span class=\"font-serif text-5xl font-light leading-none text-gold/40\">{{content_020}}</span><h2 class=\"mt-6 font-serif text-4xl font-light leading-[1.1] text-ivory sm:text-5xl\">{{content_021}}</h2><p class=\"mt-6 max-w-md text-base leading-relaxed text-ivory/65 sm:text-lg\">{{content_022}}</p><ul class=\"mt-8 flex flex-wrap gap-x-8 gap-y-3\"><li class=\"text-[0.72rem] uppercase tracking-[0.18em] text-ivory/55\"><span class=\"mr-2 text-gold\">{{content_023}}</span>{{content_024}}</li><li class=\"text-[0.72rem] uppercase tracking-[0.18em] text-ivory/55\"><span class=\"mr-2 text-gold\">{{content_025}}</span>{{content_026}}</li><li class=\"text-[0.72rem] uppercase tracking-[0.18em] text-ivory/55\"><span class=\"mr-2 text-gold\">{{content_027}}</span>{{content_028}}</li></ul></div></div><div class=\"grid items-center gap-12 lg:grid-cols-2 lg:gap-24\"><div class=\"reveal \"><div class=\"relative aspect-[4/5] overflow-hidden\"><img src=\"{{content_005}}\" alt=\"{{content_006}}\" class=\"h-full w-full object-cover object-center\" loading=\"lazy\"><div class=\"pointer-events-none absolute inset-0 border border-ivory/10\"></div></div></div><div class=\"reveal \"><span class=\"font-serif text-5xl font-light leading-none text-gold/40\">{{content_029}}</span><h2 class=\"mt-6 font-serif text-4xl font-light leading-[1.1] text-ivory sm:text-5xl\">{{content_030}}</h2><p class=\"mt-6 max-w-md text-base leading-relaxed text-ivory/65 sm:text-lg\">{{content_031}}</p><ul class=\"mt-8 flex flex-wrap gap-x-8 gap-y-3\"><li class=\"text-[0.72rem] uppercase tracking-[0.18em] text-ivory/55\"><span class=\"mr-2 text-gold\">{{content_032}}</span>{{content_033}}</li><li class=\"text-[0.72rem] uppercase tracking-[0.18em] text-ivory/55\"><span class=\"mr-2 text-gold\">{{content_034}}</span>{{content_035}}</li><li class=\"text-[0.72rem] uppercase tracking-[0.18em] text-ivory/55\"><span class=\"mr-2 text-gold\">{{content_036}}</span>{{content_037}}</li></ul></div></div><div class=\"grid items-center gap-12 lg:grid-cols-2 lg:gap-24\"><div class=\"reveal lg:order-2\"><div class=\"relative aspect-[4/5] overflow-hidden\"><img src=\"{{content_007}}\" alt=\"{{content_008}}\" class=\"h-full w-full object-cover object-center\" loading=\"lazy\"><div class=\"pointer-events-none absolute inset-0 border border-ivory/10\"></div></div></div><div class=\"reveal lg:order-1\"><span class=\"font-serif text-5xl font-light leading-none text-gold/40\">{{content_038}}</span><h2 class=\"mt-6 font-serif text-4xl font-light leading-[1.1] text-ivory sm:text-5xl\">{{content_039}}</h2><p class=\"mt-6 max-w-md text-base leading-relaxed text-ivory/65 sm:text-lg\">{{content_040}}</p><ul class=\"mt-8 flex flex-wrap gap-x-8 gap-y-3\"><li class=\"text-[0.72rem] uppercase tracking-[0.18em] text-ivory/55\"><span class=\"mr-2 text-gold\">{{content_041}}</span>{{content_042}}</li><li class=\"text-[0.72rem] uppercase tracking-[0.18em] text-ivory/55\"><span class=\"mr-2 text-gold\">{{content_043}}</span>{{content_044}}</li><li class=\"text-[0.72rem] uppercase tracking-[0.18em] text-ivory/55\"><span class=\"mr-2 text-gold\">{{content_045}}</span>{{content_046}}</li></ul></div></div><div class=\"grid items-center gap-12 lg:grid-cols-2 lg:gap-24\"><div class=\"reveal \"><div class=\"relative aspect-[4/5] overflow-hidden\"><img src=\"{{content_009}}\" alt=\"{{content_010}}\" class=\"h-full w-full object-cover object-center\" loading=\"lazy\"><div class=\"pointer-events-none absolute inset-0 border border-ivory/10\"></div></div></div><div class=\"reveal \"><span class=\"font-serif text-5xl font-light leading-none text-gold/40\">{{content_047}}</span><h2 class=\"mt-6 font-serif text-4xl font-light leading-[1.1] text-ivory sm:text-5xl\">{{content_048}}</h2><p class=\"mt-6 max-w-md text-base leading-relaxed text-ivory/65 sm:text-lg\">{{content_049}}</p><ul class=\"mt-8 flex flex-wrap gap-x-8 gap-y-3\"><li class=\"text-[0.72rem] uppercase tracking-[0.18em] text-ivory/55\"><span class=\"mr-2 text-gold\">{{content_050}}</span>{{content_051}}</li><li class=\"text-[0.72rem] uppercase tracking-[0.18em] text-ivory/55\"><span class=\"mr-2 text-gold\">{{content_052}}</span>{{content_053}}</li><li class=\"text-[0.72rem] uppercase tracking-[0.18em] text-ivory/55\"><span class=\"mr-2 text-gold\">{{content_054}}</span>{{content_055}}</li></ul></div></div></div></section>",
+      "controls": {
+        "content_001": {
+          "type": "media",
+          "default": "{{theme}}/assets/media/stock/service-smile-makeover.jpg",
+          "label": "Image: Dr. Trevor J. Thomas presenting a smile makeover plan to a patient"
+        },
+        "content_002": {
+          "type": "text",
+          "default": "Dr. Trevor J. Thomas presenting a smile makeover plan to a patient",
+          "label": "Image description"
+        },
+        "content_003": {
+          "type": "media",
+          "default": "{{theme}}/assets/media/gallery/trev-veneer-craft.jpg",
+          "label": "Image: Porcelain veneer craftsmanship in the Teeth by Trev atelier"
+        },
+        "content_004": {
+          "type": "text",
+          "default": "Porcelain veneer craftsmanship in the Teeth by Trev atelier",
+          "label": "Image description"
+        },
+        "content_005": {
+          "type": "media",
+          "default": "{{theme}}/assets/media/gallery/trev-intraoral-scan.jpg",
+          "label": "Image: Dental implant components beside a 3D arch rendering on screen"
+        },
+        "content_006": {
+          "type": "text",
+          "default": "Dental implant components beside a 3D arch rendering on screen",
+          "label": "Image description"
+        },
+        "content_007": {
+          "type": "media",
+          "default": "{{theme}}/assets/media/gallery/trev-scan-suite.jpg",
+          "label": "Image: Full-mouth rehabilitation plan with 3D imaging and an implant model"
+        },
+        "content_008": {
+          "type": "text",
+          "default": "Full-mouth rehabilitation plan with 3D imaging and an implant model",
+          "label": "Image description"
+        },
+        "content_009": {
+          "type": "media",
+          "default": "{{theme}}/assets/media/gallery/trev-consult-blue.jpg",
+          "label": "Image: The Teeth by Trev treatment studio, prepared for a hygiene visit"
+        },
+        "content_010": {
+          "type": "text",
+          "default": "The Teeth by Trev treatment studio, prepared for a hygiene visit",
+          "label": "Image description"
+        },
+        "content_011": {
+          "type": "text",
+          "default": "01",
+          "label": "text: 01"
+        },
+        "content_012": {
+          "type": "text",
+          "default": "Smile Makeovers",
+          "label": "h2: Smile Makeovers"
+        },
+        "content_013": {
+          "type": "textarea",
+          "default": "A fully bespoke redesign of your smile. We study proportion, shade, and character against your face and personality, then build a plan that looks like the best version of you — never someone else.",
+          "label": "p: A fully bespoke redesign of your smile. We study proportion, shade, and character again"
+        },
+        "content_014": {
+          "type": "text",
+          "default": "—",
+          "label": "li: —"
+        },
+        "content_015": {
+          "type": "text",
+          "default": "Digital smile preview",
+          "label": "li: Digital smile preview"
+        },
+        "content_016": {
+          "type": "text",
+          "default": "—",
+          "label": "li: —"
+        },
+        "content_017": {
+          "type": "text",
+          "default": "Custom shade & shape",
+          "label": "li: Custom shade & shape"
+        },
+        "content_018": {
+          "type": "text",
+          "default": "—",
+          "label": "li: —"
+        },
+        "content_019": {
+          "type": "text",
+          "default": "Face-first design",
+          "label": "li: Face-first design"
+        },
+        "content_020": {
+          "type": "text",
+          "default": "02",
+          "label": "text: 02"
+        },
+        "content_021": {
+          "type": "text",
+          "default": "Porcelain Veneers",
+          "label": "h2: Porcelain Veneers"
+        },
+        "content_022": {
+          "type": "textarea",
+          "default": "Hand-finished ceramic artistry that corrects shape, color, and alignment with natural, light-catching translucency. Each veneer is layered by hand until it disappears into your smile.",
+          "label": "p: Hand-finished ceramic artistry that corrects shape, color, and alignment with natural, "
+        },
+        "content_023": {
+          "type": "text",
+          "default": "—",
+          "label": "li: —"
+        },
+        "content_024": {
+          "type": "text",
+          "default": "Minimal-prep options",
+          "label": "li: Minimal-prep options"
+        },
+        "content_025": {
+          "type": "text",
+          "default": "—",
+          "label": "li: —"
+        },
+        "content_026": {
+          "type": "text",
+          "default": "Hand-layered ceramic",
+          "label": "li: Hand-layered ceramic"
+        },
+        "content_027": {
+          "type": "text",
+          "default": "—",
+          "label": "li: —"
+        },
+        "content_028": {
+          "type": "text",
+          "default": "Lifelike translucency",
+          "label": "li: Lifelike translucency"
+        },
+        "content_029": {
+          "type": "text",
+          "default": "03",
+          "label": "text: 03"
+        },
+        "content_030": {
+          "type": "text",
+          "default": "Dental Implants",
+          "label": "h2: Dental Implants"
+        },
+        "content_031": {
+          "type": "textarea",
+          "default": "Permanent, lifelike tooth replacement engineered for function and finished for beauty. From single teeth to full arches, implants restore your bite and your confidence for good.",
+          "label": "p: Permanent, lifelike tooth replacement engineered for function and finished for beauty. "
+        },
+        "content_032": {
+          "type": "text",
+          "default": "—",
+          "label": "li: —"
+        },
+        "content_033": {
+          "type": "text",
+          "default": "Single & full-arch",
+          "label": "li: Single & full-arch"
+        },
+        "content_034": {
+          "type": "text",
+          "default": "—",
+          "label": "li: —"
+        },
+        "content_035": {
+          "type": "text",
+          "default": "Guided placement",
+          "label": "li: Guided placement"
+        },
+        "content_036": {
+          "type": "text",
+          "default": "—",
+          "label": "li: —"
+        },
+        "content_037": {
+          "type": "text",
+          "default": "Restored function",
+          "label": "li: Restored function"
+        },
+        "content_038": {
+          "type": "text",
+          "default": "04",
+          "label": "text: 04"
+        },
+        "content_039": {
+          "type": "text",
+          "default": "Full-Mouth Rehabilitation",
+          "label": "h2: Full-Mouth Rehabilitation"
+        },
+        "content_040": {
+          "type": "textarea",
+          "default": "Complex, life-restoring reconstruction that rebuilds health, bite, and confidence from the ground up. The most demanding work in dentistry, performed with patience and precision.",
+          "label": "p: Complex, life-restoring reconstruction that rebuilds health, bite, and confidence from "
+        },
+        "content_041": {
+          "type": "text",
+          "default": "—",
+          "label": "li: —"
+        },
+        "content_042": {
+          "type": "text",
+          "default": "Comprehensive plan",
+          "label": "li: Comprehensive plan"
+        },
+        "content_043": {
+          "type": "text",
+          "default": "—",
+          "label": "li: —"
+        },
+        "content_044": {
+          "type": "text",
+          "default": "Bite & health restored",
+          "label": "li: Bite & health restored"
+        },
+        "content_045": {
+          "type": "text",
+          "default": "—",
+          "label": "li: —"
+        },
+        "content_046": {
+          "type": "text",
+          "default": "Staged for comfort",
+          "label": "li: Staged for comfort"
+        },
+        "content_047": {
+          "type": "text",
+          "default": "05",
+          "label": "text: 05"
+        },
+        "content_048": {
+          "type": "text",
+          "default": "General Dentistry & Hygiene",
+          "label": "h2: General Dentistry & Hygiene"
+        },
+        "content_049": {
+          "type": "textarea",
+          "default": "The foundation beneath every transformation. Routine cleanings, exams, and preventive care delivered with the same precision and calm as the artistry — because a beautiful smile begins with a healthy one.",
+          "label": "p: The foundation beneath every transformation. Routine cleanings, exams, and preventive c"
+        },
+        "content_050": {
+          "type": "text",
+          "default": "—",
+          "label": "li: —"
+        },
+        "content_051": {
+          "type": "text",
+          "default": "Cleanings & exams",
+          "label": "li: Cleanings & exams"
+        },
+        "content_052": {
+          "type": "text",
+          "default": "—",
+          "label": "li: —"
+        },
+        "content_053": {
+          "type": "text",
+          "default": "Preventive care",
+          "label": "li: Preventive care"
+        },
+        "content_054": {
+          "type": "text",
+          "default": "—",
+          "label": "li: —"
+        },
+        "content_055": {
+          "type": "text",
+          "default": "Healthy foundation",
+          "label": "li: Healthy foundation"
+        }
+      }
+    },
+    "services-3": {
+      "title": "Three steps to the smile that's always been yours.",
+      "html": "<section class=\"relative isolate overflow-hidden bg-espresso py-28 text-ivory lg:py-40\">\t<div aria-hidden=\"true\" class=\"pointer-events-none absolute inset-0 -z-10 overflow-hidden\">\n\t\t\t\t\t<span class=\"dental-motif\" style=\"top:14%;left:6%;width:100px;height:100px;animation:motifFloatC 20s ease-in-out 0.4s infinite\">\n\t\t\t\t<svg viewBox=\"0 0 32 32\" class=\"h-full w-full\" focusable=\"false\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<path d=\"M13 4.5c0-1.4 1.3-2.5 3-2.5s3 1.1 3 2.5V7h-6Z\"></path><path d=\"M12 8.5h8l-1.2 13.5a2.8 2.8 0 0 1-5.6 0Z\"></path><path d=\"M12.5 11.6h7M12.8 14.6h6.4M13.1 17.6h5.8M13.4 20.6h5.2\"></path>\t\t\t\t</svg>\n\t\t\t</span>\n\t\t\t\t\t<span class=\"dental-motif\" style=\"top:68%;left:86%;width:92px;height:92px;animation:motifFloatA 22s ease-in-out 1.6s infinite\">\n\t\t\t\t<svg viewBox=\"0 0 32 32\" class=\"h-full w-full\" focusable=\"false\">\n\t\t\t\t\t\t\t\t\t\t<path d=\"M11 4c4-1 8 .4 9.5 1.2.6 4-1 9.4-4 13.8-1.2 1.8-2.6 1.8-3.8 0C9.6 14.6 8 9.2 8.6 5.2 9.2 4.8 10 4.3 11 4Z\"></path><path d=\"M12 7.2c2.6-.7 5.2-.1 6.7.6\"></path>\t\t\t\t\t\t\t\t\t</svg>\n\t\t\t</span>\n\t\t\t</div>\n\t<div class=\"mx-auto grid max-w-7xl gap-16 px-6 lg:grid-cols-[0.85fr_1fr] lg:items-center lg:gap-20 lg:px-10\"><div class=\"reveal\"><div class=\"relative aspect-[3/2] overflow-hidden\"><img src=\"{{content_001}}\" alt=\"{{content_002}}\" class=\"h-full w-full object-cover\" loading=\"lazy\"><div class=\"absolute inset-0 ring-1 ring-inset ring-ivory/10\"></div></div></div><div><div class=\"reveal max-w-xl\"><p class=\"eyebrow mb-6 flex items-center gap-3 text-champagne\"><span class=\"tabular-nums opacity-80\">{{content_003}}</span><span class=\"h-px w-8 bg-current opacity-50\" aria-hidden=\"true\"></span><span>{{content_004}}</span></p><h2 class=\"font-serif text-4xl font-light leading-[1.1] text-ivory sm:text-5xl\">{{content_005}}</h2></div><div class=\"mt-14 space-y-12\"><div class=\"reveal\"><div class=\"flex gap-6 border-t border-ivory/15 pt-8\"><span class=\"font-serif text-4xl font-light leading-none text-champagne\">{{content_006}}</span><div><h3 class=\"font-serif text-2xl font-light text-ivory\">{{content_007}}</h3><p class=\"mt-3 max-w-md text-base leading-relaxed text-ivory/70\">{{content_008}}</p></div></div></div><div class=\"reveal\"><div class=\"flex gap-6 border-t border-ivory/15 pt-8\"><span class=\"font-serif text-4xl font-light leading-none text-champagne\">{{content_009}}</span><div><h3 class=\"font-serif text-2xl font-light text-ivory\">{{content_010}}</h3><p class=\"mt-3 max-w-md text-base leading-relaxed text-ivory/70\">{{content_011}}</p></div></div></div><div class=\"reveal\"><div class=\"flex gap-6 border-t border-ivory/15 pt-8\"><span class=\"font-serif text-4xl font-light leading-none text-champagne\">{{content_012}}</span><div><h3 class=\"font-serif text-2xl font-light text-ivory\">{{content_013}}</h3><p class=\"mt-3 max-w-md text-base leading-relaxed text-ivory/70\">{{content_014}}</p></div></div></div></div></div></div></section>",
+      "controls": {
+        "content_001": {
+          "type": "media",
+          "default": "{{theme}}/assets/media/stock/process.jpg",
+          "label": "Image: Dr. Trevor J. Thomas holding a mirror and explorer in the Teeth by Trev operatory"
+        },
+        "content_002": {
+          "type": "text",
+          "default": "Dr. Trevor J. Thomas holding a mirror and explorer in the Teeth by Trev operatory",
+          "label": "Image description"
+        },
+        "content_003": {
+          "type": "text",
+          "default": "04",
+          "label": "p: 04"
+        },
+        "content_004": {
+          "type": "text",
+          "default": "The Experience",
+          "label": "p: The Experience"
+        },
+        "content_005": {
+          "type": "text",
+          "default": "Three steps to the smile that's always been yours.",
+          "label": "h2: Three steps to the smile that's always been yours."
+        },
+        "content_006": {
+          "type": "text",
+          "default": "I",
+          "label": "text: I"
+        },
+        "content_007": {
+          "type": "text",
+          "default": "The Consultation",
+          "label": "h3: The Consultation"
+        },
+        "content_008": {
+          "type": "text",
+          "default": "We listen first. Your goals, your history, your story — mapped into a clear, honest plan with no surprises.",
+          "label": "p: We listen first. Your goals, your history, your story — mapped into a clear, honest pla"
+        },
+        "content_009": {
+          "type": "text",
+          "default": "II",
+          "label": "text: II"
+        },
+        "content_010": {
+          "type": "text",
+          "default": "The Design",
+          "label": "h3: The Design"
+        },
+        "content_011": {
+          "type": "textarea",
+          "default": "Your new smile is sculpted digitally and previewed before a single procedure — designed around your face, not a template.",
+          "label": "p: Your new smile is sculpted digitally and previewed before a single procedure — designed"
+        },
+        "content_012": {
+          "type": "text",
+          "default": "III",
+          "label": "text: III"
+        },
+        "content_013": {
+          "type": "text",
+          "default": "The Reveal",
+          "label": "h3: The Reveal"
+        },
+        "content_014": {
+          "type": "textarea",
+          "default": "Precision execution, hand-finished detail, and the moment you see yourself fully — often for the very first time.",
+          "label": "p: Precision execution, hand-finished detail, and the moment you see yourself fully — ofte"
+        }
+      }
+    },
+    "services-4": {
+      "title": "Not sure where to start? Let's talk it through.",
+      "html": "<section class=\"border-t border-ivory/10 bg-onyx py-24 lg:py-32\"><div class=\"mx-auto flex max-w-7xl flex-col items-start justify-between gap-10 px-6 lg:flex-row lg:items-center lg:px-10\"><div class=\"reveal\"><p class=\"mb-6 text-[0.6rem] uppercase tracking-[0.34em] text-gold/70\">{{content_002}}</p><h2 class=\"max-w-2xl font-serif text-4xl font-light leading-[1.08] text-ivory sm:text-5xl\">{{content_003}}</h2></div><div class=\"reveal\"><span class=\"inline-block transition-transform duration-300 ease-out will-change-transform\" data-tbt-magnetic=\"\"><a href=\"{{content_001}}\" class=\"inline-flex items-center justify-center border border-gold px-8 py-4 text-[0.72rem] font-medium uppercase tracking-[0.2em] text-gold transition-colors duration-300 hover:bg-gold hover:text-onyx\">{{content_004}}</a></span></div></div></section>",
+      "controls": {
+        "content_001": {
+          "type": "url",
+          "default": "{{site}}/consultation/",
+          "label": "Link: Book Your Consultation"
+        },
+        "content_002": {
+          "type": "text",
+          "default": "Begin",
+          "label": "p: Begin"
+        },
+        "content_003": {
+          "type": "text",
+          "default": "Not sure where to start? Let's talk it through.",
+          "label": "h2: Not sure where to start? Let's talk it through."
+        },
+        "content_004": {
+          "type": "text",
+          "default": "Book Your Consultation",
+          "label": "a: Book Your Consultation"
+        }
+      }
+    },
+    "gallery-1": {
+      "title": "Transformations, not just teeth.",
+      "html": "<section class=\"relative isolate overflow-hidden bg-ink\">\n\t\t<img src=\"{{content_001}}\" alt=\"{{content_002}}\" class=\"absolute inset-0 h-full w-full object-cover opacity-40\">\n\t\t<div class=\"absolute inset-0 bg-gradient-to-t from-ink via-ink/70 to-ink/60\"></div>\n\t\t<div class=\"relative z-10 mx-auto flex min-h-[60vh] max-w-7xl flex-col justify-end px-6 pb-20 pt-40 lg:px-10 lg:pb-28 lg:pt-52\">\n\t\t\t<p class=\"mb-6 text-[0.6rem] uppercase tracking-[0.34em] text-champagne\">{{content_003}}</p>\n\t\t\t<h1 class=\"max-w-4xl font-serif text-5xl font-light leading-[1.04] text-ivory sm:text-6xl lg:text-7xl\">{{content_004}}</h1>\n\t\t\t<p class=\"mt-8 max-w-xl text-base leading-relaxed text-ivory/75 sm:text-lg\">{{content_005}}</p>\t\t</div>\n\t</section>",
+      "controls": {
+        "content_001": {
+          "type": "media",
+          "default": "{{theme}}/assets/media/stock/feature-bg.jpg",
+          "label": "Image: Dr. Trevor J. Thomas and his assistant caring for a patient in the studio"
+        },
+        "content_002": {
+          "type": "text",
+          "default": "Dr. Trevor J. Thomas and his assistant caring for a patient in the studio",
+          "label": "Image description"
+        },
+        "content_003": {
+          "type": "text",
+          "default": "The Smile Gallery",
+          "label": "p: The Smile Gallery"
+        },
+        "content_004": {
+          "type": "text",
+          "default": "Transformations, not just teeth.",
+          "label": "h1: Transformations, not just teeth."
+        },
+        "content_005": {
+          "type": "textarea",
+          "default": "Every smile here belongs to a real person with a real story. This is the work — placed, balanced, and unmistakably theirs.",
+          "label": "p: Every smile here belongs to a real person with a real story. This is the work — placed,"
+        }
+      }
+    },
+    "gallery-2": {
+      "title": "See the difference, side by side.",
+      "html": "<section class=\"bg-onyx py-28 lg:py-40\"><div class=\"mx-auto max-w-7xl px-6 lg:px-10\"><div class=\"reveal mx-auto max-w-2xl text-center\"><p class=\"mb-6 text-[0.6rem] uppercase tracking-[0.34em] text-gold/70\">{{content_005}}</p><h2 class=\"font-serif text-4xl font-light leading-[1.1] text-ivory sm:text-5xl\">{{content_006}}</h2></div><div class=\"reveal mt-16\"><div class=\"tbt-before-after relative aspect-[16/10] w-full overflow-hidden bg-ink\" data-tbt-before-after=\"\"><img src=\"{{content_001}}\" alt=\"{{content_002}}\" class=\"absolute inset-0 h-full w-full object-cover\"><span class=\"pointer-events-none absolute right-5 top-5 z-20 bg-ink/55 px-3 py-1 text-[0.62rem] font-medium uppercase tracking-[0.22em] text-ivory\">{{content_007}}</span><div class=\"absolute inset-0\" data-tbt-before=\"\" style=\"clip-path:inset(0 50% 0 0)\"><img src=\"{{content_003}}\" alt=\"{{content_004}}\" class=\"h-full w-full object-cover\"><span class=\"pointer-events-none absolute left-5 top-5 z-20 bg-ink/55 px-3 py-1 text-[0.62rem] font-medium uppercase tracking-[0.22em] text-ivory\">{{content_008}}</span></div><div class=\"absolute inset-y-0 z-30 w-px bg-ivory\" data-tbt-handle=\"\" style=\"left:50%\"><button type=\"button\" role=\"slider\" aria-label=\"Drag to compare before and after\" aria-valuenow=\"50\" aria-valuemin=\"0\" aria-valuemax=\"100\" class=\"absolute left-1/2 top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 cursor-ew-resize items-center justify-center rounded-full bg-ivory text-ink shadow-[0_4px_24px_rgba(0,0,0,0.35)]\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" class=\"h-5 w-5\"><path d=\"M9 7 4 12l5 5M15 7l5 5-5 5\"></path></svg></button></div></div><p class=\"mt-4 text-center text-[0.72rem] uppercase tracking-[0.2em] text-ivory/45\">{{content_009}}</p></div></div></section>",
+      "controls": {
+        "content_001": {
+          "type": "media",
+          "default": "{{theme}}/assets/media/stock/after-smile.jpg",
+          "label": "Image: Bright, restored smile after treatment by Dr. Trevor J. Thomas"
+        },
+        "content_002": {
+          "type": "text",
+          "default": "Bright, restored smile after treatment by Dr. Trevor J. Thomas",
+          "label": "Image description"
+        },
+        "content_003": {
+          "type": "media",
+          "default": "{{theme}}/assets/media/stock/before-smile.jpg",
+          "label": "Image: Worn, damaged smile before treatment by Dr. Trevor J. Thomas"
+        },
+        "content_004": {
+          "type": "text",
+          "default": "Worn, damaged smile before treatment by Dr. Trevor J. Thomas",
+          "label": "Image description"
+        },
+        "content_005": {
+          "type": "text",
+          "default": "01 — Before & After",
+          "label": "p: 01 — Before & After"
+        },
+        "content_006": {
+          "type": "text",
+          "default": "See the difference, side by side.",
+          "label": "h2: See the difference, side by side."
+        },
+        "content_007": {
+          "type": "text",
+          "default": "After",
+          "label": "text: After"
+        },
+        "content_008": {
+          "type": "text",
+          "default": "Before",
+          "label": "text: Before"
+        },
+        "content_009": {
+          "type": "text",
+          "default": "Drag to reveal the transformation",
+          "label": "p: Drag to reveal the transformation"
+        }
+      }
+    },
+    "gallery-3": {
+      "title": "A few of the smiles we've had the honor to craft.",
+      "html": "<section class=\"border-t border-ivory/10 bg-ink py-28 lg:py-40\"><div class=\"mx-auto max-w-7xl px-6 lg:px-10\"><div class=\"reveal max-w-2xl\"><p class=\"mb-6 text-[0.6rem] uppercase tracking-[0.34em] text-gold/70\">{{content_001}}</p><h2 class=\"font-serif text-4xl font-light leading-[1.1] text-ivory sm:text-5xl\">{{content_002}}</h2></div><div class=\"mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3\">{{gallery_items}}</div></div></section>",
+      "controls": {
+        "content_001": {
+          "type": "text",
+          "default": "02 — The Cases",
+          "label": "p: 02 — The Cases"
+        },
+        "content_002": {
+          "type": "text",
+          "default": "A few of the smiles we've had the honor to craft.",
+          "label": "h2: A few of the smiles we've had the honor to craft."
+        }
+      },
+      "gallery": [
+        {
+          "image": {
+            "url": "{{theme}}/assets/media/stock/financing-hero.jpg",
+            "id": 0
+          },
+          "alt": "A patient reviewing a panoramic X-ray and dental implant model in the studio",
+          "title": "Inside the Chair",
+          "caption": "Precision diagnostics"
+        },
+        {
+          "image": {
+            "url": "{{theme}}/assets/media/gallery/trev-scan-suite.jpg",
+            "id": 0
+          },
+          "alt": "Full-mouth rehabilitation plan with 3D imaging and an implant model",
+          "title": "The Treatment",
+          "caption": "Planned to the detail"
+        },
+        {
+          "image": {
+            "url": "{{theme}}/assets/media/stock/service-smile-makeover.jpg",
+            "id": 0
+          },
+          "alt": "Dr. Trevor J. Thomas presenting a smile makeover plan to a patient",
+          "title": "The Consultation",
+          "caption": "Your plan, personalized"
+        },
+        {
+          "image": {
+            "url": "{{theme}}/assets/media/gallery/trev-veneer-craft.jpg",
+            "id": 0
+          },
+          "alt": "Dr. Trevor J. Thomas hand-finishing a porcelain veneer at the bench",
+          "title": "The Craft",
+          "caption": "Hand-finished veneers"
+        },
+        {
+          "image": {
+            "url": "{{theme}}/assets/media/gallery/trev-intraoral-scan.jpg",
+            "id": 0
+          },
+          "alt": "Implant components and a 3D arch rendering on screen",
+          "title": "Digital Scanning",
+          "caption": "3D smile design"
+        },
+        {
+          "image": {
+            "url": "{{theme}}/assets/media/gallery/trev-consult-blue.jpg",
+            "id": 0
+          },
+          "alt": "The Teeth by Trev treatment studio",
+          "title": "The Studio",
+          "caption": "Calm, precise, unhurried"
+        }
+      ]
+    },
+    "gallery-4": {
+      "title": "Your story could be the next one we tell.",
+      "html": "<section class=\"border-t border-ivory/10 bg-onyx py-24 lg:py-32\"><div class=\"mx-auto flex max-w-7xl flex-col items-start justify-between gap-10 px-6 lg:flex-row lg:items-center lg:px-10\"><div class=\"reveal\"><h2 class=\"max-w-2xl font-serif text-4xl font-light leading-[1.08] text-ivory sm:text-5xl\">{{content_002}}</h2></div><div class=\"reveal\"><span class=\"inline-block transition-transform duration-300 ease-out will-change-transform\" data-tbt-magnetic=\"\"><a href=\"{{content_001}}\" class=\"inline-flex items-center justify-center border border-gold px-8 py-4 text-[0.72rem] font-medium uppercase tracking-[0.2em] text-gold transition-colors duration-300 hover:bg-gold hover:text-onyx\">{{content_003}}</a></span></div></div></section>",
+      "controls": {
+        "content_001": {
+          "type": "url",
+          "default": "{{site}}/consultation/",
+          "label": "Link: Start Your Story"
+        },
+        "content_002": {
+          "type": "text",
+          "default": "Your story could be the next one we tell.",
+          "label": "h2: Your story could be the next one we tell."
+        },
+        "content_003": {
+          "type": "text",
+          "default": "Start Your Story",
+          "label": "a: Start Your Story"
+        }
+      }
+    },
+    "financing-1": {
+      "title": "A world-class smile shouldn't wait.",
+      "html": "<section class=\"relative isolate overflow-hidden bg-ink\">\n\t\t<img src=\"{{content_001}}\" alt=\"{{content_002}}\" class=\"absolute inset-0 h-full w-full object-cover opacity-40\">\n\t\t<div class=\"absolute inset-0 bg-gradient-to-t from-ink via-ink/70 to-ink/60\"></div>\n\t\t<div class=\"relative z-10 mx-auto flex min-h-[60vh] max-w-7xl flex-col justify-end px-6 pb-20 pt-40 lg:px-10 lg:pb-28 lg:pt-52\">\n\t\t\t<p class=\"mb-6 text-[0.6rem] uppercase tracking-[0.34em] text-champagne\">{{content_003}}</p>\n\t\t\t<h1 class=\"max-w-4xl font-serif text-5xl font-light leading-[1.04] text-ivory sm:text-6xl lg:text-7xl\">{{content_004}}</h1>\n\t\t\t<p class=\"mt-8 max-w-xl text-base leading-relaxed text-ivory/75 sm:text-lg\">{{content_005}}</p>\t\t</div>\n\t</section>",
+      "controls": {
+        "content_001": {
+          "type": "media",
+          "default": "{{theme}}/assets/media/stock/financing-hero.jpg",
+          "label": "Image: Reviewing a panoramic X-ray and dental implant model with a patient in the Teeth by"
+        },
+        "content_002": {
+          "type": "text",
+          "default": "Reviewing a panoramic X-ray and dental implant model with a patient in the Teeth by Trev studio",
+          "label": "Image description"
+        },
+        "content_003": {
+          "type": "text",
+          "default": "Smile Now, Pay Later",
+          "label": "p: Smile Now, Pay Later"
+        },
+        "content_004": {
+          "type": "text",
+          "default": "A world-class smile shouldn't wait.",
+          "label": "h1: A world-class smile shouldn't wait."
+        },
+        "content_005": {
+          "type": "textarea",
+          "default": "Flexible financing and monthly payment plans make life-changing dentistry accessible — so you can begin today and pay over time.",
+          "label": "p: Flexible financing and monthly payment plans make life-changing dentistry accessible — "
+        }
+      }
+    },
+    "financing-2": {
+      "title": "Transformation, within reach.",
+      "html": "<section class=\"bg-onyx py-28 lg:py-40\"><div class=\"mx-auto max-w-7xl px-6 lg:px-10\"><div class=\"reveal max-w-2xl\"><p class=\"mb-6 text-[0.6rem] uppercase tracking-[0.34em] text-gold/70\">{{content_001}}</p><h2 class=\"font-serif text-4xl font-light leading-[1.1] text-ivory sm:text-5xl\">{{content_002}}</h2></div><div class=\"mt-16 grid gap-x-12 gap-y-12 sm:grid-cols-3\"><div class=\"reveal border-t border-ivory/15 pt-7\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" class=\"h-8 w-8 text-gold\"><path d=\"M3 9.5h18M3 9.5A2.5 2.5 0 0 1 5.5 7h13A2.5 2.5 0 0 1 21 9.5m-18 0v7A2.5 2.5 0 0 0 5.5 19h13a2.5 2.5 0 0 0 2.5-2.5v-7M7 15.5h4\" stroke-width=\"1.25\"></path></svg><h3 class=\"mt-6 font-serif text-2xl font-light text-ivory\">{{content_003}}</h3><p class=\"mt-3 text-base leading-relaxed text-ivory/60\">{{content_004}}</p></div><div class=\"reveal border-t border-ivory/15 pt-7\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" class=\"h-8 w-8 text-gold\"><path d=\"M12 7v5l3 2m6-2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z\" stroke-width=\"1.25\"></path></svg><h3 class=\"mt-6 font-serif text-2xl font-light text-ivory\">{{content_005}}</h3><p class=\"mt-3 text-base leading-relaxed text-ivory/60\">{{content_006}}</p></div><div class=\"reveal border-t border-ivory/15 pt-7\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" class=\"h-8 w-8 text-gold\"><path d=\"M12 20.25S3.75 15.5 3.75 9.62A4.12 4.12 0 0 1 12 7.5a4.12 4.12 0 0 1 8.25 2.12C20.25 15.5 12 20.25 12 20.25Z\" stroke-width=\"1.25\"></path></svg><h3 class=\"mt-6 font-serif text-2xl font-light text-ivory\">{{content_007}}</h3><p class=\"mt-3 text-base leading-relaxed text-ivory/60\">{{content_008}}</p></div></div></div></section>",
+      "controls": {
+        "content_001": {
+          "type": "text",
+          "default": "01 — The Promise",
+          "label": "p: 01 — The Promise"
+        },
+        "content_002": {
+          "type": "text",
+          "default": "Transformation, within reach.",
+          "label": "h2: Transformation, within reach."
+        },
+        "content_003": {
+          "type": "text",
+          "default": "Plans from $0 down",
+          "label": "h3: Plans from $0 down"
+        },
+        "content_004": {
+          "type": "text",
+          "default": "Begin your transformation today with low monthly payments tailored to your budget — no large upfront cost.",
+          "label": "p: Begin your transformation today with low monthly payments tailored to your budget — no "
+        },
+        "content_005": {
+          "type": "text",
+          "default": "Apply in minutes",
+          "label": "h3: Apply in minutes"
+        },
+        "content_006": {
+          "type": "text",
+          "default": "A simple, soft credit check gets you an answer fast — without affecting your score or interrupting your day.",
+          "label": "p: A simple, soft credit check gets you an answer fast — without affecting your score or i"
+        },
+        "content_007": {
+          "type": "text",
+          "default": "Care that fits your life",
+          "label": "h3: Care that fits your life"
+        },
+        "content_008": {
+          "type": "textarea",
+          "default": "Stretch your investment across comfortable terms so the smile you deserve never has to wait for the perfect moment.",
+          "label": "p: Stretch your investment across comfortable terms so the smile you deserve never has to "
+        }
+      }
+    },
+    "financing-3": {
+      "title": "Trusted financing partners.",
+      "html": "<section class=\"border-t border-ivory/10 bg-ink py-28 lg:py-40\"><div class=\"mx-auto max-w-7xl px-6 lg:px-10\"><div class=\"reveal max-w-2xl\"><p class=\"mb-6 text-[0.6rem] uppercase tracking-[0.34em] text-gold/70\">{{content_005}}</p><h2 class=\"font-serif text-4xl font-light leading-[1.1] text-ivory sm:text-5xl\">{{content_006}}</h2><p class=\"mt-6 max-w-xl text-base leading-relaxed text-ivory/60\">{{content_007}}</p></div><div class=\"mt-16 grid gap-5 sm:grid-cols-2\"><a href=\"{{content_001}}\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"reveal group flex h-full flex-col border border-ivory/12 bg-white/[0.02] p-8 transition-colors duration-300 hover:border-gold/50\"><span class=\"text-[0.6rem] uppercase tracking-[0.28em] text-gold/70\">{{content_008}}</span><h3 class=\"mt-4 font-serif text-3xl font-light text-ivory\">{{content_009}}</h3><p class=\"mt-3 flex-1 text-base leading-relaxed text-ivory/60\">{{content_010}}</p><span class=\"mt-6 inline-flex items-center gap-2 text-[0.72rem] uppercase tracking-[0.2em] text-ivory/70 transition-colors duration-300 group-hover:text-gold\">{{content_011}}<span class=\"transition-transform duration-300 group-hover:translate-x-1\">→</span></span></a><a href=\"{{content_002}}\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"reveal group flex h-full flex-col border border-ivory/12 bg-white/[0.02] p-8 transition-colors duration-300 hover:border-gold/50\"><span class=\"text-[0.6rem] uppercase tracking-[0.28em] text-gold/70\">{{content_012}}</span><h3 class=\"mt-4 font-serif text-3xl font-light text-ivory\">{{content_013}}</h3><p class=\"mt-3 flex-1 text-base leading-relaxed text-ivory/60\">{{content_014}}</p><span class=\"mt-6 inline-flex items-center gap-2 text-[0.72rem] uppercase tracking-[0.2em] text-ivory/70 transition-colors duration-300 group-hover:text-gold\">{{content_015}}<span class=\"transition-transform duration-300 group-hover:translate-x-1\">→</span></span></a><a href=\"{{content_003}}\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"reveal group flex h-full flex-col border border-ivory/12 bg-white/[0.02] p-8 transition-colors duration-300 hover:border-gold/50\"><span class=\"text-[0.6rem] uppercase tracking-[0.28em] text-gold/70\">{{content_016}}</span><h3 class=\"mt-4 font-serif text-3xl font-light text-ivory\">{{content_017}}</h3><p class=\"mt-3 flex-1 text-base leading-relaxed text-ivory/60\">{{content_018}}</p><span class=\"mt-6 inline-flex items-center gap-2 text-[0.72rem] uppercase tracking-[0.2em] text-ivory/70 transition-colors duration-300 group-hover:text-gold\">{{content_019}}<span class=\"transition-transform duration-300 group-hover:translate-x-1\">→</span></span></a><a href=\"{{content_004}}\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"reveal group flex h-full flex-col border border-ivory/12 bg-white/[0.02] p-8 transition-colors duration-300 hover:border-gold/50\"><span class=\"text-[0.6rem] uppercase tracking-[0.28em] text-gold/70\">{{content_020}}</span><h3 class=\"mt-4 font-serif text-3xl font-light text-ivory\">{{content_021}}</h3><p class=\"mt-3 flex-1 text-base leading-relaxed text-ivory/60\">{{content_022}}</p><span class=\"mt-6 inline-flex items-center gap-2 text-[0.72rem] uppercase tracking-[0.2em] text-ivory/70 transition-colors duration-300 group-hover:text-gold\">{{content_023}}<span class=\"transition-transform duration-300 group-hover:translate-x-1\">→</span></span></a></div><p class=\"mt-8 text-[0.72rem] uppercase tracking-[0.18em] text-ivory/40\">{{content_024}}</p></div></section>",
+      "controls": {
+        "content_001": {
+          "type": "url",
+          "default": "https://www.carecredit.com/go/276SNV/",
+          "label": "Link: Most widely acceptedCareCreditThe healthcare credit card accepted at practices natio"
+        },
+        "content_002": {
+          "type": "url",
+          "default": "https://goalphaeon.com/apply?src=cling",
+          "label": "Link: For elective careAlphaeon CreditA dedicated credit card for cosmetic and elective ca"
+        },
+        "content_003": {
+          "type": "url",
+          "default": "https://pay.withcherry.com/trevor-jamal-thomas-dds-inc?utm_source=practice&m=51934",
+          "label": "Link: Fast, soft-check approvalCherryPaperless approval in minutes with a soft credit chec"
+        },
+        "content_004": {
+          "type": "url",
+          "default": "https://www.proceedfinance.com/application/create?referrer=37783-13017-4FDA",
+          "label": "Link: For larger plansProceed FinanceBuilt for comprehensive and full-mouth cases, with lo"
+        },
+        "content_005": {
+          "type": "text",
+          "default": "02 — Our Partners",
+          "label": "p: 02 — Our Partners"
+        },
+        "content_006": {
+          "type": "text",
+          "default": "Trusted financing partners.",
+          "label": "h2: Trusted financing partners."
+        },
+        "content_007": {
+          "type": "textarea",
+          "default": "We work with the most respected names in healthcare financing. Apply with any of them in minutes — most use a soft credit check that won't affect your score.",
+          "label": "p: We work with the most respected names in healthcare financing. Apply with any of them i"
+        },
+        "content_008": {
+          "type": "text",
+          "default": "Most widely accepted",
+          "label": "a: Most widely accepted"
+        },
+        "content_009": {
+          "type": "text",
+          "default": "CareCredit",
+          "label": "h3: CareCredit"
+        },
+        "content_010": {
+          "type": "textarea",
+          "default": "The healthcare credit card accepted at practices nationwide, with special promotional financing on qualifying treatment.",
+          "label": "p: The healthcare credit card accepted at practices nationwide, with special promotional f"
+        },
+        "content_011": {
+          "type": "text",
+          "default": "Apply with CareCredit",
+          "label": "a: Apply with CareCredit"
+        },
+        "content_012": {
+          "type": "text",
+          "default": "For elective care",
+          "label": "a: For elective care"
+        },
+        "content_013": {
+          "type": "text",
+          "default": "Alphaeon Credit",
+          "label": "h3: Alphaeon Credit"
+        },
+        "content_014": {
+          "type": "textarea",
+          "default": "A dedicated credit card for cosmetic and elective care, offering flexible monthly plans and promotional offers.",
+          "label": "p: A dedicated credit card for cosmetic and elective care, offering flexible monthly plans"
+        },
+        "content_015": {
+          "type": "text",
+          "default": "Apply with Alphaeon Credit",
+          "label": "a: Apply with Alphaeon Credit"
+        },
+        "content_016": {
+          "type": "text",
+          "default": "Fast, soft-check approval",
+          "label": "a: Fast, soft-check approval"
+        },
+        "content_017": {
+          "type": "text",
+          "default": "Cherry",
+          "label": "h3: Cherry"
+        },
+        "content_018": {
+          "type": "textarea",
+          "default": "Paperless approval in minutes with a soft credit check and flexible monthly payments — many patients qualify for 0% APR.",
+          "label": "p: Paperless approval in minutes with a soft credit check and flexible monthly payments — "
+        },
+        "content_019": {
+          "type": "text",
+          "default": "Apply with Cherry",
+          "label": "a: Apply with Cherry"
+        },
+        "content_020": {
+          "type": "text",
+          "default": "For larger plans",
+          "label": "a: For larger plans"
+        },
+        "content_021": {
+          "type": "text",
+          "default": "Proceed Finance",
+          "label": "h3: Proceed Finance"
+        },
+        "content_022": {
+          "type": "textarea",
+          "default": "Built for comprehensive and full-mouth cases, with longer terms and higher approval amounts than standard cards.",
+          "label": "p: Built for comprehensive and full-mouth cases, with longer terms and higher approval amo"
+        },
+        "content_023": {
+          "type": "text",
+          "default": "Apply with Proceed Finance",
+          "label": "a: Apply with Proceed Finance"
+        },
+        "content_024": {
+          "type": "text",
+          "default": "Not sure which fits? Dr. Trev's team will match you to the right plan during your consultation.",
+          "label": "p: Not sure which fits? Dr. Trev's team will match you to the right plan during your consu"
+        }
+      }
+    },
+    "financing-4": {
+      "title": "The details, answered.",
+      "html": "<section class=\"border-t border-ivory/10 bg-onyx py-28 lg:py-40\"><div class=\"mx-auto grid max-w-7xl gap-16 px-6 lg:grid-cols-[0.8fr_1fr] lg:gap-24 lg:px-10\"><div class=\"reveal\"><p class=\"mb-6 text-[0.6rem] uppercase tracking-[0.34em] text-gold/70\">{{content_001}}</p><h2 class=\"font-serif text-4xl font-light leading-[1.1] text-ivory sm:text-5xl\">{{content_002}}</h2></div><div class=\"divide-y divide-ivory/12 border-y border-ivory/12\"><div class=\"reveal py-8\"><h3 class=\"font-serif text-2xl font-light text-ivory\">{{content_003}}</h3><p class=\"mt-3 max-w-xl text-base leading-relaxed text-ivory/60\">{{content_004}}</p></div><div class=\"reveal py-8\"><h3 class=\"font-serif text-2xl font-light text-ivory\">{{content_005}}</h3><p class=\"mt-3 max-w-xl text-base leading-relaxed text-ivory/60\">{{content_006}}</p></div><div class=\"reveal py-8\"><h3 class=\"font-serif text-2xl font-light text-ivory\">{{content_007}}</h3><p class=\"mt-3 max-w-xl text-base leading-relaxed text-ivory/60\">{{content_008}}</p></div><div class=\"reveal py-8\"><h3 class=\"font-serif text-2xl font-light text-ivory\">{{content_009}}</h3><p class=\"mt-3 max-w-xl text-base leading-relaxed text-ivory/60\">{{content_010}}</p></div></div></div></section>",
+      "controls": {
+        "content_001": {
+          "type": "text",
+          "default": "03 — Questions",
+          "label": "p: 03 — Questions"
+        },
+        "content_002": {
+          "type": "text",
+          "default": "The details, answered.",
+          "label": "h2: The details, answered."
+        },
+        "content_003": {
+          "type": "text",
+          "default": "Will checking my options affect my credit?",
+          "label": "h3: Will checking my options affect my credit?"
+        },
+        "content_004": {
+          "type": "textarea",
+          "default": "No. Pre-qualification uses a soft credit check that has no impact on your credit score. You'll see your options before committing to anything.",
+          "label": "p: No. Pre-qualification uses a soft credit check that has no impact on your credit score."
+        },
+        "content_005": {
+          "type": "text",
+          "default": "What financing partners do you work with?",
+          "label": "h3: What financing partners do you work with?"
+        },
+        "content_006": {
+          "type": "textarea",
+          "default": "We partner with CareCredit, Alphaeon, Cherry, and Proceed Finance — leading healthcare lenders offering plans with low and no-interest promotional periods. During your consultation we'll match you to the right fit.",
+          "label": "p: We partner with CareCredit, Alphaeon, Cherry, and Proceed Finance — leading healthcare "
+        },
+        "content_007": {
+          "type": "text",
+          "default": "Can I combine financing with insurance?",
+          "label": "h3: Can I combine financing with insurance?"
+        },
+        "content_008": {
+          "type": "textarea",
+          "default": "Yes. Where applicable, we apply your benefits first and finance the remaining balance — so you only ever pay over time for what's left.",
+          "label": "p: Yes. Where applicable, we apply your benefits first and finance the remaining balance —"
+        },
+        "content_009": {
+          "type": "text",
+          "default": "How long are the payment terms?",
+          "label": "h3: How long are the payment terms?"
+        },
+        "content_010": {
+          "type": "textarea",
+          "default": "Terms range from a few months to several years depending on the plan and treatment. We'll walk you through options that keep your monthly payment comfortable.",
+          "label": "p: Terms range from a few months to several years depending on the plan and treatment. We'"
+        }
+      }
+    },
+    "financing-5": {
+      "title": "Let's find a plan that fits your life.",
+      "html": "<section class=\"border-t border-ivory/10 bg-onyx py-24 lg:py-32\"><div class=\"mx-auto flex max-w-7xl flex-col items-start justify-between gap-10 px-6 lg:flex-row lg:items-center lg:px-10\"><div class=\"reveal\"><h2 class=\"max-w-2xl font-serif text-4xl font-light leading-[1.08] text-ivory sm:text-5xl\">{{content_002}}</h2></div><div class=\"reveal\"><span class=\"inline-block transition-transform duration-300 ease-out will-change-transform\" data-tbt-magnetic=\"\"><a href=\"{{content_001}}\" class=\"inline-flex items-center justify-center border border-gold px-8 py-4 text-[0.72rem] font-medium uppercase tracking-[0.2em] text-gold transition-colors duration-300 hover:bg-gold hover:text-onyx\">{{content_003}}</a></span></div></div></section>",
+      "controls": {
+        "content_001": {
+          "type": "url",
+          "default": "{{site}}/consultation/",
+          "label": "Link: Explore Financing Options"
+        },
+        "content_002": {
+          "type": "text",
+          "default": "Let's find a plan that fits your life.",
+          "label": "h2: Let's find a plan that fits your life."
+        },
+        "content_003": {
+          "type": "text",
+          "default": "Explore Financing Options",
+          "label": "a: Explore Financing Options"
+        }
+      }
+    },
+    "contact-1": {
+      "title": "Begin with the right team.",
+      "html": "<section class=\"relative isolate overflow-hidden bg-ink\">\n\t\t<img src=\"{{content_001}}\" alt=\"{{content_002}}\" class=\"absolute inset-0 h-full w-full object-cover opacity-40\">\n\t\t<div class=\"absolute inset-0 bg-gradient-to-t from-ink via-ink/70 to-ink/60\"></div>\n\t\t<div class=\"relative z-10 mx-auto flex min-h-[60vh] max-w-7xl flex-col justify-end px-6 pb-20 pt-40 lg:px-10 lg:pb-28 lg:pt-52\">\n\t\t\t<p class=\"mb-6 text-[0.6rem] uppercase tracking-[0.34em] text-champagne\">{{content_003}}</p>\n\t\t\t<h1 class=\"max-w-4xl font-serif text-5xl font-light leading-[1.04] text-ivory sm:text-6xl lg:text-7xl\">{{content_004}}</h1>\n\t\t\t<p class=\"mt-8 max-w-xl text-base leading-relaxed text-ivory/75 sm:text-lg\">{{content_005}}</p>\t\t</div>\n\t</section>",
+      "controls": {
+        "content_001": {
+          "type": "media",
+          "default": "{{theme}}/assets/media/stock/contact-hero.jpg",
+          "label": "Image: The Teeth by Trev reception — a black marble wordmark wall, marble desk, and a city"
+        },
+        "content_002": {
+          "type": "text",
+          "default": "The Teeth by Trev reception — a black marble wordmark wall, marble desk, and a city skyline view",
+          "label": "Image description"
+        },
+        "content_003": {
+          "type": "text",
+          "default": "Concierge",
+          "label": "p: Concierge"
+        },
+        "content_004": {
+          "type": "text",
+          "default": "Begin with the right team.",
+          "label": "h1: Begin with the right team."
+        },
+        "content_005": {
+          "type": "text",
+          "default": "Tell us what you need and the Teeth by Trev concierge team will guide your next step.",
+          "label": "p: Tell us what you need and the Teeth by Trev concierge team will guide your next step."
+        }
+      }
+    },
+    "contact-2": {
+      "title": "How can the Teeth by Trev team help?",
+      "html": "<section class=\"bg-onyx py-24 lg:py-32\"><div class=\"mx-auto max-w-3xl px-6 lg:px-10\"><div class=\"reveal\">\t\t{{inquiry_form}}\n\t\t</div><p class=\"mx-auto mt-16 max-w-2xl border-t border-ivory/10 pt-8 text-center text-[0.72rem] uppercase tracking-[0.2em] text-ivory/55\">{{content_003}} <a href=\"{{content_001}}\" class=\"text-ivory/80 underline decoration-ivory/50 underline-offset-4 transition-colors hover:text-gold\">{{content_004}}</a> {{content_005}} <a href=\"{{content_002}}\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-ivory/80 underline decoration-ivory/50 underline-offset-4 transition-colors hover:text-gold\">{{content_006}}</a></p></div></section>",
+      "controls": {
+        "content_001": {
+          "type": "url",
+          "default": "tel:+14246723910",
+          "label": "Link: 424-672-3910"
+        },
+        "content_002": {
+          "type": "url",
+          "default": "https://www.instagram.com/teethbytrev.team/",
+          "label": "Link: @teethbytrev.team"
+        },
+        "content_003": {
+          "type": "text",
+          "default": "Questions? Text",
+          "label": "p: Questions? Text"
+        },
+        "content_004": {
+          "type": "text",
+          "default": "424-672-3910",
+          "label": "a: 424-672-3910"
+        },
+        "content_005": {
+          "type": "text",
+          "default": "· Continue on Instagram with",
+          "label": "p: · Continue on Instagram with"
+        },
+        "content_006": {
+          "type": "text",
+          "default": "@teethbytrev.team",
+          "label": "a: @teethbytrev.team"
+        }
+      }
+    },
+    "consultation-1": {
+      "title": "Begin with a conversation.",
+      "html": "<section class=\"relative overflow-hidden\"><div class=\"tbt-top-glow absolute inset-0\"></div><div class=\"relative mx-auto max-w-[1600px] px-6 pb-16 pt-40 lg:px-12 lg:pb-24 lg:pt-52\"><div class=\"reveal\"><p class=\"text-[0.62rem] uppercase tracking-[0.3em] text-gold\">{{content_001}}</p><h1 class=\"mt-6 max-w-4xl font-serif text-5xl font-light leading-[1.04] text-ivory sm:text-6xl lg:text-7xl\">{{content_002}}</h1><p class=\"mt-8 max-w-xl text-base leading-relaxed text-ivory/65 sm:text-lg\">{{content_003}}</p></div></div></section>",
+      "controls": {
+        "content_001": {
+          "type": "text",
+          "default": "The Consultation",
+          "label": "p: The Consultation"
+        },
+        "content_002": {
+          "type": "text",
+          "default": "Begin with a conversation.",
+          "label": "h1: Begin with a conversation."
+        },
+        "content_003": {
+          "type": "textarea",
+          "default": "Every transformation starts here — an unhurried, expert assessment of where you are and the smile you imagine. Choose to meet in person or by video.",
+          "label": "p: Every transformation starts here — an unhurried, expert assessment of where you are and"
+        }
+      }
+    },
+    "consultation-2": {
+      "title": "In Person",
+      "html": "<section class=\"border-t border-ivory/10 bg-onyx py-20 lg:py-28\"><div class=\"mx-auto grid max-w-[1600px] gap-6 px-6 lg:grid-cols-2 lg:gap-8 lg:px-12\"><article class=\"reveal flex h-full flex-col border border-ivory/12 bg-ivory/[0.02] p-8 transition-colors duration-500 hover:border-gold/40 lg:p-12\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" class=\"h-9 w-9 text-gold\"><path d=\"M12 21s-6.5-5.4-6.5-10A6.5 6.5 0 0 1 18.5 11c0 4.6-6.5 10-6.5 10Z M12 11.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z\"></path></svg><p class=\"mt-8 text-[0.62rem] uppercase tracking-[0.3em] text-gold/70\">{{content_003}}</p><h2 class=\"mt-3 font-serif text-3xl font-light text-ivory sm:text-4xl\">{{content_004}}</h2><p class=\"mt-5 text-base leading-relaxed text-ivory/65\">{{content_005}}</p><ul class=\"mt-8 space-y-3\"><li class=\"flex items-center gap-3 text-[0.72rem] uppercase tracking-[0.16em] text-ivory/55\"><span class=\"text-gold\">{{content_006}}</span>{{content_007}}</li><li class=\"flex items-center gap-3 text-[0.72rem] uppercase tracking-[0.16em] text-ivory/55\"><span class=\"text-gold\">{{content_008}}</span>{{content_009}}</li><li class=\"flex items-center gap-3 text-[0.72rem] uppercase tracking-[0.16em] text-ivory/55\"><span class=\"text-gold\">{{content_010}}</span>{{content_011}}</li></ul><div class=\"mt-10 flex items-center justify-between border-t border-ivory/10 pt-6\"><span class=\"font-serif text-2xl font-light text-ivory\">{{content_012}}</span><span class=\"inline-block transition-transform duration-300 ease-out will-change-transform\" data-tbt-magnetic=\"\"><a href=\"{{content_001}}\" class=\"group inline-flex items-center gap-3 border border-gold px-7 py-3.5 text-[0.66rem] uppercase tracking-[0.24em] text-gold transition-colors hover:bg-gold hover:text-onyx\">{{content_013}}<span class=\"transition-transform group-hover:translate-x-1\">→</span></a></span></div></article><article class=\"reveal flex h-full flex-col border border-ivory/12 bg-ivory/[0.02] p-8 transition-colors duration-500 hover:border-gold/40 lg:p-12\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" class=\"h-9 w-9 text-gold\"><path d=\"M3.5 7.5A1.5 1.5 0 0 1 5 6h8a1.5 1.5 0 0 1 1.5 1.5v9A1.5 1.5 0 0 1 13 18H5a1.5 1.5 0 0 1-1.5-1.5Z M14.5 10.5l5-3v9l-5-3Z\"></path></svg><p class=\"mt-8 text-[0.62rem] uppercase tracking-[0.3em] text-gold/70\">{{content_014}}</p><h2 class=\"mt-3 font-serif text-3xl font-light text-ivory sm:text-4xl\">{{content_015}}</h2><p class=\"mt-5 text-base leading-relaxed text-ivory/65\">{{content_016}}</p><ul class=\"mt-8 space-y-3\"><li class=\"flex items-center gap-3 text-[0.72rem] uppercase tracking-[0.16em] text-ivory/55\"><span class=\"text-gold\">{{content_017}}</span>{{content_018}}</li><li class=\"flex items-center gap-3 text-[0.72rem] uppercase tracking-[0.16em] text-ivory/55\"><span class=\"text-gold\">{{content_019}}</span>{{content_020}}</li><li class=\"flex items-center gap-3 text-[0.72rem] uppercase tracking-[0.16em] text-ivory/55\"><span class=\"text-gold\">{{content_021}}</span>{{content_022}}</li></ul><div class=\"mt-10 flex items-center justify-between border-t border-ivory/10 pt-6\"><span class=\"font-serif text-2xl font-light text-ivory\">{{content_023}}</span><span class=\"inline-block transition-transform duration-300 ease-out will-change-transform\" data-tbt-magnetic=\"\"><a href=\"{{content_002}}\" class=\"group inline-flex items-center gap-3 border border-gold px-7 py-3.5 text-[0.66rem] uppercase tracking-[0.24em] text-gold transition-colors hover:bg-gold hover:text-onyx\">{{content_024}}<span class=\"transition-transform group-hover:translate-x-1\">→</span></a></span></div></article></div><p class=\"reveal mx-auto mt-12 max-w-xl px-6 text-center text-[0.72rem] uppercase tracking-[0.2em] text-ivory/40\">{{content_025}}</p></section>",
+      "controls": {
+        "content_001": {
+          "type": "url",
+          "default": "{{site}}/reserve/?type=in-person",
+          "label": "Link: Reserve In Person→"
+        },
+        "content_002": {
+          "type": "url",
+          "default": "{{site}}/reserve/?type=video",
+          "label": "Link: Reserve Video→"
+        },
+        "content_003": {
+          "type": "text",
+          "default": "At the studio",
+          "label": "p: At the studio"
+        },
+        "content_004": {
+          "type": "text",
+          "default": "In Person",
+          "label": "h2: In Person"
+        },
+        "content_005": {
+          "type": "textarea",
+          "default": "Sit chairside with Dr. Trev. A full clinical assessment, digital imaging, and a tailored plan — designed around your face, in the room where the work happens.",
+          "label": "p: Sit chairside with Dr. Trev. A full clinical assessment, digital imaging, and a tailore"
+        },
+        "content_006": {
+          "type": "text",
+          "default": "—",
+          "label": "li: —"
+        },
+        "content_007": {
+          "type": "text",
+          "default": "Full clinical exam",
+          "label": "li: Full clinical exam"
+        },
+        "content_008": {
+          "type": "text",
+          "default": "—",
+          "label": "li: —"
+        },
+        "content_009": {
+          "type": "text",
+          "default": "Digital imaging & scans",
+          "label": "li: Digital imaging & scans"
+        },
+        "content_010": {
+          "type": "text",
+          "default": "—",
+          "label": "li: —"
+        },
+        "content_011": {
+          "type": "text",
+          "default": "Tailored treatment plan",
+          "label": "li: Tailored treatment plan"
+        },
+        "content_012": {
+          "type": "text",
+          "default": "$250",
+          "label": "text: $250"
+        },
+        "content_013": {
+          "type": "text",
+          "default": "Reserve In Person",
+          "label": "a: Reserve In Person"
+        },
+        "content_014": {
+          "type": "text",
+          "default": "From anywhere",
+          "label": "p: From anywhere"
+        },
+        "content_015": {
+          "type": "text",
+          "default": "Video",
+          "label": "h2: Video"
+        },
+        "content_016": {
+          "type": "textarea",
+          "default": "A private virtual consultation by video. Share your goals and photos, and receive Dr. Trev's expert perspective and direction — wherever you are in the world.",
+          "label": "p: A private virtual consultation by video. Share your goals and photos, and receive Dr. T"
+        },
+        "content_017": {
+          "type": "text",
+          "default": "—",
+          "label": "li: —"
+        },
+        "content_018": {
+          "type": "text",
+          "default": "Live video with Dr. Trev",
+          "label": "li: Live video with Dr. Trev"
+        },
+        "content_019": {
+          "type": "text",
+          "default": "—",
+          "label": "li: —"
+        },
+        "content_020": {
+          "type": "text",
+          "default": "Photo-based assessment",
+          "label": "li: Photo-based assessment"
+        },
+        "content_021": {
+          "type": "text",
+          "default": "—",
+          "label": "li: —"
+        },
+        "content_022": {
+          "type": "text",
+          "default": "Clear next steps",
+          "label": "li: Clear next steps"
+        },
+        "content_023": {
+          "type": "text",
+          "default": "$250",
+          "label": "text: $250"
+        },
+        "content_024": {
+          "type": "text",
+          "default": "Reserve Video",
+          "label": "a: Reserve Video"
+        },
+        "content_025": {
+          "type": "text",
+          "default": "Consultations are by appointment and limited each month.",
+          "label": "p: Consultations are by appointment and limited each month."
+        }
+      }
+    },
+    "reserve-1": {
+      "title": "Secure your place with Dr. Trev.",
+      "html": "<section class=\"relative overflow-hidden\">\n\t\t<div class=\"tbt-top-glow absolute inset-0\"></div>\n\t\t<div class=\"relative mx-auto max-w-[1600px] px-6 pb-20 pt-40 lg:px-12 lg:pb-28 lg:pt-52\">\n\t\t\t<div class=\"grid items-start gap-12 lg:grid-cols-2 lg:gap-20\">\n\t\t\t\t<div class=\"reveal\">\n\t\t\t\t\t<p class=\"text-[0.62rem] uppercase tracking-[0.3em] text-gold\">{{consultation_label}}</p>\n\t\t\t\t\t<h1 class=\"mt-6 max-w-xl font-serif text-4xl font-light leading-[1.06] text-ivory sm:text-5xl lg:text-6xl\">{{content_001}}</h1>\n\t\t\t\t\t<p class=\"mt-7 max-w-md text-base leading-relaxed text-ivory/65\">{{content_002}}</p>\n\t\t\t\t\t<ul class=\"mt-9 space-y-3\">\n\t\t\t\t\t\t<li class=\"flex items-center gap-3 text-[0.72rem] uppercase tracking-[0.16em] text-ivory/55\"><span class=\"text-gold\">{{content_003}}</span>{{content_004}}</li>\n\t\t\t\t\t\t<li class=\"flex items-center gap-3 text-[0.72rem] uppercase tracking-[0.16em] text-ivory/55\"><span class=\"text-gold\">{{content_005}}</span>{{content_006}}</li>\n\t\t\t\t\t\t<li class=\"flex items-center gap-3 text-[0.72rem] uppercase tracking-[0.16em] text-ivory/55\"><span class=\"text-gold\">{{content_007}}</span>{{content_008}}</li>\n\t\t\t\t\t</ul>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"reveal\">\t\t{{deposit_form}}\n\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</section>",
+      "controls": {
+        "content_001": {
+          "type": "text",
+          "default": "Secure your place with Dr. Trev.",
+          "label": "h1: Secure your place with Dr. Trev."
+        },
+        "content_002": {
+          "type": "textarea",
+          "default": "A $250 deposit confirms your private consultation and is credited 100% toward your treatment. Consultations are by appointment and limited each month.",
+          "label": "p: A $250 deposit confirms your private consultation and is credited 100% toward your trea"
+        },
+        "content_003": {
+          "type": "text",
+          "default": "—",
+          "label": "li: —"
+        },
+        "content_004": {
+          "type": "text",
+          "default": "Credited fully toward your treatment",
+          "label": "li: Credited fully toward your treatment"
+        },
+        "content_005": {
+          "type": "text",
+          "default": "—",
+          "label": "li: —"
+        },
+        "content_006": {
+          "type": "text",
+          "default": "Secured & encrypted by Square",
+          "label": "li: Secured & encrypted by Square"
+        },
+        "content_007": {
+          "type": "text",
+          "default": "—",
+          "label": "li: —"
+        },
+        "content_008": {
+          "type": "text",
+          "default": "A considered, unhurried conversation",
+          "label": "li: A considered, unhurried conversation"
+        }
+      }
+    },
+    "privacy-1": {
+      "title": "Your information stays under your control.",
+      "html": "<article class=\"mx-auto max-w-3xl\">\n\t\t<p class=\"text-[0.62rem] uppercase tracking-[0.3em] text-gold\">{{content_003}}</p>\n\t\t<h1 class=\"mt-5 font-serif text-5xl font-light sm:text-6xl\">{{content_004}}</h1>\n\t\t<div class=\"mt-6 space-y-1 text-sm leading-relaxed text-ivory/55\">\n\t\t\t<p>{{content_005}}</p>\n\t\t\t<p>{{content_006}}</p>\n\t\t</div>\n\t\t<div class=\"mt-10 space-y-8 text-base leading-relaxed text-ivory/70\">\n\t\t\t<section><h2 class=\"font-serif text-3xl font-light text-ivory\">{{content_007}}</h2><p class=\"mt-3\">{{content_008}}</p></section>\n\t\t\t<section><h2 class=\"font-serif text-3xl font-light text-ivory\">{{content_009}}</h2><p class=\"mt-3\">{{content_010}}</p></section>\n\t\t\t<section>\n\t\t\t\t<h2 class=\"font-serif text-3xl font-light text-ivory\">{{content_011}}</h2>\n\t\t\t\t<p class=\"mt-3\">{{content_012}}</p>\n\t\t\t\t<p class=\"mt-3\"><strong class=\"font-normal text-ivory\">{{content_013}}</strong> {{content_014}}</p>\n\t\t\t\t<p class=\"mt-3\">{{content_015}} <a href=\"{{content_001}}\" class=\"text-gold underline underline-offset-4\">{{content_016}}</a>{{content_017}}</p>\n\t\t\t</section>\n\t\t\t<section><h2 class=\"font-serif text-3xl font-light text-ivory\">{{content_018}}</h2><p class=\"mt-3\">{{content_019}}</p></section>\n\t\t\t<section><h2 class=\"font-serif text-3xl font-light text-ivory\">{{content_020}}</h2><p class=\"mt-3\">{{content_021}}</p></section>\n\t\t</div>\n\t\t<a href=\"{{content_002}}\" class=\"mt-12 inline-flex rounded-full border border-ivory/25 px-6 py-3 text-[0.68rem] uppercase tracking-[0.18em] text-ivory transition-colors hover:border-gold hover:text-gold\">{{content_022}}</a>\n\t</article>",
+      "controls": {
+        "content_001": {
+          "type": "url",
+          "default": "{{site}}/terms/",
+          "label": "Link: Terms & Conditions"
+        },
+        "content_002": {
+          "type": "url",
+          "default": "{{site}}/",
+          "label": "Link: Return to Teeth by Trev"
+        },
+        "content_003": {
+          "type": "text",
+          "default": "Privacy Policy",
+          "label": "p: Privacy Policy"
+        },
+        "content_004": {
+          "type": "text",
+          "default": "Your information stays under your control.",
+          "label": "h1: Your information stays under your control."
+        },
+        "content_005": {
+          "type": "text",
+          "default": "Teeth by Trev is operated by Trevor Jamal Thomas DDS, Inc., a California professional corporation.",
+          "label": "p: Teeth by Trev is operated by Trevor Jamal Thomas DDS, Inc., a California professional c"
+        },
+        "content_006": {
+          "type": "text",
+          "default": "436 N Bedford Dr #300, Beverly Hills, CA 90210 · 424-672-3910 · dr.trev@teethbytrev.com",
+          "label": "p: 436 N Bedford Dr #300, Beverly Hills, CA 90210 · 424-672-3910 · dr.trev@teethbytrev.com"
+        },
+        "content_007": {
+          "type": "text",
+          "default": "Who operates this website",
+          "label": "h2: Who operates this website"
+        },
+        "content_008": {
+          "type": "textarea",
+          "default": "Teeth by Trev is the public-facing brand of Trevor Jamal Thomas DDS, Inc. References to “Teeth by Trev,” “we,” “us,” or “our” in this policy mean Trevor Jamal Thomas DDS, Inc.",
+          "label": "p: Teeth by Trev is the public-facing brand of Trevor Jamal Thomas DDS, Inc. References to"
+        },
+        "content_009": {
+          "type": "text",
+          "default": "Enquiry information",
+          "label": "h2: Enquiry information"
+        },
+        "content_010": {
+          "type": "textarea",
+          "default": "Information you submit is used to route your enquiry, let the concierge team respond, and maintain an internal lead record. Please do not submit medical records, payment-card details, passwords or verification codes through the form or social media.",
+          "label": "p: Information you submit is used to route your enquiry, let the concierge team respond, a"
+        },
+        "content_011": {
+          "type": "text",
+          "default": "Text messaging (SMS)",
+          "label": "h2: Text messaging (SMS)"
+        },
+        "content_012": {
+          "type": "textarea",
+          "default": "If you tick the optional text-message box on our contact form, we collect your mobile number and your consent so we can send service messages about your enquiry and your care — appointment availability, booking and payment confirmations, rescheduling, and follow-ups. Consent is not a condition of any purchase or of using our services, and you may still submit the form without it. Message frequency varies. Message and data rates may apply.",
+          "label": "p: If you tick the optional text-message box on our contact form, we collect your mobile n"
+        },
+        "content_013": {
+          "type": "textarea",
+          "default": "No mobile information will be shared with third parties or affiliates for marketing or promotional purposes. All other categories exclude text messaging originator opt-in data and consent; this information will not be shared with any third parties.",
+          "label": "p: No mobile information will be shared with third parties or affiliates for marketing or "
+        },
+        "content_014": {
+          "type": "textarea",
+          "default": "We do not share, sell, rent, or transfer your mobile phone number or SMS consent data to third parties or affiliates for marketing or promotional purposes. Information sharing to subcontractors in support services, such as customer service, is permitted: your number is handled by Teeth by Trev, the enquiry and practice-management systems we use to run the practice, and the licensed messaging provider that delivers our texts. Each works under contract, may use your information only to provide that service to us, and may not use it for any purpose of its own.",
+          "label": "p: We do not share, sell, rent, or transfer your mobile phone number or SMS consent data t"
+        },
+        "content_015": {
+          "type": "textarea",
+          "default": "You may opt out at any time by replying STOP, END, QUIT, CANCEL, UNSUBSCRIBE, REVOKE or OPT-OUT to any message; keywords are not case sensitive, and we will send one confirmation of your removal. You may also simply ask us to stop in your own words, call 424-672-3910, or email dr.trev@teethbytrev.com — we honor every request. Reply HELP for assistance. Full messaging terms are in our",
+          "label": "p: You may opt out at any time by replying STOP, END, QUIT, CANCEL, UNSUBSCRIBE, REVOKE or"
+        },
+        "content_016": {
+          "type": "text",
+          "default": "Terms & Conditions",
+          "label": "a: Terms & Conditions"
+        },
+        "content_017": {
+          "type": "text",
+          "default": ".",
+          "label": "p: ."
+        },
+        "content_018": {
+          "type": "text",
+          "default": "Optional Meta analytics",
+          "label": "h2: Optional Meta analytics"
+        },
+        "content_019": {
+          "type": "textarea",
+          "default": "Analytics is off by default. If you select “Allow analytics,” the site may send Meta a page-visit signal and a generic Lead event after an enquiry is successfully saved. The site does not send Meta your name, email address, phone number, treatment choices, budget, messages, photos or clinical information. This analytics signal never includes text messaging opt-in data or consent.",
+          "label": "p: Analytics is off by default. If you select “Allow analytics,” the site may send Meta a "
+        },
+        "content_020": {
+          "type": "text",
+          "default": "Change your choice",
+          "label": "h2: Change your choice"
+        },
+        "content_021": {
+          "type": "textarea",
+          "default": "Use the “Privacy choices” control at the bottom of any page to allow or turn off optional analytics. Your preference is stored in your browser. To stop text messages, reply STOP to any message. To stop marketing email, use the unsubscribe link in any message. To request removal of your enquiry record, contact us at dr.trev@teethbytrev.com or 424-672-3910.",
+          "label": "p: Use the “Privacy choices” control at the bottom of any page to allow or turn off option"
+        },
+        "content_022": {
+          "type": "text",
+          "default": "Return to Teeth by Trev",
+          "label": "a: Return to Teeth by Trev"
+        }
+      }
+    },
+    "terms-1": {
+      "title": "The terms of working with us.",
+      "html": "<article class=\"mx-auto max-w-3xl\">\n\t\t<p class=\"text-[0.62rem] uppercase tracking-[0.3em] text-gold\">{{content_003}}</p>\n\t\t<h1 class=\"mt-5 font-serif text-5xl font-light sm:text-6xl\">{{content_004}}</h1>\n\t\t<div class=\"mt-6 space-y-1 text-sm leading-relaxed text-ivory/55\">\n\t\t\t<p>{{content_005}}</p>\n\t\t\t<p>{{content_006}}</p>\n\t\t</div>\n\t\t<div class=\"mt-10 space-y-8 text-base leading-relaxed text-ivory/70\">\n\t\t\t<section><h2 class=\"font-serif text-3xl font-light text-ivory\">{{content_007}}</h2><p class=\"mt-3\">{{content_008}}</p></section>\n\t\t\t<section>\n\t\t\t\t<h2 class=\"font-serif text-3xl font-light text-ivory\">{{content_009}}</h2>\n\t\t\t\t<p class=\"mt-3\">{{content_010}}</p>\n\t\t\t\t<p class=\"mt-3\">{{content_011}}</p>\n\t\t\t\t<p class=\"mt-3\">{{content_012}}</p>\n\t\t\t\t<p class=\"mt-3\">{{content_013}} <a href=\"{{content_001}}\" class=\"text-gold underline underline-offset-4\">{{content_014}}</a>{{content_015}}</p>\n\t\t\t</section>\n\t\t\t<section><h2 class=\"font-serif text-3xl font-light text-ivory\">{{content_016}}</h2><p class=\"mt-3\">{{content_017}}</p></section>\n\t\t\t<section><h2 class=\"font-serif text-3xl font-light text-ivory\">{{content_018}}</h2><p class=\"mt-3\">{{content_019}}</p></section>\n\t\t\t<section><h2 class=\"font-serif text-3xl font-light text-ivory\">{{content_020}}</h2><p class=\"mt-3\">{{content_021}}</p></section>\n\t\t\t<section><h2 class=\"font-serif text-3xl font-light text-ivory\">{{content_022}}</h2><p class=\"mt-3\">{{content_023}}</p></section>\n\t\t\t<section><h2 class=\"font-serif text-3xl font-light text-ivory\">{{content_024}}</h2><p class=\"mt-3\">{{content_025}}</p></section>\n\t\t</div>\n\t\t<a href=\"{{content_002}}\" class=\"mt-12 inline-flex rounded-full border border-ivory/25 px-6 py-3 text-[0.68rem] uppercase tracking-[0.18em] text-ivory transition-colors hover:border-gold hover:text-gold\">{{content_026}}</a>\n\t</article>",
+      "controls": {
+        "content_001": {
+          "type": "url",
+          "default": "{{site}}/privacy/",
+          "label": "Link: Privacy Policy"
+        },
+        "content_002": {
+          "type": "url",
+          "default": "{{site}}/",
+          "label": "Link: Return to Teeth by Trev"
+        },
+        "content_003": {
+          "type": "text",
+          "default": "Terms & Conditions",
+          "label": "p: Terms & Conditions"
+        },
+        "content_004": {
+          "type": "text",
+          "default": "The terms of working with us.",
+          "label": "h1: The terms of working with us."
+        },
+        "content_005": {
+          "type": "text",
+          "default": "Teeth by Trev is operated by Trevor Jamal Thomas DDS, Inc., a California professional corporation.",
+          "label": "p: Teeth by Trev is operated by Trevor Jamal Thomas DDS, Inc., a California professional c"
+        },
+        "content_006": {
+          "type": "text",
+          "default": "436 N Bedford Dr #300, Beverly Hills, CA 90210 · 424-672-3910 · dr.trev@teethbytrev.com",
+          "label": "p: 436 N Bedford Dr #300, Beverly Hills, CA 90210 · 424-672-3910 · dr.trev@teethbytrev.com"
+        },
+        "content_007": {
+          "type": "text",
+          "default": "Business identity",
+          "label": "h2: Business identity"
+        },
+        "content_008": {
+          "type": "textarea",
+          "default": "Teeth by Trev is the public-facing brand of Trevor Jamal Thomas DDS, Inc. References to “Teeth by Trev,” “we,” “us,” or “our” in these terms mean Trevor Jamal Thomas DDS, Inc.",
+          "label": "p: Teeth by Trev is the public-facing brand of Trevor Jamal Thomas DDS, Inc. References to"
+        },
+        "content_009": {
+          "type": "text",
+          "default": "Text messaging program",
+          "label": "h2: Text messaging program"
+        },
+        "content_010": {
+          "type": "textarea",
+          "default": "By ticking the optional text-message box on our contact form, you agree to receive service text messages from Teeth by Trev at the mobile number you provide. These messages relate to your enquiry and your care: appointment availability and reminders, booking and payment confirmations, rescheduling, and follow-ups about your enquiry.",
+          "label": "p: By ticking the optional text-message box on our contact form, you agree to receive serv"
+        },
+        "content_011": {
+          "type": "textarea",
+          "default": "Message frequency varies, and is typically two to four messages per month depending on your appointments. Message and data rates may apply. Consent is not a condition of any purchase or of using our services. No mobile information will be shared with third parties or affiliates for marketing or promotional purposes. Information sharing to subcontractors in support services, such as customer service, is permitted.",
+          "label": "p: Message frequency varies, and is typically two to four messages per month depending on "
+        },
+        "content_012": {
+          "type": "textarea",
+          "default": "You can opt out at any time by replying STOP, END, QUIT, CANCEL, UNSUBSCRIBE, REVOKE or OPT-OUT to any message. Keywords are not case sensitive. We will send a single message confirming that you have been removed, after which you will receive no further texts. You may also opt out by calling 424-672-3910, emailing dr.trev@teethbytrev.com, or simply asking us in your own words to stop texting you; we honor every request. Reply HELP for assistance at any time.",
+          "label": "p: You can opt out at any time by replying STOP, END, QUIT, CANCEL, UNSUBSCRIBE, REVOKE or"
+        },
+        "content_013": {
+          "type": "textarea",
+          "default": "Carriers are not liable for delayed or undelivered messages. Delivery depends on your mobile carrier and is not guaranteed. How we handle the information collected for this program is described in our",
+          "label": "p: Carriers are not liable for delayed or undelivered messages. Delivery depends on your m"
+        },
+        "content_014": {
+          "type": "text",
+          "default": "Privacy Policy",
+          "label": "a: Privacy Policy"
+        },
+        "content_015": {
+          "type": "text",
+          "default": ".",
+          "label": "p: ."
+        },
+        "content_016": {
+          "type": "text",
+          "default": "No medical advice",
+          "label": "h2: No medical advice"
+        },
+        "content_017": {
+          "type": "textarea",
+          "default": "This website, our messages, and our social media accounts are for general information and scheduling. They are not medical or dental advice, and they are not a substitute for an in-person examination or a consultation with a licensed clinician. Using this site or submitting an enquiry does not create a doctor-patient relationship. For urgent clinical concerns, contact the treating office or emergency services.",
+          "label": "p: This website, our messages, and our social media accounts are for general information a"
+        },
+        "content_018": {
+          "type": "text",
+          "default": "Consultations and deposits",
+          "label": "h2: Consultations and deposits"
+        },
+        "content_019": {
+          "type": "textarea",
+          "default": "A private video consultation may be reserved with a $250 deposit, which is credited in full toward your treatment. Payments are processed securely by Square; we never receive or store your card details. Consultations are by appointment and limited each month. To reschedule or ask about a deposit, contact us at 424-672-3910.",
+          "label": "p: A private video consultation may be reserved with a $250 deposit, which is credited in "
+        },
+        "content_020": {
+          "type": "text",
+          "default": "Use of this site",
+          "label": "h2: Use of this site"
+        },
+        "content_021": {
+          "type": "textarea",
+          "default": "You agree to use this site lawfully and not to disrupt it or attempt to access areas you are not authorized to use. Please do not submit medical records, payment-card details, passwords or verification codes through the contact form or social media.",
+          "label": "p: You agree to use this site lawfully and not to disrupt it or attempt to access areas yo"
+        },
+        "content_022": {
+          "type": "text",
+          "default": "Content and photography",
+          "label": "h2: Content and photography"
+        },
+        "content_023": {
+          "type": "textarea",
+          "default": "All text, photography, and branding on this site belong to Teeth by Trev unless stated otherwise, and may not be reproduced without permission. Treatment images represent individual patients; results vary from person to person and are not a guarantee of any particular outcome. Links to third-party sites, including financing partners, are provided for convenience, and we are not responsible for their content or practices.",
+          "label": "p: All text, photography, and branding on this site belong to Teeth by Trev unless stated "
+        },
+        "content_024": {
+          "type": "text",
+          "default": "Changes and contact",
+          "label": "h2: Changes and contact"
+        },
+        "content_025": {
+          "type": "textarea",
+          "default": "We may update these terms from time to time; the version published here is the one that applies. Questions about these terms are welcome at dr.trev@teethbytrev.com or 424-672-3910, or by post to 436 N Bedford Dr #300, Beverly Hills, CA 90210.",
+          "label": "p: We may update these terms from time to time; the version published here is the one that"
+        },
+        "content_026": {
+          "type": "text",
+          "default": "Return to Teeth by Trev",
+          "label": "a: Return to Teeth by Trev"
+        }
+      }
+    }
+  }
+}

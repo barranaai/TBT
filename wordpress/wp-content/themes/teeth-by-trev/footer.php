@@ -4,6 +4,9 @@
  *
  * @package TeethByTrev
  */
+if ( empty( $GLOBALS['tbt_classic_layout'] ) && function_exists( 'tbt_editor_global' ) && tbt_editor_global( 'footer' ) ) {
+	echo '<div class="grain" aria-hidden="true"></div>'; wp_footer(); echo '</body></html>'; return;
+}
 if ( ! empty( $GLOBALS['tbt_classic_layout'] ) ) :
 ?>
 <footer class="bg-ink py-16 text-ivory/70">

@@ -1,0 +1,34 @@
+/* Keep the approved geometry when Elementor supplies its document wrappers. */
+.tbt-editor-content > .elementor,
+.tbt-editor-global,
+.tbt-editor-global > .elementor,
+.elementor-widget[class*="elementor-widget-tbt-"],
+.elementor-widget[class*="elementor-widget-tbt-"] > .elementor-widget-container {
+  display: contents;
+}
+/* Elementor's unlayered image reset must not override the theme's image sizing. */
+.elementor-widget[class*="elementor-widget-tbt-"] img.h-full,
+.elementor-widget[class*="elementor-widget-tbt-"] video.h-full { height: 100%; }
+.elementor-widget[class*="elementor-widget-tbt-"] img.h-14 { height: 3.5rem; }
+.elementor-widget[class*="elementor-widget-tbt-"] img.h-12 { height: 3rem; }
+.elementor-widget[class*="elementor-widget-tbt-"] img.w-auto { width: auto; }
+.elementor-widget[class*="elementor-widget-tbt-"] a.underline { text-decoration-line: underline; }
+.tbt-editor-content .elementor .elementor-widget.elementor-element.elementor-widget-tbt-home-9 figure { margin: 0 0 1em; }
+/* The editor must always show editable content, including after partial rerenders. */
+.elementor-editor-active .tbt-intro-veil { display: none; }
+.elementor-editor-active .reveal,
+.elementor-editor-active .img-reveal,
+.elementor-editor-active .line-reveal > span {
+  opacity: 1 !important;
+  transform: none !important;
+  clip-path: none !important;
+}
+.elementor-editor-active .elementor-widget[class*="elementor-widget-tbt-"] {
+  display: block;
+  margin: 0;
+}
+.elementor-editor-active [data-tbt-nav] { position: relative; }
+.elementor-editor-active [data-tbt-menu] { display: none; }
+.elementor-editor-active .tbt-editor-global { display: none; }
+.elementor-editor-active [data-tbt-inquiry],
+.elementor-editor-active [data-tbt-square] { pointer-events: none; }

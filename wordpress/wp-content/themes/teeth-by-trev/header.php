@@ -46,6 +46,7 @@
 <?php if ( ! empty( $GLOBALS['tbt_minimal_header'] ) ) : $tbt_minimal = $GLOBALS['tbt_minimal_header']; ?>
 <header class="absolute inset-x-0 top-0 z-40"><div class="mx-auto flex max-w-[1600px] items-center justify-between px-6 py-6 lg:px-12"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="Teeth by Trev — home"><img src="<?php echo tbt_asset( 'brand/tbt-atelier-logo.png' ); ?>" alt="Teeth by Trev — Dental Atelier" width="546" height="256" class="h-10 w-auto"></a><a href="<?php echo esc_url( home_url( $tbt_minimal['path'] ) ); ?>" class="text-[0.62rem] uppercase tracking-[0.28em] text-ivory/55 transition-colors hover:text-ivory"><?php echo esc_html( $tbt_minimal['label'] ); ?></a></div></header>
 <?php return; endif; ?>
+<?php if ( function_exists( 'tbt_editor_global' ) && tbt_editor_global( 'header' ) ) return; ?>
 <header class="tbt-nav fixed inset-x-0 top-0 z-50 transition-all duration-500" data-tbt-nav>
 	<nav class="relative z-10 mx-auto flex max-w-[1600px] items-center justify-between px-8 py-8 transition-all duration-500 sm:px-11 sm:py-11 lg:px-14 lg:py-14" aria-label="Primary navigation">
 		<a href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="Teeth by Trev — home" class="relative z-10">
