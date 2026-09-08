@@ -275,7 +275,7 @@ final class TBT_Core_REST {
 		);
 		$names = array( 'landingUrl' => 'Landing URL', 'referrer' => 'Referrer URL', 'utmSource' => 'UTM Source', 'utmMedium' => 'UTM Medium', 'utmCampaign' => 'UTM Campaign', 'utmContent' => 'UTM Content', 'utmTerm' => 'UTM Term', 'fbclid' => 'FBCLID', 'ttclid' => 'TTCLID', 'entryChannel' => 'Entry Channel', 'entryAccount' => 'Entry Account' );
 		foreach ( $names as $key => $label ) $fields[ $label ] = self::clean( $payload['attribution'][ $key ] ?? '', 2048 );
-		return self::airtable_create( $fields, '', array( 'Lead Reference', 'Submission Token', 'Caller Name', 'Email', 'Social', 'Photos' ), 'Submission Token' );
+		return self::airtable_create( $fields, '', array( 'Lead Reference', 'Submission Token', 'Caller Name', 'Phone Number', 'Email', 'Social', 'Photos' ), 'Submission Token' );
 	}
 
 	private static function airtable_create( array $fields, string $table_override = '', array $required_fields = array(), string $merge_field = '' ): array {

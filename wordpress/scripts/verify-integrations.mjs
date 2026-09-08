@@ -235,7 +235,7 @@ await reset({ squareEnabled: null }, true);
 
 let healthResult = await jsonRequest("/wp-json/tbt/v1/health");
 let health = healthResult.body;
-assert(health.ok && health.plugin === "0.2.10" && health.airtable === true && health.square === false, `default-disabled health mismatch: ${JSON.stringify(health)}`);
+assert(health.ok && health.plugin === "0.2.11" && health.airtable === true && health.square === false, `default-disabled health mismatch: ${JSON.stringify(health)}`);
 let squareConfigResult = await jsonRequest("/wp-json/tbt/v1/square/config");
 assert(squareConfigResult.body.configured === false, "Square was exposed when credentials were present but the enable flag was absent");
 let disabledSquare = (await postSquare({ sourceId: "cnon:disabled-default", idempotencyKey: "integration-square-disabled-default" }, 503)).body;
@@ -254,7 +254,7 @@ await reset({ squareEnabled: true });
 
 healthResult = await jsonRequest("/wp-json/tbt/v1/health");
 health = healthResult.body;
-assert(health.ok && health.plugin === "0.2.10" && health.airtable === true && health.square === true && health.airtablePending === 0 && health.airtablePendingDeposits === 0, `configured health mismatch: ${JSON.stringify(health)}`);
+assert(health.ok && health.plugin === "0.2.11" && health.airtable === true && health.square === true && health.airtablePending === 0 && health.airtablePendingDeposits === 0, `configured health mismatch: ${JSON.stringify(health)}`);
 assert(healthResult.response.headers.get("cache-control")?.includes("no-store"), "Health response is cacheable");
 squareConfigResult = await jsonRequest("/wp-json/tbt/v1/square/config");
 const squareConfig = squareConfigResult.body;
@@ -271,6 +271,7 @@ assert(newResult.ok && newResult.recorded && newResult.stored && newResult.photo
 let snapshot = await state();
 let fields = airtableFields(serviceLogs(snapshot, "airtable")[0]);
 assert(fields.Social === "Instagram: @barrana.integration", "New enquiry Social mapping is incorrect");
+assert(fields["Phone Number"] === "+14245550199", "New enquiry Phone Number mapping is incorrect");
 assert(fields["SMS Consent"] === "No" && fields["Video Consult"] === "No", "Consent or video-consult Airtable fields are incorrect");
 assert(fields.Photos === newResult.photosUrl && fields["Caller Type"] === "New consultation", "New enquiry Airtable routing fields are incorrect");
 assert(!("Message" in fields) && fields.Services === "Veneers", "New enquiry leaked a stale branch answer");
@@ -297,6 +298,7 @@ assert(existingResult.ok && existingResult.stored && existingResult.photos === 1
 snapshot = await state();
 fields = airtableFields(serviceLogs(snapshot, "airtable")[0]);
 assert(fields.Social === "Instagram: @barrana.integration" && fields["Caller Type"] === "Existing patient", "Existing enquiry Airtable mapping failed");
+assert(fields["Phone Number"] === "+14245550199", "Existing enquiry Phone Number mapping is incorrect");
 assert(fields["Existing Patient Issue"] === "Please help with an existing appointment." && !("Treatment Interest" in fields), "Existing enquiry branch scoping failed");
 
 await reset();
@@ -305,6 +307,7 @@ assert(generalResult.ok && generalResult.stored && generalResult.photos === 1, "
 snapshot = await state();
 fields = airtableFields(serviceLogs(snapshot, "airtable")[0]);
 assert(fields.Social === "Instagram: @barrana.integration" && fields["Caller Type"] === "General / business", "General enquiry Airtable mapping failed");
+assert(fields["Phone Number"] === "+14245550199", "General enquiry Phone Number mapping is incorrect");
 assert(fields.Message === "Integration verification enquiry." && !("Treatment Interest" in fields), "General enquiry branch scoping failed");
 assert(snapshot.inquiries.length === 3 && snapshot.photos.length === 3, "Three enquiry types were not stored once each");
 console.log("PASS Existing and General enquiry Airtable mappings and branch scoping");
@@ -362,6 +365,13 @@ assert(criticalResult.ok && criticalResult.recorded && criticalResult.stored ===
 snapshot = await state();
 assert(serviceLogs(snapshot, "airtable").length === 1, "Critical Airtable field was silently dropped and retried");
 assert(snapshot.inquiries.find((row) => row.submission_token === "integration-critical-field")?.airtable_saved === false, "Critical-field failure was marked as Airtable-saved");
+
+await reset({ airtable: [{ status: 422, body: { error: { message: 'Unknown field name: "Phone Number"' } } }] });
+const criticalPhoneResult = (await postInquiry(generalInquiry("integration-critical-phone", "critical-phone@example.com"))).body;
+assert(criticalPhoneResult.ok && criticalPhoneResult.recorded && criticalPhoneResult.stored === false, "Missing required Airtable Phone Number field was incorrectly accepted");
+snapshot = await state();
+assert(serviceLogs(snapshot, "airtable").length === 1, "Required Airtable Phone Number field was silently dropped and retried");
+assert(snapshot.inquiries.find((row) => row.submission_token === "integration-critical-phone")?.airtable_saved === false, "Missing Airtable Phone Number field was marked as saved");
 
 const optionalPayload = generalInquiry("integration-optional-field", "optional-field@example.com");
 optionalPayload.attribution.utmTerm = "optional-term";
